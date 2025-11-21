@@ -3,7 +3,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
 import { config } from "./config";
-import { router } from "./routes/index.routes";
+import { router } from "./router/index.routes";
 const { NODE_ENV, ALLOWED_ORIGINS } = config;
 
 export function createApp() {
