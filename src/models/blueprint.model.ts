@@ -1,8 +1,8 @@
 import mongoose, { Schema } from "mongoose";
-import { IBlueprintModel } from "../interfaces";
+import { IBlueprint } from "../interfaces";
 
 
-const BlueprintSchema = new Schema<IBlueprintModel>(
+const BlueprintSchema = new Schema<IBlueprint>(
     {
         name: { type: String, required: true, trim: true },
         model_path: { type: String, required: true },
@@ -12,4 +12,4 @@ const BlueprintSchema = new Schema<IBlueprintModel>(
     { timestamps: true }
 );
 
-export default mongoose.model<IBlueprintModel>("blueprints", BlueprintSchema);
+export default mongoose.model<IBlueprint>("blueprints", BlueprintSchema);

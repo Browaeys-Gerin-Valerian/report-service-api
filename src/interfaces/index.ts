@@ -8,7 +8,7 @@ export enum DocumentType {
     PPTX = "PPTX",
 }
 
-export interface IBlueprintModel extends Document {
+export interface IBlueprint extends Document {
     name: string;
     model_path: string;
     data_structure: any; // flexible object that can fit anything
