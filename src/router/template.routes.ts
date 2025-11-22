@@ -1,21 +1,10 @@
 import { Router } from "express";
+import { templateController } from "../controllers/template.controller";
 const router = Router();
 
-
-router.get("/templates", (_req, res) => {
-    res.send("template endpoint");
-});
-
-router.post("/templates", (_req, res) => {
-    res.send("Create a new template");
-});
-
-router.patch("/templates/:id", (_req, res) => {
-    res.send(`Update template with id ${_req.params.id}`);
-});
-
-router.delete("/templates/:id", (_req, res) => {
-    res.send(`Delete template with id ${_req.params.id}`);
-});
+router.get("/templates", templateController.getAll);
+router.post("/templates", templateController.createOne);
+router.patch("/templates/:id", templateController.updateOne);
+router.delete("/templates/:id", templateController.deleteOne);
 
 export default router;
