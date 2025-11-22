@@ -25,11 +25,11 @@ export async function createOne(payload: Partial<IBlueprint>): Promise<IBlueprin
 }
 
 export async function getOneById(id: string) {
-    return BlueprintModel.findById(id).populate(["templates", "model"]).exec();
+    return BlueprintModel.findById(id).exec();
 }
 
 export async function updateOne(id: string, update: UpdateQuery<IBlueprint>) {
-    return BlueprintModel.findByIdAndUpdate(id, update, { new: true }).populate(["templates", "model"]).exec();
+    return BlueprintModel.findByIdAndUpdate(id, update, { new: true }).exec();
 }
 
 export async function deleteOne(id: string) {
