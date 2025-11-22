@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Schema } from "mongoose";
 
 
 export enum DocumentType {
@@ -10,6 +10,7 @@ export enum DocumentType {
 
 export interface IBlueprint extends Document {
     name: string;
+    description?: string;
     model_path: string;
     data_structure: any; // flexible object that can fit anything
     templates: ITemplate[]; // refs to TemplateModel or embedded
@@ -19,6 +20,7 @@ export interface IBlueprint extends Document {
 
 
 export interface ITemplate extends Document {
+    blueprint_id: Schema.Types.ObjectId;
     name: string;
     default: boolean;
     template_file: string;
