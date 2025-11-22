@@ -1,21 +1,10 @@
 import { Router } from "express";
+import { blueprintController } from "../controllers/blueprint.controller";
 const router = Router();
 
-
-router.get("/blueprint", (_req, res) => {
-    res.send("blueprint endpoint");
-});
-
-router.post("/blueprint", (_req, res) => {
-    res.send("Create a new blueprint");
-});
-
-router.patch("/blueprint/:id", (_req, res) => {
-    res.send(`Update blueprint with id ${_req.params.id}`);
-});
-
-router.delete("/blueprint/:id", (_req, res) => {
-    res.send(`Delete blueprint with id ${_req.params.id}`);
-});
+router.get("/blueprints", blueprintController.getAll);
+router.post("/blueprints", blueprintController.createOne);
+router.patch("/blueprints/:id", blueprintController.updateOne);
+router.delete("/blueprints/:id", blueprintController.deleteOne);
 
 export default router;
