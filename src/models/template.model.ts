@@ -3,6 +3,7 @@ import { DocumentType, ITemplate } from "../interfaces";
 
 const TemplateSchema = new Schema<ITemplate>(
     {
+        blueprint_id: { type: Schema.Types.ObjectId, ref: "blueprints", required: true },
         name: { type: String, required: true, trim: true },
         default: { type: Boolean, default: false },
         template_file: { type: String, required: true },
