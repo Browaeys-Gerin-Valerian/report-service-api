@@ -6,7 +6,6 @@ const TemplateSchema = new Schema<ITemplate>(
         blueprint_id: { type: Schema.Types.ObjectId, ref: "blueprints", required: true },
         name: { type: String, required: true, trim: true },
         default: { type: Boolean, default: false },
-        template_file: { type: String, required: true },
         format: { type: String, required: true },
         supported_output_formats: { type: [String], default: [DocumentType.PDF, DocumentType.DOCX] },
         language: { type: String, default: "EN" },
