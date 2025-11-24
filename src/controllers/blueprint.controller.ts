@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as blueprintService from "../services/blueprint.service";
+import { json } from "stream/consumers";
 
 
 export const blueprintController = {
@@ -49,7 +50,9 @@ export async function createOne(req: Request, res: Response) {
 export async function updateOne(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const updated = await blueprintService.updateOne(id, req.body);
+        const { data } = req.body;
+
+        const updated = await blueprintService.updateOne(id, JSON.parse(data));
         if (!updated) return res.status(404).json({ error: "Blueprint not found" });
         res.json(updated);
     } catch (err) {
