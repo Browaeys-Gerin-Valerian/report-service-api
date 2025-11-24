@@ -10,7 +10,6 @@ const TemplateSchema = new Schema<ITemplate>(
         format: { type: String, required: true },
         supported_output_formats: { type: [String], default: [DocumentType.PDF, DocumentType.DOCX] },
         language: { type: String, default: "EN" },
-        data_structure_checks: { type: Schema.Types.Mixed, default: {} },
     },
     { timestamps: true }
 );

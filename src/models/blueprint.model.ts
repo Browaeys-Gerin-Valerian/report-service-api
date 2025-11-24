@@ -8,7 +8,7 @@ const BlueprintSchema = new Schema<IBlueprint>(
         description: { type: String, default: "" },
         model_path: { type: String, required: true },
         data_structure: { type: Schema.Types.Mixed, required: true, default: {} },
-        templates: [{ type: Schema.Types.ObjectId, ref: "template" }],
+        templates: [{ type: Schema.Types.ObjectId, ref: "templates" }],
     },
     { timestamps: true }
 );
