@@ -8,6 +8,7 @@ export const templateService = {
     getOneById,
     updateOne,
     deleteOne,
+    deleteManyByBlueprintId
 };
 
 export async function getAll(filter: FilterQuery<ITemplate> = {}, opts: { limit?: number; skip?: number; sort?: any } = {}) {
@@ -36,3 +37,6 @@ export async function deleteOne(id: string) {
     return TemplateModel.findByIdAndDelete(id).exec();
 }
 
+export async function deleteManyByBlueprintId(blueprint_id: string) {
+    return TemplateModel.deleteMany({ blueprint_id }).exec();
+}
