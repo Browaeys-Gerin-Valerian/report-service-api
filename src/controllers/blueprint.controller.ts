@@ -38,9 +38,8 @@ export async function getOneById(req: Request, res: Response) {
 
 export async function createOne(req: Request, res: Response) {
     try {
-        const payload = req.body;
-        if (!payload?.name) return res.status(400).json({ error: "name is required" });
-        const doc = await blueprintService.createOne(payload);
+        const { data } = req.body;
+        const doc = await blueprintService.createOne(JSON.parse(data));
         res.status(201).json(doc);
     } catch (err) {
         res.status(500).json({ error: "Failed to create blueprint", details: err });
