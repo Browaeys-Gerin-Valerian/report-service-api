@@ -14,12 +14,12 @@ export const blueprintController = {
 export async function getAll(req: Request, res: Response) {
     try {
         const { limit, skip, sort } = req.query;
-        const items = await blueprintDbService.getAll({}, {
+        const doc = await blueprintDbService.getAll({}, {
             limit: limit ? Number(limit) : undefined,
             skip: skip ? Number(skip) : undefined,
             sort: sort ? JSON.parse(String(sort)) : undefined,
         });
-        res.json(items);
+        res.json(doc);
     } catch (err) {
         res.status(500).json({ error: "Failed to list blueprints", details: err });
     }
@@ -51,9 +51,9 @@ export async function updateOne(req: Request, res: Response) {
         const { id } = req.params;
         const { data } = req.body;
 
-        const updated = await blueprintDbService.updateOne(id, JSON.parse(data));
-        if (!updated) return res.status(404).json({ error: "Blueprint not found" });
-        res.json(updated);
+        const doc = await blueprintDbService.updateOne(id, JSON.parse(data));
+        if (!doc) return res.status(404).json({ error: "Blueprint not found" });
+        res.json(doc);
     } catch (err) {
         res.status(500).json({ error: "Failed to update blueprint", details: err });
     }
@@ -62,8 +62,8 @@ export async function updateOne(req: Request, res: Response) {
 export async function deleteOne(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const deleted = await blueprintDbService.deleteOne(id);
-        if (!deleted) return res.status(404).json({ error: "Blueprint not found" });
+        const doc = await blueprintDbService.deleteOne(id);
+        if (!doc) return res.status(404).json({ error: "Blueprint not found" });
         res.status(204).send();
     } catch (err) {
         res.status(500).json({ error: "Failed to delete blueprint", details: err });

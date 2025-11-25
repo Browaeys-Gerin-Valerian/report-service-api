@@ -13,12 +13,12 @@ export const templateController = {
 export async function getAll(req: Request, res: Response) {
     try {
         const { limit, skip, sort } = req.query;
-        const items = await templateDbService.getAll({}, {
+        const doc = await templateDbService.getAll({}, {
             limit: limit ? Number(limit) : undefined,
             skip: skip ? Number(skip) : undefined,
             sort: sort ? JSON.parse(String(sort)) : undefined,
         });
-        res.json(items);
+        res.json(doc);
     } catch (err) {
         res.status(500).json({ error: "Failed to list templates", details: err });
     }
@@ -45,10 +45,7 @@ export async function createOne(req: Request, res: Response) {
             return res.status(400).json({ error: "Data is required (key: data)" });
         }
 
-        const payload = JSON.parse(req.body.data);
-
-
-        const doc = await templateFilesystemService.createOne(payload, req.file);
+        const doc = await templateFilesystemService.createOne(JSON.parse(req.body.data), req.file);
 
         res.status(201).json(doc);
     } catch (err) {
@@ -60,9 +57,9 @@ export async function createOne(req: Request, res: Response) {
 export async function updateOne(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const updated = await templateDbService.updateOne(id, req.body);
-        if (!updated) return res.status(404).json({ error: "Template not found" });
-        res.json(updated);
+        const doc = await templateDbService.updateOne(id, req.body);
+        if (!doc) return res.status(404).json({ error: "Template not found" });
+        res.json(doc);
     } catch (err) {
         res.status(500).json({ error: "Failed to update template", details: err });
     }
@@ -71,8 +68,8 @@ export async function updateOne(req: Request, res: Response) {
 export async function deleteOne(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const deleted = await templateDbService.deleteOne(id);
-        if (!deleted) return res.status(404).json({ error: "Template not found" });
+        const doc = await templateDbService.deleteOne(id);
+        if (!doc) return res.status(404).json({ error: "Template not found" });
         res.status(204).send();
     } catch (err) {
         res.status(500).json({ error: "Failed to delete template", details: err });
