@@ -1,14 +1,16 @@
 import fs from "fs";
 import path from "path";
-
-const TEMPLATE_DIR = path.join(process.cwd(), "templates");
+import { config } from "../config";
+import { ITemplate } from "../interfaces";
+const { TEMPLATE_DIR } = config;
 
 if (!fs.existsSync(TEMPLATE_DIR)) {
     fs.mkdirSync(TEMPLATE_DIR);
 }
 
-export function generateFileName(templateId: string) {
-    return `${Date.now()}-${templateId}`;
+export function generateFileName(template: ITemplate) {
+    const { _id, name } = template;
+    return `${name}-${_id.toString()}`;
 }
 
 export function saveUploadedFile(tempFilePath: string, finalFileName: string) {
@@ -16,12 +18,4 @@ export function saveUploadedFile(tempFilePath: string, finalFileName: string) {
     fs.renameSync(tempFilePath, finalPath);
     return finalFileName;
 }
-
-export function deleteFileIfExists(fileName: string) {
-    const filePath = path.join(TEMPLATE_DIR, fileName);
-    if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-    }
-}
-
 

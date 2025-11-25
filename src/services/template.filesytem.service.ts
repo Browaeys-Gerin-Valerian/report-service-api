@@ -7,13 +7,7 @@ export const templateFilesystemService = {
 
 
 export async function createOne(data: any, file: Express.Multer.File) {
-
-    // 1. Create DB entry
     const doc = await templateDbService.createOne({ ...data, });
-
-    // 2. Compute final name
-    const finalName = generateFileName(doc._id.toString());
-
-    // 3. Move file to final name
+    const finalName = generateFileName(doc);
     saveUploadedFile(file.path, finalName);
 }
