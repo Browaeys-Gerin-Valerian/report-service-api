@@ -2,7 +2,8 @@ import mongoose, { Schema } from "mongoose";
 import fs from "fs";
 import path from "path";
 import { IBlueprint } from "../interfaces";
-import { templateService } from "../services/template.service";
+import { templateDbService } from "../services/template.db.service";
+
 
 
 const BlueprintSchema = new Schema<IBlueprint>(
@@ -21,14 +22,14 @@ BlueprintSchema.pre("findOneAndDelete", async function () {
 
     if (!blueprint) return;
 
-    const templates = await templateService.getAll({ blueprint_id: blueprint._id });
+    const templates = await templateDbService.getAll({ blueprint_id: blueprint._id });
 
     for (const tpl of templates) {
         const filePath = path.join(process.cwd(), "templates", tpl.name);
         if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     }
 
-    await templateService.deleteManyByBlueprintId(blueprint._id);
+    await templateDbService.deleteManyByBlueprintId(blueprint._id);
 });
 
 
