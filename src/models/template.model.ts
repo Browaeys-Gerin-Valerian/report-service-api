@@ -1,5 +1,10 @@
+import fs from "fs";
 import mongoose, { Schema } from "mongoose";
 import { DocumentType, ITemplate } from "../interfaces";
+import { config } from "../config";
+import path from "path";
+import { generateFileName } from "../utils/templates.utils";
+const { TEMPLATE_DIR } = config;
 
 const TemplateSchema = new Schema<ITemplate>(
     {
@@ -13,5 +18,12 @@ const TemplateSchema = new Schema<ITemplate>(
     { timestamps: true }
 );
 
+//Mongoose hook to delete the associated file when a template is deleted
+TemplateSchema.post("findOneAndDelete", async function (doc) {
+    if (!doc) return;
+    const fileName = generateFileName(doc);
+    const filePath = path.join(TEMPLATE_DIR, fileName);
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+});
 
 export default mongoose.model<ITemplate>("templates", TemplateSchema);

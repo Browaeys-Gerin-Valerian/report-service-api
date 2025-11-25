@@ -1,10 +1,12 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { config } from "../config";
+const { TEMPLATE_DIR } = config;
 
 const allowedExtensions = ['.docx', '.pdf'];
 
-const TEMPLATE_DIR = path.join(process.cwd(), "templates");
+
 
 // Ensure folder exists
 if (!fs.existsSync(TEMPLATE_DIR)) {
