@@ -1,6 +1,7 @@
 import { FilterQuery, UpdateQuery } from "mongoose";
 import { ITemplate } from "../interfaces";
 import TemplateModel from "../models/template.model";
+import { detectFormat } from "../utils/functions.utils";
 
 export const templateDbService = {
     getAll,
@@ -24,8 +25,26 @@ export async function getOneById(id: string) {
 }
 
 
-export async function createOne(payload: Partial<ITemplate>): Promise<ITemplate> {
-    const doc = new TemplateModel(payload);
+export async function createOne(payload: Partial<ITemplate>, file: Express.Multer.File): Promise<ITemplate> {
+
+    const format = detectFormat(file);
+
+    const { blueprint_id, name, language, default: isDefault } = payload;
+
+    // If the new template is set as default, unset previous defaults
+    if (isDefault === true) {
+        await TemplateModel.updateMany(
+            { blueprint_id },
+            { $set: { default: false } }
+        );
+    }
+    const doc = new TemplateModel({
+        blueprint_id,
+        name,
+        language,
+        format,
+        default: isDefault === true,
+    });
     return doc.save();
 }
 
