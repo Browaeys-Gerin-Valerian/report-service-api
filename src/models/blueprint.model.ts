@@ -3,6 +3,9 @@ import fs from "fs";
 import path from "path";
 import { IBlueprint } from "../interfaces";
 import { templateDbService } from "../services/template.db.service";
+import { generateFileName } from "../utils/templates.utils";
+import { config } from "../config";
+const { TEMPLATE_DIR } = config;
 
 
 
@@ -25,8 +28,10 @@ BlueprintSchema.pre("findOneAndDelete", async function () {
     const templates = await templateDbService.getAll({ blueprint_id: blueprint._id });
 
     for (const tpl of templates) {
-        const filePath = path.join(process.cwd(), "templates", tpl.name);
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+        const finalFileName = generateFileName(tpl);
+        const finalPath = path.join(TEMPLATE_DIR, finalFileName);
+        console.log("Deleting template file at path:", finalPath);
+        if (fs.existsSync(finalPath)) fs.unlinkSync(finalPath);
     }
 
     await templateDbService.deleteManyByBlueprintId(blueprint._id);
