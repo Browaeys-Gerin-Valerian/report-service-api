@@ -1,8 +1,9 @@
+
+import { FilterQuery, UpdateQuery } from "mongoose";
 import { IBlueprint } from "../interfaces";
 import BlueprintModel from "../models/blueprint.model";
-import { FilterQuery, UpdateQuery } from "mongoose";
 
-export const blueprintService = {
+export const blueprintDbService = {
     getAll,
     createOne,
     getOneById,

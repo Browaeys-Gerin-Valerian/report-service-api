@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import * as templateService from "../services/template.service";
+import * as templateDbService from "../services/template.db.service";
+import { templateFilesystemService } from "../services/template.filesytem.service";
 
 export const templateController = {
     getAll,
@@ -12,7 +13,7 @@ export const templateController = {
 export async function getAll(req: Request, res: Response) {
     try {
         const { limit, skip, sort } = req.query;
-        const items = await templateService.getAll({}, {
+        const items = await templateDbService.getAll({}, {
             limit: limit ? Number(limit) : undefined,
             skip: skip ? Number(skip) : undefined,
             sort: sort ? JSON.parse(String(sort)) : undefined,
@@ -26,7 +27,7 @@ export async function getAll(req: Request, res: Response) {
 export async function getOneById(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const doc = await templateService.getOneById(id);
+        const doc = await templateDbService.getOneById(id);
         if (!doc) return res.status(404).json({ error: "Template not found" });
         res.json(doc);
     } catch (err) {
@@ -36,21 +37,30 @@ export async function getOneById(req: Request, res: Response) {
 
 export async function createOne(req: Request, res: Response) {
     try {
-        const payload = req.body;
-        if (!payload?.name || !payload?.template_file || !payload?.format) {
-            return res.status(400).json({ error: "name, template_file and format are required" });
+        if (!req.file) {
+            return res.status(400).json({ error: "File is required (key: file)" });
         }
-        const doc = await templateService.createOne(payload);
+
+        if (!req.body.data) {
+            return res.status(400).json({ error: "Data is required (key: data)" });
+        }
+
+        const payload = JSON.parse(req.body.data);
+
+
+        const doc = await templateFilesystemService.createOne(payload, req.file);
+
         res.status(201).json(doc);
     } catch (err) {
         res.status(500).json({ error: "Failed to create template", details: err });
     }
 }
 
+
 export async function updateOne(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const updated = await templateService.updateOne(id, req.body);
+        const updated = await templateDbService.updateOne(id, req.body);
         if (!updated) return res.status(404).json({ error: "Template not found" });
         res.json(updated);
     } catch (err) {
@@ -61,7 +71,7 @@ export async function updateOne(req: Request, res: Response) {
 export async function deleteOne(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const deleted = await templateService.deleteOne(id);
+        const deleted = await templateDbService.deleteOne(id);
         if (!deleted) return res.status(404).json({ error: "Template not found" });
         res.status(204).send();
     } catch (err) {

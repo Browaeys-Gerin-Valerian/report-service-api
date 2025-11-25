@@ -2,10 +2,10 @@ import { FilterQuery, UpdateQuery } from "mongoose";
 import { ITemplate } from "../interfaces";
 import TemplateModel from "../models/template.model";
 
-export const templateService = {
+export const templateDbService = {
     getAll,
-    createOne,
     getOneById,
+    createOne,
     updateOne,
     deleteOne,
     deleteManyByBlueprintId
@@ -19,15 +19,16 @@ export async function getAll(filter: FilterQuery<ITemplate> = {}, opts: { limit?
     return q.exec();
 }
 
+export async function getOneById(id: string) {
+    return TemplateModel.findById(id).exec();
+}
+
 
 export async function createOne(payload: Partial<ITemplate>): Promise<ITemplate> {
     const doc = new TemplateModel(payload);
     return doc.save();
 }
 
-export async function getOneById(id: string) {
-    return TemplateModel.findById(id).exec();
-}
 
 export async function updateOne(id: string, update: UpdateQuery<ITemplate>) {
     return TemplateModel.findByIdAndUpdate(id, update, { new: true }).exec();

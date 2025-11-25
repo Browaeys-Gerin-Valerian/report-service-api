@@ -33,6 +33,7 @@ docker-compose.local.yml
 Thumbs.db
 *.swp
 *.swo
+templates/
 
 # ==========================
 # IDE
