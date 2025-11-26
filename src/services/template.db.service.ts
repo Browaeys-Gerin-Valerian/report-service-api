@@ -1,7 +1,6 @@
 import { FilterQuery, UpdateQuery } from "mongoose";
 import { ITemplate } from "../interfaces";
 import TemplateModel from "../models/template.model";
-import { detectFormat } from "../utils/functions.utils";
 
 export const templateDbService = {
     getAll,
@@ -26,14 +25,8 @@ export async function getOneById(id: string) {
 }
 
 
-export async function createOne(payload: Partial<ITemplate>, file: Express.Multer.File): Promise<ITemplate> {
-
-    const format = detectFormat(file);
-
-    const doc = new TemplateModel({
-        ...payload,
-        format,
-    });
+export async function createOne(payload: Partial<ITemplate>): Promise<ITemplate> {
+    const doc = new TemplateModel(payload);
     return doc.save();
 }
 
