@@ -2,10 +2,10 @@ import { Document, Schema } from "mongoose";
 
 
 export enum DocumentType {
-    PDF = "PDF",
-    DOCX = "DOCX",
-    HTML = "HTML",
-    PPTX = "PPTX",
+    PDF = "pdf",
+    DOCX = "docx",
+    HTML = "html",
+    PPTX = "pptx",
 }
 
 export interface IBlueprint extends Document {
@@ -20,6 +20,7 @@ export interface IBlueprint extends Document {
 export interface ITemplate extends Document {
     blueprint_id: Schema.Types.ObjectId;
     name: string;
+    filename: string;
     default: boolean;
     format: string;
     supported_output_formats: string[];

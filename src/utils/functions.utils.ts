@@ -14,3 +14,14 @@ export function detectFormat(file: Express.Multer.File): string {
             throw new Error(`Unsupported template format: ${ext}`);
     }
 }
+
+export function isBodyEmpty(body: any): boolean {
+    if (body === null || body === undefined) return true;
+
+    if (typeof body === 'string') return body.trim().length === 0;
+
+    if (typeof body === 'object') return Object.keys(body).length === 0;
+
+    return false;
+}
+

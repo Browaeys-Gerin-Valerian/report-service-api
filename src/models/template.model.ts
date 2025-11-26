@@ -3,13 +3,13 @@ import mongoose, { Schema } from "mongoose";
 import { DocumentType, ITemplate } from "../interfaces";
 import { config } from "../config";
 import path from "path";
-import { generateFileName } from "../utils/templates.utils";
 import { templateDbService } from "../services/template.db.service";
 const { TEMPLATE_DIR } = config;
 
 const TemplateSchema = new Schema<ITemplate>(
     {
         blueprint_id: { type: Schema.Types.ObjectId, ref: "blueprints", required: true },
+        filename: { type: String, required: true },
         name: { type: String, required: true, trim: true },
         default: { type: Boolean, default: false },
         format: { type: String, required: true },
@@ -20,10 +20,9 @@ const TemplateSchema = new Schema<ITemplate>(
 );
 
 //Mongoose hook to delete the associated file when a template is deleted
-TemplateSchema.post("findOneAndDelete", async function (doc) {
-    if (!doc) return;
-    const fileName = generateFileName(doc);
-    const filePath = path.join(TEMPLATE_DIR, fileName);
+TemplateSchema.post("findOneAndDelete", async function (doc, next) {
+    if (!doc) return next();
+    const filePath = path.join(TEMPLATE_DIR, doc.filename);
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 });
 
@@ -35,19 +34,15 @@ TemplateSchema.pre("save", async function (next) {
     next();
 });
 
-//Mongoose hook to ensure only one default template per blueprint on update
+//Mongoose hook to ensure only one default template per blueprint on update and 
 TemplateSchema.pre("findOneAndUpdate", async function (next) {
     const doc = this.getUpdate() as ITemplate;
-    const docToUpdate = await this.model.findOne(this.getFilter());
-    console.log('CURRENT DOC:', { doc, docToUpdate });
-
     //Cast boolean is needed because doc.default is typed as string on update documents
-    if (Boolean(doc.default) === true) {
+    if (Boolean(doc.default)) {
         //recover the blueprint_id from the document being updated, for unset other to default false
         const docToUpdate = await this.model.findOne(this.getFilter());
-        if (docToUpdate) {
-            await templateDbService.unsetDefaultTemplatesForBlueprint(docToUpdate.blueprint_id.toString());
-        }
+        if (docToUpdate) await templateDbService.unsetDefaultTemplatesForBlueprint(docToUpdate.blueprint_id.toString());
+
     }
     next();
 });
