@@ -57,7 +57,10 @@ export async function createOne(req: Request, res: Response) {
 export async function updateOne(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const doc = await templateDbService.updateOne(id, req.body);
+        const { file, body: { data } } = req
+
+        const payload = data ? JSON.parse(data) : {};
+        const doc = await templateFilesystemService.updateOne(id, payload, file);
         if (!doc) return res.status(404).json({ error: "Template not found" });
         res.json(doc);
     } catch (err) {

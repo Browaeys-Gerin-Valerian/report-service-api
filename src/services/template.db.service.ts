@@ -39,8 +39,8 @@ export async function unsetDefaultTemplatesForBlueprint(blueprint_id: string) {
 }
 
 
-export async function updateOne(id: string, update: UpdateQuery<ITemplate>) {
-    return TemplateModel.findByIdAndUpdate(id, update, { new: true }).exec();
+export async function updateOne(id: string, payload: UpdateQuery<ITemplate>) {
+    return TemplateModel.findByIdAndUpdate(id, payload, { new: true }).exec();
 }
 
 export async function deleteOne(id: string) {

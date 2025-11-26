@@ -27,3 +27,17 @@ export async function writeTemplateFileOrRollback(doc: ITemplate, file: Express.
     }
 }
 
+// Updates the template file by deleting the old one and writing the new one
+export async function updateTemplateFile(template: ITemplate, file: Express.Multer.File): Promise<ITemplate> {
+    await deleteTemplateFile(template);
+    return await writeTemplateFileOrRollback(template, file);
+}
+
+export async function deleteTemplateFile(template: ITemplate): Promise<void> {
+    const finalName = generateFileName(template);
+    const finalPath = path.join(TEMPLATE_DIR, finalName);
+    if (fs.existsSync(finalPath)) {
+        fs.unlinkSync(finalPath);
+    }
+}
+
