@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as templateDbService from "../services/template.db.service";
 import { templateFilesystemService } from "../services/template.filesytem.service";
+import { isBodyEmpty } from "../utils/functions.utils";
 
 export const templateController = {
     getAll,
@@ -57,11 +58,12 @@ export async function createOne(req: Request, res: Response) {
 export async function updateOne(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const { file, body: { data } } = req
 
-        const payload = data ? JSON.parse(data) : {};
-        const doc = await templateFilesystemService.updateOne(id, payload, file);
-        if (!doc) return res.status(404).json({ error: "Template not found" });
+        if (!req.file && isBodyEmpty(req.body)) {
+            return res.status(400).json({ error: "At least one of file (key: file) or data (key: data) is required" });
+        }
+        const payload = req.body.data ? JSON.parse(req.body.data) : {};
+        const doc = await templateFilesystemService.updateOne(id, payload, req.file);
         res.json(doc);
     } catch (err) {
         res.status(500).json({ error: "Failed to update template", details: err });

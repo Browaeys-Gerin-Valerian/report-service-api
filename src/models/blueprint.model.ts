@@ -28,8 +28,7 @@ BlueprintSchema.pre("findOneAndDelete", async function () {
     const templates = await templateDbService.getAll({ blueprint_id: blueprint._id });
 
     for (const tpl of templates) {
-        const finalFileName = generateFileName(tpl);
-        const finalPath = path.join(TEMPLATE_DIR, finalFileName);
+        const finalPath = path.join(TEMPLATE_DIR, tpl.filename);
         if (fs.existsSync(finalPath)) fs.unlinkSync(finalPath);
     }
 

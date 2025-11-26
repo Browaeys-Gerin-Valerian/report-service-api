@@ -3,20 +3,20 @@ import path from "path";
 import { config } from "../config";
 import { ITemplate } from "../interfaces";
 import { templateDbService } from "../services/template.db.service";
+import { detectFormat } from "./functions.utils";
 const { TEMPLATE_DIR } = config;
 
 if (!fs.existsSync(TEMPLATE_DIR)) {
     fs.mkdirSync(TEMPLATE_DIR);
 }
 
-export function generateFileName(template: ITemplate) {
-    const { _id, name } = template;
-    return `${name}-${_id.toString()}`;
+export function generateFileName(template: ITemplate, file: Express.Multer.File): string {
+    const { name } = template;
+    return `${name}-${Date.now()}.${detectFormat(file)}`;
 }
 
 export async function writeTemplateFileOrRollback(doc: ITemplate, file: Express.Multer.File): Promise<ITemplate> {
-    const finalName = generateFileName(doc);
-    const finalPath = path.join(TEMPLATE_DIR, finalName);
+    const finalPath = path.join(TEMPLATE_DIR, doc.filename);
     try {
         fs.writeFileSync(finalPath, file.buffer);
         return doc;
@@ -34,8 +34,7 @@ export async function updateTemplateFile(template: ITemplate, file: Express.Mult
 }
 
 export async function deleteTemplateFile(template: ITemplate): Promise<void> {
-    const finalName = generateFileName(template);
-    const finalPath = path.join(TEMPLATE_DIR, finalName);
+    const finalPath = path.join(TEMPLATE_DIR, template.filename);
     if (fs.existsSync(finalPath)) {
         fs.unlinkSync(finalPath);
     }
