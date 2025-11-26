@@ -9,7 +9,8 @@ export const templateDbService = {
     createOne,
     updateOne,
     deleteOne,
-    deleteManyByBlueprintId
+    deleteManyByBlueprintId,
+    unsetDefaultTemplatesForBlueprint
 };
 
 export async function getAll(filter: FilterQuery<ITemplate> = {}, opts: { limit?: number; skip?: number; sort?: any } = {}) {
@@ -29,23 +30,19 @@ export async function createOne(payload: Partial<ITemplate>, file: Express.Multe
 
     const format = detectFormat(file);
 
-    const { blueprint_id, name, language, default: isDefault } = payload;
-
-    // If the new template is set as default, unset previous defaults
-    if (isDefault === true) {
-        await TemplateModel.updateMany(
-            { blueprint_id },
-            { $set: { default: false } }
-        );
-    }
     const doc = new TemplateModel({
-        blueprint_id,
-        name,
-        language,
+        ...payload,
         format,
-        default: isDefault === true,
     });
     return doc.save();
+}
+
+//query used when a new template is created  with default=true to unset previous default templates for the same blueprint
+export async function unsetDefaultTemplatesForBlueprint(blueprint_id: string) {
+    await TemplateModel.updateMany(
+        { blueprint_id },
+        { $set: { default: false } }
+    );
 }
 
 

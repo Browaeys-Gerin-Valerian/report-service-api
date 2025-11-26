@@ -4,6 +4,7 @@ import { DocumentType, ITemplate } from "../interfaces";
 import { config } from "../config";
 import path from "path";
 import { generateFileName } from "../utils/templates.utils";
+import { templateDbService } from "../services/template.db.service";
 const { TEMPLATE_DIR } = config;
 
 const TemplateSchema = new Schema<ITemplate>(
@@ -24,6 +25,14 @@ TemplateSchema.post("findOneAndDelete", async function (doc) {
     const fileName = generateFileName(doc);
     const filePath = path.join(TEMPLATE_DIR, fileName);
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+});
+
+//Mongoose hook to ensure only one default template per blueprint
+TemplateSchema.pre("save", async function (next) {
+    const doc = this as ITemplate;
+    if (!doc) return next();
+    if (doc.default === true) await templateDbService.unsetDefaultTemplatesForBlueprint(doc.blueprint_id.toString());
+    next();
 });
 
 export default mongoose.model<ITemplate>("templates", TemplateSchema);
