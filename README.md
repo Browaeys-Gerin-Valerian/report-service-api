@@ -24,40 +24,60 @@ my-app/
 - Docker Compose V2
 - MongoDB (sera lancé via Docker)
 
-### 🚀 Lancer les containers
+## 📄 Templates File Storage
 
-Depuis le dossier `docker/` :
+### Location
 
-- Pour le mode dev:
+All uploaded template files are stored in the `templates` folder at the root of the project
+
+### File Naming Convention
+
+Uploaded files are renamed according to the following pattern:
+
+- `<template_name>`: The `name` field of the template.
+- `<timestamp>`: Current timestamp in milliseconds (to avoid collisions).
+- `<original_filename>`: Original name of the uploaded file including its extension.
+
+### Notes
+
+- This ensures that files are unique even if multiple files with the same name are uploaded.
+- Original file extensions are preserved to maintain compatibility with software (e.g., `.docx`, `.pdf`).
+- Temporary files are written directly to the `templates` folder and renamed immediately after upload.
+
+## 🚀 Running the Containers
+
+Go to the `docker/` folder.
+
+### Development Mode
+
+start containers:
 
 ```bash
 docker-compose -f docker-compose.dev.yml up --build
 ```
 
-- Pour le mode prod:
-
-```bash
-docker-compose -f docker-compose.prod.yml up --build
-```
-
-Pour lancer les containers en mode detacher ajouter l'option -d a la fin des deux instructions précedentes.
-
-- #### Verifier que les containers tournent bien:
-
-```bash
-docker ps
-```
-
-- #### Arrêter les containers:
-
-Pour le mode dev:
+stop containers:
 
 ```bash
 docker-compose -f docker-compose.dev.yml down
 ```
 
-Pour le mode prod:
+### Production Mode
+
+```bash
+docker-compose -f docker-compose.prod.yml up --build
+```
+
+stop containers:
 
 ```bash
 docker-compose -f docker-compose.prod.yml down
+```
+
+To run containers in detached mode, simply add the -d flag at the end of the commands above.
+
+### Check if Containers are Running
+
+```bash
+docker ps
 ```
