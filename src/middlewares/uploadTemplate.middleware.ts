@@ -13,17 +13,9 @@ if (!fs.existsSync(TEMPLATE_DIR)) {
     fs.mkdirSync(TEMPLATE_DIR);
 }
 
-const storage = multer.diskStorage({
-    destination: (_, __, cb) => {
-        cb(null, TEMPLATE_DIR);
-    },
-    filename: (_, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`)
-    }
-});
-
 export const uploadTemplate = multer({
-    storage, fileFilter: (_, file, cb) => {
+    storage: multer.memoryStorage(),
+    fileFilter: (_, file, cb) => {
         const ext = path.extname(file.originalname).toLowerCase();
         if (allowedExtensions.includes(ext)) {
             cb(null, true);
