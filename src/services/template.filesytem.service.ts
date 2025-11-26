@@ -1,10 +1,11 @@
 import { templateDbService } from "./template.db.service";
-import { writeTemplateFileOrRollback } from "../utils/templates.utils";
+import { updateTemplateFile, writeTemplateFileOrRollback } from "../utils/templates.utils";
 import { ITemplate } from "../interfaces";
 import { detectFormat } from "../utils/functions.utils";
 
 export const templateFilesystemService = {
     createOne,
+    updateOne
 };
 
 
@@ -17,4 +18,15 @@ export async function createOne(payload: ITemplate, file: Express.Multer.File) {
         throw new Error("Failed to create template in database");
     }
     return await writeTemplateFileOrRollback(doc, file);
+}
+
+export async function updateOne(id: string, payload: Partial<ITemplate>, file?: Express.Multer.File) {
+    const doc = await templateDbService.updateOne(id, payload);
+    if (!doc) {
+        throw new Error("Failed to update template in database");
+    }
+    if (file) {
+        await updateTemplateFile(doc, file);
+    }
+    return doc;
 }

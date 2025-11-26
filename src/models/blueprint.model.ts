@@ -18,7 +18,7 @@ const BlueprintSchema = new Schema<IBlueprint>(
     { timestamps: true }
 );
 
-// Pre-hook to handle cascading deletions of associated templates and their files
+// Pre-hook to handle cascading deletions of associated templates and their files on blueprint deletion
 BlueprintSchema.pre("findOneAndDelete", async function () {
     const query = this as any;
     const blueprint = await query.model.findOne(query.getFilter());
@@ -30,7 +30,6 @@ BlueprintSchema.pre("findOneAndDelete", async function () {
     for (const tpl of templates) {
         const finalFileName = generateFileName(tpl);
         const finalPath = path.join(TEMPLATE_DIR, finalFileName);
-        console.log("Deleting template file at path:", finalPath);
         if (fs.existsSync(finalPath)) fs.unlinkSync(finalPath);
     }
 

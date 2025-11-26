@@ -35,4 +35,21 @@ TemplateSchema.pre("save", async function (next) {
     next();
 });
 
+//Mongoose hook to ensure only one default template per blueprint on update
+TemplateSchema.pre("findOneAndUpdate", async function (next) {
+    const doc = this.getUpdate() as ITemplate;
+    const docToUpdate = await this.model.findOne(this.getFilter());
+    console.log('CURRENT DOC:', { doc, docToUpdate });
+
+    //Cast boolean is needed because doc.default is typed as string on update documents
+    if (Boolean(doc.default) === true) {
+        //recover the blueprint_id from the document being updated, for unset other to default false
+        const docToUpdate = await this.model.findOne(this.getFilter());
+        if (docToUpdate) {
+            await templateDbService.unsetDefaultTemplatesForBlueprint(docToUpdate.blueprint_id.toString());
+        }
+    }
+    next();
+});
+
 export default mongoose.model<ITemplate>("templates", TemplateSchema);
