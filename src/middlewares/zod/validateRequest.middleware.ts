@@ -14,7 +14,6 @@ export type ValidatedRequest = Request & {
 export function validateRequest(schema: ZodSchema<any>) {
     return (req: Request, res: Response, next: NextFunction) => {
         try {
-
             const data = {
                 params: req.params,
                 query: req.query,
@@ -23,6 +22,7 @@ export function validateRequest(schema: ZodSchema<any>) {
             };
 
             const parsed = schema.parse(data);
+
 
             (req as ValidatedRequest).validated = parsed;
 
