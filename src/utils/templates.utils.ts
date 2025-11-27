@@ -75,8 +75,6 @@ export async function handleTemplateNameAndFileChange(
     const filename = generateFileName(payload, file);
     const format = detectFormat(file);
 
-    console.log("Deleting old template file:", { filename, format });
-
     await HandleDeleteTemplateFile(template);
 
     const updated = await templateDbService.updateOne(id, {

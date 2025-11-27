@@ -15,13 +15,22 @@ export function detectFormat(file: Express.Multer.File): string {
     }
 }
 
-export function isBodyEmpty(body: any): boolean {
-    if (body === null || body === undefined) return true;
+export function parsedBody(rawBody: any): Record<string, any> {
 
-    if (typeof body === 'string') return body.trim().length === 0;
+    const parsedBody: Record<string, any> = {};
+    for (const key of Object.keys(rawBody)) {
+        const value = rawBody[key];
 
-    if (typeof body === 'object') return Object.keys(body).length === 0;
-
-    return false;
+        if (typeof value === "string") {
+            try {
+                parsedBody[key] = JSON.parse(value);
+            } catch {
+                parsedBody[key] = value;
+            }
+        } else {
+            parsedBody[key] = value;
+        }
+    }
+    return parsedBody;
 }
 

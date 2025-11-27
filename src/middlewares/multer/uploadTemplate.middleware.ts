@@ -1,7 +1,7 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import { config } from "../config";
+import { config } from "../../config";
 const { TEMPLATE_DIR } = config;
 
 const allowedExtensions = ['.docx', '.pdf'];
