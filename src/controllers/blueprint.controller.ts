@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as blueprintDbService from "../services/blueprint.db.service";
+import { ValidatedRequest } from "../middlewares/zod/validateRequest.middleware";
 
 
 export const blueprintController = {
@@ -13,7 +14,8 @@ export const blueprintController = {
 
 export async function getAll(req: Request, res: Response) {
     try {
-        const { limit, skip, sort } = req.query;
+        const { query } = (req as ValidatedRequest).validated;
+        const { limit, skip, sort } = query;
         const doc = await blueprintDbService.getAll({}, {
             limit: limit ? Number(limit) : undefined,
             skip: skip ? Number(skip) : undefined,
@@ -27,7 +29,8 @@ export async function getAll(req: Request, res: Response) {
 
 export async function getOneById(req: Request, res: Response) {
     try {
-        const { id } = req.params;
+        const { params } = (req as ValidatedRequest).validated;
+        const { id } = params;
         const doc = await blueprintDbService.getOneById(id);
         if (!doc) return res.status(404).json({ error: "Blueprint not found" });
         res.json(doc);
@@ -38,8 +41,9 @@ export async function getOneById(req: Request, res: Response) {
 
 export async function createOne(req: Request, res: Response) {
     try {
-        const { data } = req.body;
-        const doc = await blueprintDbService.createOne(JSON.parse(data));
+        const { body } = (req as ValidatedRequest).validated;
+        const { data } = body;
+        const doc = await blueprintDbService.createOne(data);
         res.status(201).json(doc);
     } catch (err) {
         res.status(500).json({ error: "Failed to create blueprint", details: err });
@@ -48,10 +52,11 @@ export async function createOne(req: Request, res: Response) {
 
 export async function updateOne(req: Request, res: Response) {
     try {
-        const { id } = req.params;
-        const { data } = req.body;
+        const { params, body } = (req as ValidatedRequest).validated;
+        const { id } = params;
+        const { data } = body;
 
-        const doc = await blueprintDbService.updateOne(id, JSON.parse(data));
+        const doc = await blueprintDbService.updateOne(id, data);
         if (!doc) return res.status(404).json({ error: "Blueprint not found" });
         res.json(doc);
     } catch (err) {
@@ -61,7 +66,8 @@ export async function updateOne(req: Request, res: Response) {
 
 export async function deleteOne(req: Request, res: Response) {
     try {
-        const { id } = req.params;
+        const { params } = (req as ValidatedRequest).validated;
+        const { id } = params;
         const doc = await blueprintDbService.deleteOne(id);
         if (!doc) return res.status(404).json({ error: "Blueprint not found" });
         res.status(204).send();

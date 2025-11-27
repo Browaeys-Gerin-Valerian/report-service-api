@@ -3,7 +3,6 @@ import fs from "fs";
 import path from "path";
 import { IBlueprint } from "../interfaces";
 import { templateDbService } from "../services/template.db.service";
-import { generateFileName } from "../utils/templates.utils";
 import { config } from "../config";
 const { TEMPLATE_DIR } = config;
 

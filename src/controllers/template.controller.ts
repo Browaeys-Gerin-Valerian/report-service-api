@@ -28,7 +28,8 @@ export async function getAll(req: Request, res: Response) {
 
 export async function getOneById(req: Request, res: Response) {
     try {
-        const { id } = req.params;
+        const { params } = (req as ValidatedRequest).validated;
+        const { id } = params;
         const doc = await templateDbService.getOneById(id);
         if (!doc) return res.status(404).json({ error: "Template not found" });
         res.json(doc);
