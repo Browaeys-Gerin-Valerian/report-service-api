@@ -10,7 +10,7 @@ if (!fs.existsSync(TEMPLATE_DIR)) {
     fs.mkdirSync(TEMPLATE_DIR);
 }
 
-export function generateFileName(template: ITemplate, file: Express.Multer.File): string {
+export function generateFileName(template: Partial<ITemplate>, file: Express.Multer.File): string {
     const { name } = template;
     return `${name}-${Date.now()}.${detectFormat(file)}`;
 }
@@ -72,8 +72,10 @@ export async function handleTemplateNameAndFileChange(
     payload: Partial<ITemplate>,
     file: Express.Multer.File
 ) {
-    const filename = generateFileName(template, file);
+    const filename = generateFileName(payload, file);
     const format = detectFormat(file);
+
+    console.log("Deleting old template file:", { filename, format });
 
     await HandleDeleteTemplateFile(template);
 

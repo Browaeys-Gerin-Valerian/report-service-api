@@ -31,6 +31,11 @@ export async function updateOne(id: string, payload: Partial<ITemplate>, file?: 
         throw new Error("Template not found");
     }
 
+    //case where neither name nor file are changed just other metadata
+    if (!payload.name && !file) {
+        return await templateDbService.updateOne(id, payload);
+    }
+
     //case where only name is changed but file remains the same
     if (payload.name && !file) {
         return handleTemplateNameUpdateOnly(docToUpdate, id, payload);
