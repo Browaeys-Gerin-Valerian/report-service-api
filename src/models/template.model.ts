@@ -14,7 +14,7 @@ const TemplateSchema = new Schema<ITemplate>(
         default: { type: Boolean, default: false },
         format: { type: String, required: true },
         supported_output_formats: { type: [String], default: [DocumentType.PDF, DocumentType.DOCX] },
-        language: { type: String, default: "EN", required: true },
+        language: { type: String, required: true },
     },
     { timestamps: true }
 );
