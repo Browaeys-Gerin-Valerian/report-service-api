@@ -13,13 +13,7 @@ export const templateController = {
 
 export async function getAll(req: Request, res: Response) {
     try {
-        const { query } = (req as ValidatedRequest).validated;
-        const { limit, skip, sort } = query;
-        const doc = await templateDbService.getAll({}, {
-            limit: limit ? Number(limit) : undefined,
-            skip: skip ? Number(skip) : undefined,
-            sort: sort ? JSON.parse(String(sort)) : undefined,
-        });
+        const doc = await templateDbService.getAll();
         res.json(doc);
     } catch (err) {
         res.status(500).json({ error: "Failed to list templates", details: err });
@@ -28,8 +22,7 @@ export async function getAll(req: Request, res: Response) {
 
 export async function getOneById(req: Request, res: Response) {
     try {
-        const { params } = (req as ValidatedRequest).validated;
-        const { id } = params;
+        const { id } = req.params;
         const doc = await templateDbService.getOneById(id);
         if (!doc) return res.status(404).json({ error: "Template not found" });
         res.json(doc);

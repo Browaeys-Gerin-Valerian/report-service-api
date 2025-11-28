@@ -34,15 +34,17 @@ All uploaded template files are stored in the `templates` folder at the root of 
 
 Uploaded files are renamed according to the following pattern:
 
+`<template_name>-<timestamp>.<extension>`
+
 - `<template_name>`: The `name` field of the template.
 - `<timestamp>`: Current timestamp in milliseconds (to avoid collisions).
-- `<original_filename>`: Original name of the uploaded file including its extension.
+- `<extension>`: Extension type (.pdf, .docx, ...).
 
 ### Notes
 
 - This ensures that files are unique even if multiple files with the same name are uploaded.
 - Original file extensions are preserved to maintain compatibility with software (e.g., `.docx`, `.pdf`).
-- Temporary files are written directly to the `templates` folder and renamed immediately after upload.
+- Temporary files are written directly to the `templates` folder after upload.
 
 ## 🚀 Running the Containers
 

@@ -1,13 +1,5 @@
 import { z } from "zod";
 
-export const getAllBlueprintsSchema = z.object({
-    query: z.object({
-        limit: z.string().optional(),
-        skip: z.string().optional(),
-        sort: z.string().optional(),
-    }).strict(),
-});
-
 export const getOneBlueprintSchema = z.object({
     params: z.object({
         id: z.string().min(1, "Blueprint ID is required"),
