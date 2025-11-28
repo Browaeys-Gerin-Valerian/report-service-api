@@ -34,7 +34,7 @@ TemplateSchema.pre("save", async function (next) {
     next();
 });
 
-//Mongoose hook to ensure only one default template per blueprint on update and 
+//Mongoose hook to ensure only one default template per blueprint on update 
 TemplateSchema.pre("findOneAndUpdate", async function (next) {
     const doc = this.getUpdate() as ITemplate;
     //Cast boolean is needed because doc.default is typed as string on update documents

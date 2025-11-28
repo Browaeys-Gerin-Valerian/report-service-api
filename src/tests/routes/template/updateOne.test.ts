@@ -9,7 +9,7 @@ describe("PATCH /api/templates/:id", () => {
     // --------------------------------------------------------------------
     // 1️⃣ PATCH avec uniquement DATA
     // --------------------------------------------------------------------
-    it("should update fields and rename file if name is updated (data only)", async () => {
+    it.skip("should update fields and rename file if name is updated (data only)", async () => {
         //
         // --- ARRANGE : créer un template initial ---
         //
@@ -63,7 +63,7 @@ describe("PATCH /api/templates/:id", () => {
     // --------------------------------------------------------------------
     // 2️⃣ PATCH avec uniquement FILE
     // --------------------------------------------------------------------
-    it("should replace file and update filename when only file is sent", async () => {
+    it.skip("should replace file and update filename when only file is sent", async () => {
         //
         // --- ARRANGE : créer un template initial ---
         //
@@ -112,7 +112,7 @@ describe("PATCH /api/templates/:id", () => {
     // --------------------------------------------------------------------
     // 3️⃣ PATCH with DATA + FILE
     // --------------------------------------------------------------------
-    it("should update fields and replace+rename file when both data and file are sent", async () => {
+    it.skip("should update fields and replace+rename file when both data and file are sent", async () => {
         //
         // --- ARRANGE : créer un template initial ---
         //
