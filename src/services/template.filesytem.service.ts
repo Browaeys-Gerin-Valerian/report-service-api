@@ -1,7 +1,7 @@
 import { templateDbService } from "./template.db.service";
 import { generateFileName, handleTemplateNameAndFileChange, handleTemplateFileUpdateOnly, handleTemplateNameUpdateOnly, handleWriteTemplateFile } from "../utils/templates.utils";
 import { ITemplate } from "../interfaces";
-import { detectFormat } from "../utils/functions.utils";
+import { detectFormat, isNotEmptyObject } from "../utils/functions.utils";
 
 export const templateFilesystemService = {
     createOne,
@@ -29,18 +29,20 @@ export async function updateOne(id: string, payload: Partial<ITemplate>, file?: 
         throw new Error("Template not found");
     }
 
+    const fileExist = file && isNotEmptyObject(file)
+
     //case where neither name nor file are changed just other metadata
-    if (!payload?.name && !file) {
+    if (!payload?.name && !fileExist) {
         return await templateDbService.updateOne(id, payload);
     }
 
     //case where only name is changed but file remains the same
-    if (payload?.name && !file) {
+    if (payload?.name && !fileExist) {
         return handleTemplateNameUpdateOnly(docToUpdate, id, payload);
     }
 
     //case where only file is changed
-    if (!payload?.name && file) {
+    if (!payload?.name && fileExist) {
         return handleTemplateFileUpdateOnly(docToUpdate, id, file);
     }
 
