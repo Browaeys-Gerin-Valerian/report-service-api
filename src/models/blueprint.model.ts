@@ -10,7 +10,7 @@ const { TEMPLATE_DIR } = config;
 
 const BlueprintSchema = new Schema<IBlueprint>(
     {
-        name: { type: String, required: true, trim: true },
+        name: { type: String, required: true, trim: true, unique: true },
         description: { type: String, default: "" },
         data_structure: { type: Schema.Types.Mixed, required: true },
     },

@@ -1,5 +1,11 @@
 import { DocumentType } from '../interfaces'
 
+export function isNotEmptyObject(obj: any): boolean {
+    return obj != null
+        && typeof obj === "object"
+        && Object.keys(obj).length > 0;
+}
+
 
 export function detectFormat(file: Express.Multer.File): string {
     const ext = file.originalname.split(".").pop()?.toLowerCase();
