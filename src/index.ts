@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { createApp } from "./app";
-import { connectDb } from "./config/db/db";
+import { connectDb } from "./config/db/db.connect";
 import { config } from "./config";
 const { PORT } = config;
 
