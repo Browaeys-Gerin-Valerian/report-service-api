@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import * as templateDbService from "../services/template.db.service";
-import { templateFilesystemService } from "../services/template.filesytem.service";
+import { templateDbService } from "../services/db/template.db.service";
+import { templateFilesystemService } from "../services/filesystem/template.filesytem.service";
 import { ValidatedRequest } from "../middlewares/zod/validateRequest.middleware";
 
 export const templateController = {

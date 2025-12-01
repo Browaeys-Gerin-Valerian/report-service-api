@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as blueprintDbService from "../services/blueprint.db.service";
+import { blueprintDbService } from "../services/db/blueprint.db.service";
 import { ValidatedRequest } from "../middlewares/zod/validateRequest.middleware";
 
 

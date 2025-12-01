@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { config } from "../config";
 import { ITemplate } from "../interfaces";
-import { templateDbService } from "../services/template.db.service";
+import { templateDbService } from "../services/db/template.db.service";
 import { detectFormat } from "./functions.utils";
 const { TEMPLATE_DIR } = config;
 
