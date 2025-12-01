@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import fs from "fs";
 import path from "path";
 import { IBlueprint } from "../interfaces";
-import { templateDbService } from "../services/template.db.service";
+import { templateDbService } from "../services/db/template.db.service";
 import { config } from "../config";
 const { TEMPLATE_DIR } = config;
 

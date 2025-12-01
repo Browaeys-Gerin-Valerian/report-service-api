@@ -1,7 +1,7 @@
-import { templateDbService } from "./template.db.service";
-import { generateFileName, handleTemplateNameAndFileChange, handleTemplateFileUpdateOnly, handleTemplateNameUpdateOnly, handleWriteTemplateFile } from "../utils/templates.utils";
-import { ITemplate } from "../interfaces";
-import { detectFormat, isNotEmptyObject } from "../utils/functions.utils";
+import { templateDbService } from "../db/template.db.service";
+import { generateFileName, handleTemplateNameAndFileChange, handleTemplateFileUpdateOnly, handleTemplateNameUpdateOnly, handleWriteTemplateFile } from "../../utils/templates.utils";
+import { ITemplate } from "../../interfaces";
+import { detectFormat, isNotEmptyObject } from "../../utils/functions.utils";
 
 export const templateFilesystemService = {
     createOne,

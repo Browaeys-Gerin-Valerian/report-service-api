@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 import { DocumentType, ITemplate } from "../interfaces";
 import { config } from "../config";
 import path from "path";
-import { templateDbService } from "../services/template.db.service";
+import { templateDbService } from "../services/db/template.db.service";
 const { TEMPLATE_DIR } = config;
 
 const TemplateSchema = new Schema<ITemplate>(
