@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { fileSchema } from "./file.schema";
+import { createFileSchema, updateFileSchema } from "./file.schema";
 
 export const getAllTemplatesSchema = z.object({
     query: z.object({
@@ -24,7 +24,7 @@ export const createTemplateSchema = z.object({
             language: z.string().min(1, "Language is required"),
         }).strict()
     }).strict(),
-    file: fileSchema,
+    file: createFileSchema,
 });
 
 export const updateTemplateSchema = z.object({
@@ -39,7 +39,7 @@ export const updateTemplateSchema = z.object({
         }).strict().optional()
     }).optional(),
 
-    file: fileSchema.optional(),
+    file: updateFileSchema.optional(),
 });
 
 export const deleteTemplateSchema = z.object({
