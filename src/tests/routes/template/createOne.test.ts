@@ -7,7 +7,7 @@ describe("POST /api/templates", () => {
 
     it("should create a new template with file", async () => {
         const fileContent = Buffer.from("dummy content");
-        const fileName = "TestTemplate.docx";
+        const fileName = "Dummy_doc.docx";
 
         const res = await request(app)
             .post("/api/templates")
@@ -31,7 +31,9 @@ describe("POST /api/templates", () => {
         // filename = Test Template-<timestamp>.docx
         expect(res.body.filename).toMatch(/^Test Template-\d+\.docx$/);
 
+
         const uploadedFilePath = path.join(TEMPLATE_DIR, res.body.filename);
+        console.log('TEST', uploadedFilePath)
         expect(fs.existsSync(uploadedFilePath)).toBe(true);
     });
 
