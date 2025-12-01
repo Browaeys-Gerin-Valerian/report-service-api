@@ -6,5 +6,5 @@ export const config = {
     MONGO_URI: process.env.MONGO_URI || "mongodb://127.0.0.1:27017",
     DB_NAME: process.env.DB_NAME,
     ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : ["http://localhost:3000"],
-    TEMPLATE_DIR: path.join(process.cwd(), "templates"),
+    TEMPLATE_DIR: path.join(process.cwd(), "templates_files"),
 };
