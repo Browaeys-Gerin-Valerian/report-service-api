@@ -8,10 +8,12 @@ export enum DocumentType {
     PPTX = "pptx",
 }
 
+export type OutputFormat = "docx" | "pdf"
+
 export interface IBlueprint extends Document {
     name: string;
     description?: string;
-    data_structure: any; // flexible object that can fit anything
+    data_structure: any;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -27,4 +29,12 @@ export interface ITemplate extends Document {
     language: string;
     createdAt?: Date;
     updatedAt?: Date;
+}
+
+export class ValidationError extends Error {
+    public details: string[];
+    constructor(message: string, details: string[] = []) {
+        super(message);
+        this.details = details;
+    }
 }

@@ -1,49 +1,58 @@
 import { z } from "zod";
 
-// Base (sans object)
+// Base (sans le champ "type", défini par les sous-schemas)
 const baseField = {
-    type: z.enum(["string", "paragraph", "list", "table", "image"]),
     required: z.boolean().optional()
 };
 
+// ---- Déclarations anticipées ----
 export const fieldSchema: z.ZodType<any> = z.lazy(() =>
     z.union([
         stringField,
-        listField,
+        paragraphField,
         objectField,
+        listField,
         tableField,
         imageField
     ])
 );
 
-// String / paragraph
+// ---- Champs individuels ----
+
+// string
 const stringField = z.object({
     ...baseField,
-    type: z.enum(["string", "paragraph"])
+    type: z.literal("string")
 });
 
-// Object
+// paragraph (même nature que string mais sémantique différente)
+const paragraphField = z.object({
+    ...baseField,
+    type: z.literal("paragraph")
+});
+
+// object
 const objectField = z.object({
     ...baseField,
     type: z.literal("object"),
-    fields: z.record(z.string(), z.lazy(() => fieldSchema))
+    fields: z.record(z.string(), fieldSchema)
 });
 
-// List
+// list
 const listField = z.object({
     ...baseField,
     type: z.literal("list"),
     items: fieldSchema
 });
 
-// Table
+// table
 const tableField = z.object({
     ...baseField,
     type: z.literal("table"),
-    columns: z.record(z.string(), stringField)
+    columns: z.record(z.string(), stringField) // table = uniquement strings dans ta logique
 });
 
-// Image
+// image
 const imageField = z.object({
     ...baseField,
     type: z.literal("image"),
@@ -51,5 +60,6 @@ const imageField = z.object({
     max_size: z.number().optional()
 });
 
-// Schema final des data_structure
+// data_structure final
 export const dataStructureSchema = z.record(z.string(), fieldSchema);
+

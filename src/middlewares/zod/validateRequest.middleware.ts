@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { ZodSchema, ZodError } from "zod";
-import { parsedBody } from "../../utils/functions.utils";
+import { ZodType, ZodError } from "zod";
+import { parsedBody } from "./utils/zod.utils";
 
 export type ValidatedRequest = Request & {
     validated: {
@@ -11,7 +11,7 @@ export type ValidatedRequest = Request & {
     };
 };
 
-export function validateRequest(schema: ZodSchema<any>) {
+export function validateRequest(schema: ZodType<any>) {
     return (req: Request, res: Response, next: NextFunction) => {
         try {
             const data = {
