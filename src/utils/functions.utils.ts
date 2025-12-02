@@ -1,10 +1,45 @@
+import fs from "fs";
+import path from 'path';
 import { DocumentType } from '../interfaces'
+import { config } from "../config";
+const { TEMPLATE_DIR } = config
+import { OutputFormat } from "../interfaces/index"
+
+export function isObject(value: any): value is Record<string, any> {
+    return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 
 export function isNotEmptyObject(obj: any): boolean {
     return obj != null
         && typeof obj === "object"
         && Object.keys(obj).length > 0;
 }
+
+export function mapToObject(map: Map<string, any>): Record<string, any> {
+    return Object.fromEntries(map);
+}
+
+export function getTemplatePath(filename: string) {
+    const filePath = path.join(TEMPLATE_DIR, filename);
+    if (!fs.existsSync(filePath)) {
+        throw new Error(`Template not found: ${filePath}`);
+    }
+    return filePath;
+};
+
+
+export function detectContentType(outputFormat: OutputFormat): string {
+    switch (outputFormat) {
+        case "pdf":
+            return "application/pdf";
+        case "docx":
+            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        default:
+            throw new Error(`Unsupported output format: ${outputFormat}`);
+    }
+}
+
 
 
 export function detectFormat(file: Express.Multer.File): string {
@@ -21,22 +56,4 @@ export function detectFormat(file: Express.Multer.File): string {
     }
 }
 
-export function parsedBody(rawBody: any): Record<string, any> {
-
-    const parsedBody: Record<string, any> = {};
-    for (const key of Object.keys(rawBody)) {
-        const value = rawBody[key];
-
-        if (typeof value === "string") {
-            try {
-                parsedBody[key] = JSON.parse(value);
-            } catch {
-                parsedBody[key] = value;
-            }
-        } else {
-            parsedBody[key] = value;
-        }
-    }
-    return parsedBody;
-}
 

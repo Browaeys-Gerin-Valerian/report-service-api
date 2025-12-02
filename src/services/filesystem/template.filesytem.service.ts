@@ -1,5 +1,5 @@
 import { templateDbService } from "../db/template.db.service";
-import { generateFileName, handleTemplateNameAndFileChange, handleTemplateFileUpdateOnly, handleTemplateNameUpdateOnly, handleWriteTemplateFile } from "../../utils/templates.utils";
+import { generateFileName, handleTemplateNameAndFileChange, handleTemplateFileUpdateOnly, handleTemplateNameUpdateOnly, handleWriteTemplateFile } from "./utils/templates.utils";
 import { ITemplate } from "../../interfaces";
 import { detectFormat, isNotEmptyObject } from "../../utils/functions.utils";
 
