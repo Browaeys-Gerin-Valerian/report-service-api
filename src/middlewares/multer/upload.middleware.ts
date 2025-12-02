@@ -13,7 +13,7 @@ if (!fs.existsSync(TEMPLATE_DIR)) {
     fs.mkdirSync(TEMPLATE_DIR);
 }
 
-export const uploadTemplate = multer({
+export const upload = multer({
     storage: multer.memoryStorage(),
     fileFilter: (_, file, cb) => {
         const ext = path.extname(file.originalname).toLowerCase();
