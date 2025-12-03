@@ -2,13 +2,14 @@ import "dotenv/config";
 import { createApp } from "./app";
 import { connectDb } from "./config/db/db.connect";
 import { config } from "./config";
-const { PORT } = config;
+const { PORT, NODE_ENV } = config;
 
 async function main() {
     await connectDb();
-    const app = createApp();
+    const app = await createApp();
     const server = app.listen(PORT, () => {
-        console.log(`Server listening on port ${PORT}`);
+        console.log(`🚀 Server listening on port ${PORT}`);
+        if (NODE_ENV !== "production") console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`)
     });
 
     process.on("SIGINT", () => {
