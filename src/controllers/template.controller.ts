@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { templateDbService } from "../services/db/template.db.service";
 import { templateFilesystemService } from "../services/filesystem/template.filesytem.service";
 import { ValidatedRequest } from "../middlewares/zod/validateRequest.middleware";
+import { blueprintDbService } from "../services/db/blueprint.db.service";
 
 export const templateController = {
     getAll,
@@ -35,6 +36,11 @@ export async function createOne(req: Request, res: Response) {
     try {
         const { body, file } = (req as ValidatedRequest).validated;
         const { data } = body;
+        const { blueprint_id } = data
+
+        const blueprint = await blueprintDbService.getOneById(blueprint_id)
+        if (!blueprint) return res.status(404).json({ error: "Blueprint to link with template not found" });
+
         const doc = await templateFilesystemService.createOne(data, file);
         res.status(201).json(doc);
     } catch (err) {
