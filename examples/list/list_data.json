@@ -1,0 +1,30 @@
+{
+  "list": {
+    "items": ["Ligne 1", "Ligne 2", "Ligne 3"]
+  },
+
+  "list_of_object": {
+    "items": [
+      { "fields": { "name": "Jean Dupont", "age": "50" } },
+      { "fields": { "name": "Charles Henri", "age": "63" } },
+      { "fields": { "name": "Jacques Gerin", "age": "80" } }
+    ]
+  },
+
+  "list_of_nested_objects": {
+    "items": [
+      {
+        "fields": {
+          "name": "Jean",
+          "tasks": { "items": ["Tâche 1", "Tâche 2"] }
+        }
+      },
+      {
+        "fields": {
+          "name": "Luc",
+          "tasks": { "items": ["Tâche 1", "Tâche 2", "Tâche 3"] }
+        }
+      }
+    ]
+  }
+}
