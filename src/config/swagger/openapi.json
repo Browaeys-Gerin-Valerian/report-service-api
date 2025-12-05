@@ -1,0 +1,413 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Report Document Generation API",
+    "version": "1.0.0",
+    "description": "API for managing cybersecurity report blueprints and templates (Express + TypeScript + Mongoose)."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/blueprints": {
+      "get": {
+        "operationId": "listBlueprints",
+        "summary": "List all blueprints",
+        "description": "Retrieve all available blueprints.",
+        "tags": ["Blueprints"],
+        "responses": {
+          "200": {
+            "description": "List of all blueprints",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Blueprint" }
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "post": {
+        "operationId": "createBlueprint",
+        "summary": "Create a new blueprint",
+        "tags": ["Blueprints"],
+        "description": "Create a blueprint by providing its metadata and structure.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateBlueprintBody" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Blueprint successfully created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Blueprint" }
+              }
+            }
+          },
+          "400": {
+            "description": "Zod validation error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ZodValidationError" }
+              }
+            }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+
+    "/blueprints/{id}": {
+      "get": {
+        "operationId": "getBlueprint",
+        "summary": "Get a blueprint by ID",
+        "tags": ["Blueprints"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "200": {
+            "description": "Blueprint found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Blueprint" }
+              }
+            }
+          },
+          "404": { "description": "Blueprint not found" },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "patch": {
+        "operationId": "updateBlueprint",
+        "summary": "Update a blueprint",
+        "tags": ["Blueprints"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateBlueprintBody" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Blueprint updated",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Blueprint" }
+              }
+            }
+          },
+          "400": {
+            "description": "Zod validation error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ZodValidationError" }
+              }
+            }
+          },
+          "404": { "description": "Blueprint not found" },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteBlueprint",
+        "summary": "Delete a blueprint",
+        "tags": ["Blueprints"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "204": { "description": "Blueprint deleted" },
+          "404": { "description": "Blueprint not found" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+
+    "/templates": {
+      "get": {
+        "operationId": "listTemplates",
+        "summary": "List all templates",
+        "description": "Retrieve all document templates.",
+        "tags": ["Templates"],
+        "responses": {
+          "200": {
+            "description": "List of all templates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Template" }
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "post": {
+        "operationId": "createTemplate",
+        "summary": "Create a template",
+        "description": "Upload a file and attach template metadata.",
+        "tags": ["Templates"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Template file to upload"
+                  },
+                  "data": {
+                    "type": "string",
+                    "description": "Stringified JSON metadata matching CreateTemplateBody"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Template created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Template" }
+              }
+            }
+          },
+          "400": {
+            "description": "Zod validation error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ZodValidationError" }
+              }
+            }
+          },
+          "404": { "description": "Blueprint not found" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+
+    "/templates/{id}": {
+      "get": {
+        "operationId": "getTemplate",
+        "summary": "Get template by ID",
+        "tags": ["Templates"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "200": {
+            "description": "Template found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Template" }
+              }
+            }
+          },
+          "404": { "description": "Template not found" },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "patch": {
+        "operationId": "updateTemplate",
+        "summary": "Update a template",
+        "tags": ["Templates"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Updated file (optional)"
+                  },
+                  "data": {
+                    "type": "string",
+                    "description": "Stringified JSON metadata matching UpdateTemplateBody"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Template updated",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Template" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ZodValidationError" }
+              }
+            }
+          },
+          "404": { "description": "Template not found" },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTemplate",
+        "summary": "Delete a template",
+        "tags": ["Templates"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "204": { "description": "Template deleted" },
+          "404": { "description": "Template not found" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "parameters": {
+      "IdParam": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "description": "MongoDB ObjectID"
+        }
+      }
+    },
+
+    "schemas": {
+      "Blueprint": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "data_structure": {
+            "type": "object",
+            "description": "Dynamic JSON structure mapping: key → type",
+            "additionalProperties": true
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+
+      "CreateBlueprintBody": {
+        "type": "object",
+        "required": ["name", "data_structure"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "data_structure": {
+            "type": "object",
+            "description": "Dynamic structure describing expected fields",
+            "additionalProperties": true
+          }
+        }
+      },
+
+      "UpdateBlueprintBody": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "data_structure": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+
+      "Template": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "blueprint_id": {
+            "type": "string",
+            "description": "Reference to the associated blueprint"
+          },
+          "filename": { "type": "string" },
+          "name": { "type": "string" },
+          "default": { "type": "boolean" },
+          "format": {
+            "type": "string",
+            "description": "Original uploaded file extension (e.g., docx, pdf)"
+          },
+          "supported_output_formats": {
+            "type": "array",
+            "description": "Output formats this template supports",
+            "items": { "type": "string" }
+          },
+          "language": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+
+      "CreateTemplateBody": {
+        "type": "object",
+        "required": ["blueprint_id", "name", "language"],
+        "properties": {
+          "blueprint_id": { "type": "string" },
+          "name": { "type": "string" },
+          "default": { "type": "boolean" },
+          "language": { "type": "string" }
+        }
+      },
+
+      "UpdateTemplateBody": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "default": { "type": "boolean" },
+          "language": { "type": "string" }
+        }
+      },
+
+      "ZodValidationError": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string", "example": "Validation error" },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "array",
+                  "description": "Path to invalid field",
+                  "items": { "type": "string" },
+                  "example": ["data", "name"]
+                },
+                "message": { "type": "string", "example": "Name is required" },
+                "code": { "type": "string", "example": "invalid_type" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
