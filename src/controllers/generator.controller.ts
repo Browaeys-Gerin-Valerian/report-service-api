@@ -10,8 +10,9 @@ export const generatorController = {
 };
 
 export async function generate(req: Request, res: Response) {
-    const { template_id, blueprint_id, output_format, data } =
-        (req as ValidatedRequest).validated.body;
+    const { body, files } = (req as ValidatedRequest).validated;
+
+    const { data: { blueprint_id, template_id, output_format, data_to_insert } } = body
     try {
         const blueprint = await blueprintDbService.getOneById(blueprint_id);
         const template = await templateDbService.getOneById(template_id)
@@ -19,9 +20,11 @@ export async function generate(req: Request, res: Response) {
         if (!blueprint) return res.status(404).json({ error: "Blueprint not found" });
         if (!template) return res.status(404).json({ error: "Template not found" });
 
+
         const buffer = await documentGeneratorService.generate({
             template,
-            data,
+            data_to_insert,
+            files,
             data_structure: blueprint.data_structure,
             output_format,
         });

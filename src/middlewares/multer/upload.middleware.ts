@@ -2,9 +2,9 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { config } from "../../config";
-const { TEMPLATE_DIR } = config;
+const { TEMPLATE_DIR, ALLOWED_DOC_EXTENSION, ALLOWED_IMG_EXTENSION } = config;
 
-const allowedExtensions = ['.docx', '.pdf'];
+const allowedExtensions = [...ALLOWED_DOC_EXTENSION, ...ALLOWED_IMG_EXTENSION];
 
 
 
@@ -20,7 +20,7 @@ export const upload = multer({
         if (allowedExtensions.includes(ext)) {
             cb(null, true);
         } else {
-            cb(new Error('Only .docx and .pdf files are allowed'));
+            cb(new Error(`Only ${allowedExtensions} files are allowed`));
         }
     }
 });

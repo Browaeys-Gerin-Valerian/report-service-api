@@ -8,6 +8,7 @@ export type ValidatedRequest = Request & {
         query: any;
         body: any;
         file: any;
+        files: any
     };
 };
 
@@ -19,6 +20,7 @@ export function validateRequest(schema: ZodType<any>) {
                 query: req.query,
                 body: req.body ? parsedBody(req.body) : {},
                 file: req.file ? req.file : {},
+                files: req.files ? req.files : []
             };
 
             const parsed = schema.parse(data);
