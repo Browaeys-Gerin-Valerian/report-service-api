@@ -1,0 +1,16 @@
+{
+  "image_1": {
+    "meta": {
+      "filename": "example_image_1.webp",
+      "width": 10,
+      "height": 5
+    }
+  },
+  "mon_image_2": {
+    "meta": {
+      "filename": "example_image_2.jpg",
+      "width": 15,
+      "height": 10
+    }
+  }
+}

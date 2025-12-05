@@ -52,7 +52,7 @@ export function detectFormat(file: Express.Multer.File): string {
         case "docx":
             return DocumentType.DOCX;
         default:
-            throw new Error(`Unsupported template format: ${ext}`);
+            throw new Error(`Unsupported format: ${ext}`);
     }
 }
 

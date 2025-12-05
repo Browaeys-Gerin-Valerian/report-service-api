@@ -1,10 +1,10 @@
-import { ValidationError } from "../../../interfaces";
+import { FieldType, ValidationError } from "../../../interfaces";
 import { isObject } from "../../../utils/functions.utils";
 
-type FieldType = "text" | "list" | "table" | "image" | "object";
+
 
 export async function validateData(
-    data: Record<string, any>,
+    data_to_insert: Record<string, any>,
     data_structure: Record<string, any>,
     path: string[] = []
 ) {
@@ -12,8 +12,9 @@ export async function validateData(
 
     for (const key of Object.keys(data_structure)) {
         const fieldDef = data_structure[key];
-        const value = data[key];
+        const value = data_to_insert[key];
         const currentPath = [...path, key].join(".");
+
 
 
         // --------------------------
@@ -24,9 +25,6 @@ export async function validateData(
             errors.push(`Missing required field: ${currentPath}`);
             continue;
         }
-
-        // non-required  → skip
-        if (value === undefined || value === null) continue;
 
         // --------------------------
         // DISPATCH BY TYPE
@@ -69,6 +67,7 @@ export async function validateData(
             // ----------------------------------------
             case "list":
                 if (!isObject(value) || !Array.isArray(value.items)) {
+
                     errors.push(`Field ${currentPath}.items should be an array`);
                     break;
                 }
@@ -137,9 +136,29 @@ export async function validateData(
             // IMAGE FIELD
             // ----------------------------------------
             case "image":
-                if (typeof value !== "string") {
-                    errors.push(`Field ${currentPath} should be a base64 string`);
+                if (!isObject(value)) {
+                    errors.push(`Field ${currentPath} should be an object`);
+                    break;
                 }
+
+                // Vérification meta
+                if (!isObject(value.meta)) {
+                    errors.push(`Field ${currentPath}.meta should be an object`);
+                    break;
+                }
+
+                if (typeof value.meta.filename !== "string") {
+                    errors.push(`Field ${currentPath}.meta.filename should be a string`);
+                }
+
+                if (value.meta.width !== undefined && typeof value.meta.width !== "number") {
+                    errors.push(`Field ${currentPath}.meta.width should be a number`);
+                }
+
+                if (value.meta.height !== undefined && typeof value.meta.height !== "number") {
+                    errors.push(`Field ${currentPath}.meta.height should be a number`);
+                }
+
                 break;
 
             // ----------------------------------------

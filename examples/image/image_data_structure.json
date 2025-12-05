@@ -1,0 +1,10 @@
+{
+  "image_1": {
+    "type": "image",
+    "required": true
+  },
+  "mon_image_2": {
+    "type": "image",
+    "required": false
+  }
+}

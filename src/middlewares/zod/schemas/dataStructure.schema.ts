@@ -37,8 +37,7 @@ const list = z.object({
 const image = z.object({
     ...base,
     type: z.literal("image"),
-    mimetypes: z.array(z.string()).optional(),
-});
+}).strict();
 
 const table = z.object({
     ...base,

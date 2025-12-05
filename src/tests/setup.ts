@@ -17,7 +17,7 @@ beforeAll(async () => {
     await mongoose.connect(uri);
 
     // --- Express App ---
-    app = createApp();
+    app = await createApp();
 
     // --- Templates Directory ---
     if (!fs.existsSync(TEMPLATE_DIR)) {
