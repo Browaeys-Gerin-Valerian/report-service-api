@@ -47,7 +47,7 @@ async function generate(options: GeneratorOptions) {
  * 
  */
 
-    // await validateData(data_to_insert, mapToObject(data_structure));
+    await validateData(data_to_insert, mapToObject(data_structure));
 
 
     //Default case is optionnal since format is already checked in request with zod validator
