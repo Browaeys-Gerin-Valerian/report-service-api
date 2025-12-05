@@ -9,8 +9,8 @@ export async function injectImg(tag: string, data_to_insert: Record<string, any>
     const extension = meta.filename.split(".").pop()?.toLowerCase();
 
     return {
-        width: meta.width,
-        height: meta.height,
+        width: meta.width ?? 10,
+        height: meta.height ?? 10,
         data: meta.file.buffer,
         extension: `.${extension}`
     };
