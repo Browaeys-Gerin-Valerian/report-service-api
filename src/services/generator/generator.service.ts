@@ -1,6 +1,6 @@
 import { getTemplatePath, mapToObject } from "../../utils/functions.utils";
 import { validateData } from "./utils/validateData";
-import { DocumentType, ITemplate, OutputFormat, ValidationError } from "../../interfaces";
+import { DocumentType, ITemplate, OutputFormat, ValidationError } from "../../types";
 import { generateDocx } from "./docx/docxGenerator.service";
 import { generatePdf } from "./pdf/pdfGenerator.service";
 import { resolveImages } from "./utils/resolveImages";

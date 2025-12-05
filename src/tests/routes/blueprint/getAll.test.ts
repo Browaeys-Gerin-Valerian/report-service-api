@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from "../../setup";
-import { IBlueprint } from "../../../interfaces";
+import { IBlueprint } from "../../../types";
 import blueprintModel from "../../../models/blueprint.model";
 
 describe("GET /api/blueprints", () => {
