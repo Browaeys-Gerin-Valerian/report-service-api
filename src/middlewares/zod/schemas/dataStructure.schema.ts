@@ -1,64 +1,57 @@
 import { z } from "zod";
 
-// Base (sans le champ "type", défini par les sous-schemas)
-const baseField = {
-    required: z.boolean().optional()
-};
+const base = {
+    required: z.boolean().optional(),
+}
 
-// ---- Déclarations anticipées ----
+
 export const fieldSchema: z.ZodType<any> = z.lazy(() =>
     z.union([
-        stringField,
-        paragraphField,
-        objectField,
-        listField,
-        tableField,
-        imageField
+        text,
+        object,
+        list,
+        table,
+        image,
     ])
 );
 
-// ---- Champs individuels ----
+const text = z.object({
+    ...base,
+    type: z.literal("text")
+})
 
-// string
-const stringField = z.object({
-    ...baseField,
-    type: z.literal("string")
-});
-
-// paragraph (même nature que string mais sémantique différente)
-const paragraphField = z.object({
-    ...baseField,
-    type: z.literal("paragraph")
-});
-
-// object
-const objectField = z.object({
-    ...baseField,
+const object = z.object({
+    ...base,
     type: z.literal("object"),
     fields: z.record(z.string(), fieldSchema)
 });
 
-// list
-const listField = z.object({
-    ...baseField,
+
+const list = z.object({
+    ...base,
     type: z.literal("list"),
-    items: fieldSchema
+    items: z.array(fieldSchema),
 });
 
-// table
-const tableField = z.object({
-    ...baseField,
-    type: z.literal("table"),
-    columns: z.record(z.string(), stringField) // table = uniquement strings dans ta logique
-});
 
-// image
-const imageField = z.object({
-    ...baseField,
+const image = z.object({
+    ...base,
     type: z.literal("image"),
     mimetypes: z.array(z.string()).optional(),
-    max_size: z.number().optional()
 });
+
+const table = z.object({
+    ...base,
+    type: z.literal("table"),
+    columns: z.record(z.string(), z.union([
+        text,
+        object,
+        list,
+        image
+    ]))
+});
+
+
 
 // data_structure final
 export const dataStructureSchema = z.record(z.string(), fieldSchema);

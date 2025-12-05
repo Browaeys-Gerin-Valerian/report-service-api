@@ -1,0 +1,33 @@
+{
+  "simple_table": {
+    "columns": {
+      "col1": { "required": true },
+      "col2": { "required": true },
+      "col3": { "required": true }
+    }
+  },
+
+  "table_with_lists": {
+    "columns": {
+      "project": { "required": true },
+      "tasks": { "items": [{ "required": true }, { "required": false }] },
+      "owner": { "required": true }
+    }
+  },
+
+  "table_nested": {
+    "columns": {
+      "user": {
+        "fields": {
+          "name": { "required": true },
+          "age": { "required": true }
+        }
+      },
+      "meta": {
+        "fields": {
+          "updated_at": { "required": true }
+        }
+      }
+    }
+  }
+}
