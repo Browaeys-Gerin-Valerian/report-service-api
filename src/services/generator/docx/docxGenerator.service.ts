@@ -1,7 +1,7 @@
 import fs from "fs";
 import createReport from 'docx-templates';
 import { config } from "../../../config"
-import { ValidationError } from "../../../interfaces";
+import { ValidationError } from "../../../types";
 import { injectImg } from "./utils/injectImg";
 const { TEMPLATE_CMD_DELIMITER } = config
 

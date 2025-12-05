@@ -1,4 +1,4 @@
-import { ValidationError } from "../../../interfaces";
+import { ValidationError } from "../../../types";
 
 
 export function resolveImages(data: any, files: Express.Multer.File[]) {

@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from 'path';
-import { DocumentType } from '../interfaces'
+import { DocumentType } from '../types'
 import { config } from "../config";
 const { TEMPLATE_DIR } = config
-import { OutputFormat } from "../interfaces/index"
+import { OutputFormat } from "../types/index"
 
 export function isObject(value: any): value is Record<string, any> {
     return typeof value === "object" && value !== null && !Array.isArray(value);

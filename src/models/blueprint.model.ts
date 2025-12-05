@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import fs from "fs";
 import path from "path";
-import { IBlueprint } from "../interfaces";
+import { IBlueprint } from "../types";
 import { templateDbService } from "../services/db/template.db.service";
 import { config } from "../config";
 const { TEMPLATE_DIR } = config;

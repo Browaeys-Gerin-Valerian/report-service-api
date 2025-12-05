@@ -1,6 +1,6 @@
 import { templateDbService } from "../db/template.db.service";
 import { generateFileName, handleTemplateNameAndFileChange, handleTemplateFileUpdateOnly, handleTemplateNameUpdateOnly, handleWriteTemplateFile } from "./utils/templates.utils";
-import { ITemplate } from "../../interfaces";
+import { ITemplate } from "../../types";
 import { detectFormat, isNotEmptyObject } from "../../utils/functions.utils";
 
 export const templateFilesystemService = {

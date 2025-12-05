@@ -1,7 +1,7 @@
 import request from "supertest";
 import templateModel from "../../../models/template.model";
 import { app } from "../../setup";
-import { ITemplate } from "../../../interfaces";
+import { ITemplate } from "../../../types";
 
 describe("GET /api/templates", () => {
 

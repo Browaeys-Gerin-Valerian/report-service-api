@@ -1,4 +1,4 @@
-import { FieldType, ValidationError } from "../../../interfaces";
+import { FieldType, ValidationError } from "../../../types";
 import { isObject } from "../../../utils/functions.utils";
 
 
