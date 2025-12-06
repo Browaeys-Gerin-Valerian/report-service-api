@@ -8,57 +8,57 @@
     "required": false
   },
 
-  "author_with_optional": {
+  "text_with_optional": {
     "type": "object",
     "required": true,
     "fields": {
-      "firstname": {
+      "intro": {
         "type": "text",
         "required": true
       },
-      "lastname": {
+      "chapter_1": {
         "type": "text",
         "required": true
       },
-      "age": {
+      "chapter_2": {
         "type": "text",
         "required": false
       },
-      "description": {
+      "epilogue": {
         "type": "text",
         "required": false
       }
     }
   },
 
-  "author_full_optional": {
+  "text_full_optional": {
     "type": "object",
     "required": false,
     "fields": {
-      "firstname": {
+      "country": {
         "type": "text",
         "required": false
       },
-      "lastname": {
+      "state": {
         "type": "text",
         "required": false
       },
-      "description": {
+      "city": {
         "type": "text",
         "required": false
       }
     }
   },
 
-  "author_with_error": {
+  "text_with_error": {
     "type": "object",
     "required": false,
     "fields": {
-      "firstname": {
+      "model": {
         "type": "text",
         "required": true
       },
-      "lastname": {
+      "engine": {
         "type": "text",
         "required": false
       },
