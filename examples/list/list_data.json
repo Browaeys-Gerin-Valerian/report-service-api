@@ -1,13 +1,40 @@
 {
   "list": {
-    "items": ["Ligne 1", "Ligne 2", "Ligne 3"]
+    "items": ["Alpha", "Bravo", "Charlie"]
+  },
+
+  "list_with_optional": {
+    "items": ["Opt-1", "Opt-2"]
+  },
+
+  "list_full_optional": {
+    "items": []
+  },
+
+  "list_with_error": {
+    "items": ["Item-1"]
   },
 
   "list_of_object": {
     "items": [
-      { "fields": { "name": "Jean Dupont", "age": "50" } },
-      { "fields": { "name": "Charles Henri", "age": "63" } },
-      { "fields": { "name": "Jacques Gerin", "age": "80" } }
+      { "fields": { "name": "Alice Martin", "age": "27" } },
+      { "fields": { "name": "Bob Lefèvre", "age": "44" } },
+      { "fields": { "name": "Clara Morel", "age": "33" } }
+    ]
+  },
+
+  "list_of_object_with_optional": {
+    "items": [
+      { "fields": { "security_lvl": "Danger", "code": "2" } },
+      { "fields": { "security_lvl": "No danger", "code": "5" } }
+    ]
+  },
+
+  "list_of_object_with_error": {
+    "items": [
+      { "fields": { "country": "france", "state": "ile-de-france" } },
+      { "fields": { "country": "usa", "state": "florida" } },
+      { "fields": { "country": "spain" } }
     ]
   },
 
@@ -15,14 +42,18 @@
     "items": [
       {
         "fields": {
-          "name": "Jean",
-          "tasks": { "items": ["Tâche 1", "Tâche 2"] }
+          "name": "Isabelle",
+          "tasks": {
+            "items": ["Task-A", "Task-B"]
+          }
         }
       },
       {
         "fields": {
-          "name": "Luc",
-          "tasks": { "items": ["Tâche 1", "Tâche 2", "Tâche 3"] }
+          "name": "Julien",
+          "tasks": {
+            "items": ["Task-1", "Task-2", "Task-3"]
+          }
         }
       }
     ]
