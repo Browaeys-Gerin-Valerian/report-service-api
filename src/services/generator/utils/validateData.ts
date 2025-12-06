@@ -15,14 +15,20 @@ export async function validateData(
         const value = data_to_insert[key];
         const currentPath = [...path, key].join(".");
 
-
-
         // --------------------------
         // REQUIRED
         // --------------------------
         if (fieldDef.required && (value === undefined || value === null)) {
 
             errors.push(`Missing required field: ${currentPath}`);
+            continue;
+        }
+
+
+        // --------------------------
+        // NOT REQUIRED
+        // --------------------------
+        if (!fieldDef.required && (value === undefined || value === null)) {
             continue;
         }
 

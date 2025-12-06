@@ -1,13 +1,18 @@
 {
-  "firstname": "Jean",
   "title": "My report",
-  "description": "This is Jean report",
+  "summary": "This is the summary of my report",
 
-  "author": {
+  "author_with_optional": {
     "fields": {
-      "name": "Jacques Legrand",
-      "age": "50",
-      "description": "this is the description of Jacques Legrand wich have 50 this year"
+      "firstname": "Jacques",
+      "lastname": "Legrand"
+    }
+  },
+
+  "author_full_optional": {},
+  "author_with_error": {
+    "fields": {
+      "firstname": "Jacques"
     }
   }
 }

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const base = {
-    required: z.boolean().optional(),
+    required: z.boolean(),
 }
 
 
