@@ -2,17 +2,19 @@
   "title": "My report",
   "summary": "This is the summary of my report",
 
-  "author_with_optional": {
+  "text_with_optional": {
     "fields": {
-      "firstname": "Jacques",
-      "lastname": "Legrand"
+      "intro": "This is my intro",
+      "chapter_1": "This is my chapter one"
     }
   },
 
-  "author_full_optional": {},
-  "author_with_error": {
+  "text_full_optional": {
+    "fields": {}
+  },
+  "text_with_error": {
     "fields": {
-      "firstname": "Jacques"
+      "model": "Airbus"
     }
   }
 }
