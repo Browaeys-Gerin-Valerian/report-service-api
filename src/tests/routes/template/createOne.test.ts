@@ -33,7 +33,6 @@ describe("POST /api/templates", () => {
 
 
         const uploadedFilePath = path.join(TEMPLATE_DIR, res.body.filename);
-        console.log('TEST', uploadedFilePath)
         expect(fs.existsSync(uploadedFilePath)).toBe(true);
     });
 
