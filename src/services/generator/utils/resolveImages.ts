@@ -8,7 +8,6 @@ export function resolveImages(data: any, files: Express.Multer.File[]) {
 
         if (!node || typeof node !== "object") return;
 
-        // Cas image
         if (node.meta && node.meta.filename) {
             const file = files.find(f => f.originalname === node.meta.filename);
 
@@ -19,8 +18,6 @@ export function resolveImages(data: any, files: Express.Multer.File[]) {
             node.meta.file = file;
             return;
         }
-
-        // Cas objets
         for (const key in node) {
             walk(node[key]);
         }
