@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+
+
 const base = {
     required: z.boolean(),
 }
@@ -7,6 +9,7 @@ const base = {
 
 export const fieldSchema: z.ZodType<any> = z.lazy(() =>
     z.union([
+        displayFlag,
         text,
         object,
         list,
@@ -14,6 +17,10 @@ export const fieldSchema: z.ZodType<any> = z.lazy(() =>
         image,
     ])
 );
+
+const displayFlag = z.object({
+    type: z.literal("display")
+});
 
 const text = z.object({
     ...base,
@@ -53,5 +60,5 @@ const table = z.object({
 
 
 // data_structure final
-export const dataStructureSchema = z.record(z.string(), fieldSchema);
+export const dataStructureSchema = z.record(z.string(), z.union([fieldSchema, displayFlag]));
 

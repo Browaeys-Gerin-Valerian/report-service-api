@@ -1,0 +1,45 @@
+{
+  "should_display_first_section": {
+    "type": "display"
+  },
+  "first_section": {
+    "type": "object",
+    "required": true,
+    "fields": {
+      "intro": {
+        "type": "text",
+        "required": true
+      },
+      "chapter_1": {
+        "type": "text",
+        "required": true
+      },
+      "chapter_2": {
+        "type": "text",
+        "required": true
+      },
+      "epilogue": {
+        "type": "text",
+        "required": true
+      }
+    }
+  },
+  "list_with_different_data_type": {
+    "type": "list",
+    "required": true,
+    "items": [
+      {
+        "type": "text",
+        "required": true
+      },
+      {
+        "type": "object",
+        "required": true,
+        "fields": {
+          "galaxy": { "type": "text", "required": true },
+          "planet": { "type": "text", "required": true }
+        }
+      }
+    ]
+  }
+}
