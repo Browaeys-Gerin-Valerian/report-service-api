@@ -38,6 +38,16 @@ export async function validateData(
         switch (fieldDef.type as FieldType) {
 
             // ----------------------------------------
+            // DISPLAY FIELD
+            // ----------------------------------------
+
+            case "display":
+                if (typeof value !== "boolean") {
+                    errors.push(`Field ${currentPath} should be a boolean`);
+                }
+                break;
+
+            // ----------------------------------------
             // TEXT FIELD
             // ----------------------------------------
             case "text":

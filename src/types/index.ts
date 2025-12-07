@@ -10,7 +10,7 @@ export enum DocumentType {
 
 export type OutputFormat = "docx" | "pdf"
 
-export type FieldType = "text" | "list" | "table" | "image" | "object";
+export type FieldType = "text" | "list" | "table" | "image" | "object" | "display";
 
 export interface IBlueprint extends Document {
     name: string;

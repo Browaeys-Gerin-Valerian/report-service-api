@@ -1,0 +1,17 @@
+{
+  "should_display_first_section": false,
+  "first_section": {
+    "fields": {
+      "intro": "This is my intro",
+      "chapter_1": "This is my chapter one",
+      "chapter_2": "This is my chapter two",
+      "epilogue": "This is my epilogue"
+    }
+  },
+  "list_with_different_data_type": {
+    "items": [
+      "item-1-text-type",
+      { "fields": { "galaxy": "Milky way", "planet": "Earth" } }
+    ]
+  }
+}
