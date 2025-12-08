@@ -1,6 +1,7 @@
 import fs from "fs";
 import mongoose, { Schema } from "mongoose";
-import { DocumentType, ITemplate } from "../types";
+import { DocumentType } from "../types";
+import { ITemplate } from "../types/entity"
 import { config } from "../config";
 import path from "path";
 import { templateDbService } from "../services/db/template.db.service";

@@ -1,5 +1,5 @@
 import { FilterQuery, UpdateQuery } from "mongoose";
-import { ITemplate } from "../../types";
+import { ITemplate } from "../../types/entity";
 import TemplateModel from "../../models/template.model";
 
 export const templateDbService = {
