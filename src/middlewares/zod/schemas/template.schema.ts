@@ -1,6 +1,13 @@
 import { z } from "zod";
 import { createFileSchema, updateFileSchema } from "./file.schema";
 
+export const getAllTemplatesSchema = z.object({
+    query: z.object({
+        limit: z.string().optional(),
+        skip: z.string().optional(),
+        sort: z.string().optional(),
+    }).strict(),
+});
 
 export const getOneTemplateSchema = z.object({
     params: z.object({

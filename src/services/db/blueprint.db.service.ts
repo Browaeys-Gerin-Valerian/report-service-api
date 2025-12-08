@@ -12,8 +12,12 @@ export const blueprintDbService = {
 };
 
 
-export async function getAll() {
-    return BlueprintModel.find({})
+export async function getAll(filter: FilterQuery<IBlueprint> = {}, opts: { limit?: number; skip?: number; sort?: any } = {}) {
+    const q = BlueprintModel.find(filter);
+    if (opts.sort) q.sort(opts.sort);
+    if (opts.skip) q.skip(opts.skip);
+    if (opts.limit) q.limit(opts.limit);
+    return q.exec();
 }
 
 export async function createOne(payload: Partial<IBlueprint>): Promise<IBlueprint> {
