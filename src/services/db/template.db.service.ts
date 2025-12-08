@@ -12,12 +12,8 @@ export const templateDbService = {
     unsetDefaultTemplatesForBlueprint
 };
 
-export async function getAll(filter: FilterQuery<ITemplate> = {}, opts: { limit?: number; skip?: number; sort?: any } = {}) {
-    const q = TemplateModel.find(filter);
-    if (opts.sort) q.sort(opts.sort);
-    if (opts.skip) q.skip(opts.skip);
-    if (opts.limit) q.limit(opts.limit);
-    return q.exec();
+export async function getAll(filter: FilterQuery<ITemplate> = {}) {
+    return TemplateModel.find(filter).exec();
 }
 
 export async function getOneById(id: string) {
