@@ -4,6 +4,9 @@ export const getOneBlueprintSchema = z.object({
     params: z.object({
         id: z.string().min(1, "Blueprint ID is required"),
     }),
+    query: z.object({
+        withTemplates: z.coerce.boolean().optional(),
+    })
 });
 
 export const createBlueprintSchema = z.object({

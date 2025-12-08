@@ -73,7 +73,10 @@
         "operationId": "getBlueprint",
         "summary": "Get a blueprint by ID",
         "tags": ["Blueprints"],
-        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" },
+          { "$ref": "#/components/parameters/WithTemplatesQuery" }
+        ],
         "responses": {
           "200": {
             "description": "Blueprint found",
@@ -294,6 +297,15 @@
           "type": "string",
           "description": "MongoDB ObjectID"
         }
+      },
+      "WithTemplatesQuery": {
+        "name": "withTemplates",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "boolean"
+        },
+        "description": "Populate the blueprint with its templates if true"
       }
     },
 

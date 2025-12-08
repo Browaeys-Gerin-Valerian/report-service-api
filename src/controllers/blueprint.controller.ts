@@ -23,15 +23,20 @@ export async function getAll(req: Request, res: Response) {
 
 export async function getOneById(req: Request, res: Response) {
     try {
-        const { params } = (req as ValidatedRequest).validated;
+        const { params, query } = (req as ValidatedRequest).validated;
         const { id } = params;
-        const doc = await blueprintDbService.getOneById(id);
+
+        const doc = await blueprintDbService.getOneById(id, {
+            populate: query.withTemplates,
+        });
+
         if (!doc) return res.status(404).json({ error: "Blueprint not found" });
         res.json(doc);
     } catch (err) {
         res.status(500).json({ error: "Failed to fetch blueprint", details: err });
     }
 }
+
 
 export async function createOne(req: Request, res: Response) {
     try {

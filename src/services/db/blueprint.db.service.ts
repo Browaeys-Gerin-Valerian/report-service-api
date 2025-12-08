@@ -21,9 +21,21 @@ export async function createOne(payload: Partial<IBlueprint>): Promise<IBlueprin
     return doc.save();
 }
 
-export async function getOneById(id: string) {
-    return BlueprintModel.findById(id).exec();
+export async function getOneById(
+    id: string,
+    options?: { populate?: boolean }
+) {
+    let query = BlueprintModel.findById(id);
+
+    if (options?.populate) {
+        query = query.populate("templates");
+    }
+
+    return query.exec();
 }
+
+
+
 
 export async function updateOne(id: string, update: UpdateQuery<IBlueprint>) {
     return BlueprintModel.findByIdAndUpdate(id, update, { new: true }).exec();

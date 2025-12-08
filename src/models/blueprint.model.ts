@@ -22,6 +22,19 @@ const BlueprintSchema = new Schema<IBlueprint>(
     { timestamps: true }
 );
 
+
+
+//Virtual used to populate blueprint with his associateed templates 
+BlueprintSchema.virtual("templates", {
+    ref: "templates",
+    localField: "_id",
+    foreignField: "blueprint_id",
+});
+BlueprintSchema.set("toObject", { virtuals: true });
+BlueprintSchema.set("toJSON", { virtuals: true });
+
+
+
 // Pre-hook to handle cascading deletions of associated templates and their files on blueprint deletion
 BlueprintSchema.pre("findOneAndDelete", async function () {
     const query = this as any;
