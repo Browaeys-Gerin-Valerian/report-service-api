@@ -23,9 +23,9 @@ export async function generate(req: Request, res: Response) {
 
         const buffer = await documentGeneratorService.generate({
             template,
+            data_structure: blueprint.data_structure,
             data_to_insert,
             files,
-            data_structure: blueprint.data_structure,
             output_format,
         });
 

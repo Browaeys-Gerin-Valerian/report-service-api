@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { config } from "../../../config";
-import { ITemplate } from "../../../types";
+import { ITemplate } from "../../../types/entity";
 import { templateDbService } from "../../db/template.db.service";
 import { detectFormat } from "../../../utils/functions.utils";
 const { TEMPLATE_DIR } = config;
