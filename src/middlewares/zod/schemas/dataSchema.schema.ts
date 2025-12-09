@@ -33,7 +33,7 @@ const dataImage = z.object({
 
 
 const dataTable = z.object({
-    columns: z.array(
+    rows: z.array(
         z.union([
             dataText,
             dataObject,

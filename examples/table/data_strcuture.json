@@ -2,7 +2,7 @@
   "table": {
     "type": "table",
     "required": true,
-    "columns": [
+    "rows": [
       { "type": "text", "required": true },
       { "type": "text", "required": true },
       { "type": "text", "required": true },
@@ -12,7 +12,7 @@
   "table_with_object": {
     "type": "table",
     "required": true,
-    "columns": [
+    "rows": [
       {
         "type": "object",
         "required": true,

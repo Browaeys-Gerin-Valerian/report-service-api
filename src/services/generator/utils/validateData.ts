@@ -108,22 +108,22 @@ export function validateData(
                 const dataStructureTable = fieldStructure as TableStructure;
 
 
-                if (!Array.isArray(dataStructureTable.columns)) {
-                    addError(`Schema ${currentPath} is missing 'columns'`);
+                if (!Array.isArray(dataStructureTable.rows)) {
+                    addError(`Schema ${currentPath} is missing 'rows'`);
                     break;
                 }
 
-                if (!Array.isArray(dataTable.columns)) {
-                    addError(`Value for ${currentPath} is missing 'columns'`);
+                if (!Array.isArray(dataTable.rows)) {
+                    addError(`Value for ${currentPath} is missing 'rows'`);
                     break;
                 }
 
-                dataStructureTable.columns.forEach((itemStructure, i) => {
-                    const itemValue = dataTable.columns[i]
+                dataStructureTable.rows.forEach((itemStructure, i) => {
+                    const itemValue = dataTable.rows[i]
 
                     validateData(
-                        { columns: itemStructure },
-                        { columns: itemValue },
+                        { rows: itemStructure },
+                        { rows: itemValue },
                         [...path, `${key}`]
                     );
                 });
