@@ -1,9 +1,9 @@
 {
   "table": {
-    "columns": ["item-1", "item-2", "item-3", "item-4"]
+    "rows": ["item-1", "item-2", "item-3", "item-4"]
   },
   "table_with_object": {
-    "columns": [
+    "rows": [
       {
         "fields": {
           "title": "Inception",

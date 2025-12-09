@@ -48,7 +48,7 @@ export type DataImage = {
 
 
 export type DataTable = {
-    columns: (DataText | DataObject | DataList)[];
+    rows: (DataText | DataObject | DataList)[];
 };
 
 export type DataValue =
@@ -89,7 +89,7 @@ export type ListStructure = BaseStructure & {
 
 export type TableStructure = BaseStructure & {
     type: "table";
-    columns: (TextStructure | ObjectStructure | ListStructure)[];
+    rows: (TextStructure | ObjectStructure | ListStructure)[];
 }
 
 export type ImageStructure = BaseStructure & {

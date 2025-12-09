@@ -46,7 +46,7 @@ const image = z.object({
 const table = z.object({
     ...base,
     type: z.literal("table"),
-    columns: z.array(
+    rows: z.array(
         z.union([
             text,
             object,
