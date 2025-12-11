@@ -1,59 +1,14 @@
 {
-  "list": {
-    "items": ["Alpha", "Bravo", "Charlie"]
+  "persons": {
+    "items": ["item-1", "item-2", "item-3", "item-3"]
   },
 
-  "list_with_optional": {
-    "items": ["Opt-1", "Opt-2"]
-  },
-
-  "list_full_optional": {
-    "items": []
-  },
-
-  "list_with_error": {
-    "items": ["Item-1"]
-  },
-
-  "list_of_object": {
-    "items": [
-      { "fields": { "name": "Alice Martin", "age": "27" } },
-      { "fields": { "name": "Bob Lefèvre", "age": "44" } },
-      { "fields": { "name": "Clara Morel", "age": "33" } }
-    ]
-  },
-
-  "list_of_object_with_optional": {
-    "items": [
-      { "fields": { "security_lvl": "Danger", "code": "2" } },
-      { "fields": { "security_lvl": "No danger", "code": "5" } }
-    ]
-  },
-
-  "list_of_object_with_error": {
-    "items": [
-      { "fields": { "country": "france", "state": "ile-de-france" } },
-      { "fields": { "country": "usa", "state": "florida" } },
-      { "fields": { "country": "spain" } }
-    ]
-  },
-
-  "list_of_nested_objects": {
+  "locations": {
     "items": [
       {
         "fields": {
-          "name": "Isabelle",
-          "tasks": {
-            "items": ["Task-A", "Task-B"]
-          }
-        }
-      },
-      {
-        "fields": {
-          "name": "Julien",
-          "tasks": {
-            "items": ["Task-1", "Task-2", "Task-3"]
-          }
+          "country": "France",
+          "state": "Ile de france"
         }
       }
     ]

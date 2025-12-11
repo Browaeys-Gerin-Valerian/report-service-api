@@ -3,69 +3,8 @@
     "type": "text",
     "required": true
   },
-  "summary": {
+  "author": {
     "type": "text",
     "required": false
-  },
-
-  "text_with_optional": {
-    "type": "object",
-    "required": true,
-    "fields": {
-      "intro": {
-        "type": "text",
-        "required": true
-      },
-      "chapter_1": {
-        "type": "text",
-        "required": true
-      },
-      "chapter_2": {
-        "type": "text",
-        "required": false
-      },
-      "epilogue": {
-        "type": "text",
-        "required": false
-      }
-    }
-  },
-
-  "text_full_optional": {
-    "type": "object",
-    "required": false,
-    "fields": {
-      "country": {
-        "type": "text",
-        "required": false
-      },
-      "state": {
-        "type": "text",
-        "required": false
-      },
-      "city": {
-        "type": "text",
-        "required": false
-      }
-    }
-  },
-
-  "text_with_error": {
-    "type": "object",
-    "required": false,
-    "fields": {
-      "model": {
-        "type": "text",
-        "required": true
-      },
-      "engine": {
-        "type": "text",
-        "required": false
-      },
-      "description": {
-        "type": "text",
-        "required": false
-      }
-    }
   }
 }
