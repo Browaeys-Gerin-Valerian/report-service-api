@@ -1,6 +1,8 @@
 import { DocumentType, OutputFormat, ValidationError } from "../../types";
 import { ITemplate } from "../../types/entity"
+import { mapToObject } from "../../utils/functions.utils";
 import { docxGenerator } from "./docx/index.service";
+import { validateData } from "./utils/validateData";
 
 
 export const documentGeneratorService = {
@@ -18,6 +20,9 @@ export interface GeneratorOptions {
 async function generate(options: GeneratorOptions) {
 
     const { template, files, data_structure, data_to_insert, output_format } = options;
+
+
+
 
     switch (output_format) {
         case DocumentType.DOCX:

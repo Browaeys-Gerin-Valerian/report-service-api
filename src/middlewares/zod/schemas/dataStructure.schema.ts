@@ -6,7 +6,6 @@ const base = {
 
 export const fieldSchema: z.ZodType<any> = z.lazy(() =>
     z.union([
-        displayFlag,
         text,
         object,
         list,
@@ -15,9 +14,6 @@ export const fieldSchema: z.ZodType<any> = z.lazy(() =>
     ])
 );
 
-const displayFlag = z.object({
-    type: z.literal("display")
-});
 
 const text = z.object({
     ...base,
@@ -56,4 +52,4 @@ const table = z.object({
     )
 });
 
-export const dataStructureSchema = z.record(z.string(), z.union([fieldSchema, displayFlag]));
+export const dataStructureSchema = z.record(z.string(), z.union([fieldSchema]));

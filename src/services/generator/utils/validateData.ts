@@ -17,11 +17,11 @@ import { isObject } from "../../../utils/functions.utils";
 export function validateData(
     data_structure: DataStructureSchema,
     data_to_insert: DataSchema,
+    errors: string[] = [],
     path: string[] = [],
 ) {
-    const errors: string[] = [];
 
-    const addError = (msg: string) => errors.push(msg);
+    const addError = (msg: string) => errors.push(msg)
 
     for (const key of Object.keys(data_structure)) {
         const fieldStructure = data_structure[key] as BaseStructure & { type: string };
@@ -35,24 +35,16 @@ export function validateData(
             addError(`Missing required field in ${currentPath}`);
             continue;
         }
-
         // --------------------------
         // NOT REQUIRED
         // --------------------------
         if (!fieldStructure.required && (fieldValue === undefined || fieldValue === null)) {
             continue;
         }
-
         // --------------------------
         // DISPATCH BY TYPE
         // --------------------------
         switch (fieldStructure.type as FieldType) {
-
-            case "display":
-                if (typeof fieldValue !== "boolean") {
-                    addError(`Field ${currentPath} should be a boolean`);
-                }
-                break;
 
             case "text":
                 if (typeof fieldValue !== "string") {
@@ -62,8 +54,8 @@ export function validateData(
 
             case "object":
                 //Casting for typescript
-                const dataObject = fieldValue as DataObject;
                 const dataStructureObject = fieldStructure as ObjectStructure
+                const dataObject = fieldValue as DataObject;
 
                 if (!isObject(dataStructureObject.fields)) {
                     addError(`Schema for object ${currentPath} is missing 'fields'`);
@@ -74,13 +66,13 @@ export function validateData(
                     break;
                 }
 
-                validateData(dataStructureObject.fields, dataObject.fields, [...path, key]);
+                validateData(dataStructureObject.fields, dataObject.fields, errors, [...path, key]);
                 break;
 
             case "list":
                 //Casting for typescript
-                const dataList = fieldValue as DataList;
                 const dataStructureList = fieldStructure as ListStructure
+                const dataList = fieldValue as DataList;
 
                 if (!Array.isArray(dataStructureList.items)) {
                     addError(`Schema for list ${currentPath} is missing 'items'`);
@@ -92,11 +84,17 @@ export function validateData(
                     break;
                 }
 
+                if (dataList.items.length === 0) {
+                    addError(`List ${currentPath}.items should not be empty`);
+                    break;
+                }
+
                 dataStructureList.items.forEach((itemStructure, i) => {
                     const itemValue = dataList.items[i]
                     validateData(
                         { items: itemStructure },
                         { items: itemValue },
+                        errors,
                         [...path, `${key}`]
                     );
                 });
@@ -104,8 +102,8 @@ export function validateData(
 
             case "table":
                 //Casting for typescript
-                const dataTable = fieldValue as DataTable;
                 const dataStructureTable = fieldStructure as TableStructure;
+                const dataTable = fieldValue as DataTable;
 
 
                 if (!Array.isArray(dataStructureTable.rows)) {
@@ -118,12 +116,18 @@ export function validateData(
                     break;
                 }
 
+                if (dataTable.rows.length === 0) {
+                    addError(`Table ${currentPath}.rows should not be empty`);
+                    break;
+                }
+
                 dataStructureTable.rows.forEach((itemStructure, i) => {
                     const itemValue = dataTable.rows[i]
 
                     validateData(
                         { rows: itemStructure },
                         { rows: itemValue },
+                        errors,
                         [...path, `${key}`]
                     );
                 });

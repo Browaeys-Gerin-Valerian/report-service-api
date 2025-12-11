@@ -1,207 +1,37 @@
 {
-  "list": {
+  "persons": {
     "type": "list",
     "required": true,
     "items": [
       {
         "type": "text",
         "required": true
-      },
-      {
-        "type": "text",
-        "required": true
-      },
-      {
-        "type": "text",
-        "required": true
       }
     ]
   },
 
-  "list_with_optional": {
-    "type": "list",
-    "required": true,
-    "items": [
-      {
-        "type": "text",
-        "required": true
-      },
-      {
-        "type": "text",
-        "required": true
-      },
-      {
-        "type": "text",
-        "required": false
-      }
-    ]
-  },
-
-  "list_full_optional": {
-    "type": "list",
-    "required": false,
-    "items": [
-      {
-        "type": "text",
-        "required": false
-      },
-      {
-        "type": "text",
-        "required": false
-      },
-      {
-        "type": "text",
-        "required": false
-      }
-    ]
-  },
-
-  "list_with_error": {
+  "books": {
     "type": "list",
     "required": false,
     "items": [
       {
         "type": "text",
         "required": true
-      },
-      {
-        "type": "text",
-        "required": false
-      },
-      {
-        "type": "text",
-        "required": false
       }
     ]
   },
 
-  "list_of_object": {
+  "locations": {
     "type": "list",
-    "required": true,
-    "items": [
-      {
-        "type": "object",
-        "required": true,
-        "fields": {
-          "name": { "type": "text", "required": true },
-          "age": { "type": "text", "required": true }
-        }
-      },
-      {
-        "type": "object",
-        "required": true,
-        "fields": {
-          "name": { "type": "text", "required": true },
-          "age": { "type": "text", "required": true }
-        }
-      },
-      {
-        "type": "object",
-        "required": true,
-        "fields": {
-          "name": { "type": "text", "required": true },
-          "age": { "type": "text", "required": true }
-        }
-      }
-    ]
-  },
-
-  "list_of_object_with_optional": {
-    "type": "list",
-    "required": true,
-    "items": [
-      {
-        "type": "object",
-        "required": true,
-        "fields": {
-          "security_lvl": { "type": "text", "required": true },
-          "code": { "type": "text", "required": true }
-        }
-      },
-      {
-        "type": "object",
-        "required": true,
-        "fields": {
-          "security_lvl": { "type": "text", "required": true },
-          "code": { "type": "text", "required": true }
-        }
-      },
-      {
-        "type": "object",
-        "required": false,
-        "fields": {
-          "security_lvl": { "type": "text", "required": false },
-          "code": { "type": "text", "required": false }
-        }
-      }
-    ]
-  },
-
-  "list_of_object_with_error": {
-    "type": "list",
-    "required": true,
+    "required": false,
     "items": [
       {
         "type": "object",
         "required": true,
         "fields": {
           "country": { "type": "text", "required": true },
-          "state": { "type": "text", "required": true }
-        }
-      },
-      {
-        "type": "object",
-        "required": true,
-        "fields": {
-          "country": { "type": "text", "required": true },
-          "state": { "type": "text", "required": true }
-        }
-      },
-      {
-        "type": "object",
-        "required": false,
-        "fields": {
-          "country": { "type": "text", "required": true },
-          "state": { "type": "text", "required": false }
-        }
-      }
-    ]
-  },
-
-  "list_of_nested_objects": {
-    "type": "list",
-    "required": true,
-    "items": [
-      {
-        "type": "object",
-        "required": true,
-        "fields": {
-          "name": { "type": "text", "required": true },
-          "tasks": {
-            "type": "list",
-            "required": true,
-            "items": [
-              { "type": "text", "required": true },
-              { "type": "text", "required": true }
-            ]
-          }
-        }
-      },
-      {
-        "type": "object",
-        "required": true,
-        "fields": {
-          "name": { "type": "text", "required": true },
-          "tasks": {
-            "type": "list",
-            "required": true,
-            "items": [
-              { "type": "text", "required": true },
-              { "type": "text", "required": true },
-              { "type": "text", "required": true },
-              { "type": "text", "required": false }
-            ]
-          }
+          "state": { "type": "text", "required": true },
+          "city": { "type": "text", "required": false }
         }
       }
     ]

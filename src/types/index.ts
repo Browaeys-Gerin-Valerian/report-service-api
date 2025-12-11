@@ -20,7 +20,7 @@ export enum DocumentType {
 export type OutputFormat = "docx" | "pdf"
 
 
-export type FieldType = "display" | "text" | "object" | "list" | "table" | "image"
+export type FieldType = "text" | "object" | "list" | "table" | "image"
 
 // --------------------------
 // INJECTABLE DATA DEFINITION
@@ -69,9 +69,6 @@ export type BaseStructure = {
     required: boolean
 }
 
-export type DisplayStructure = {
-    type: "display";
-}
 
 export type TextStructure = BaseStructure & {
     type: "text";
@@ -97,7 +94,6 @@ export type ImageStructure = BaseStructure & {
 }
 
 export type DataStructure =
-    | DisplayStructure
     | TextStructure
     | ObjectStructure
     | ListStructure

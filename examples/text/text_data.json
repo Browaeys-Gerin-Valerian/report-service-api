@@ -1,20 +1,3 @@
 {
-  "title": "My report",
-  "summary": "This is the summary of my report",
-
-  "text_with_optional": {
-    "fields": {
-      "intro": "This is my intro",
-      "chapter_1": "This is my chapter one"
-    }
-  },
-
-  "text_full_optional": {
-    "fields": {}
-  },
-  "text_with_error": {
-    "fields": {
-      "model": "Airbus"
-    }
-  }
+  "title": "My report"
 }
