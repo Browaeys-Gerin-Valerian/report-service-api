@@ -23,11 +23,8 @@ const dataCollection = z.object({
 });
 
 const dataImage = z.object({
-    meta: z.object({
-        filename: z.string(),
-        width: z.number(),
-        height: z.number()
-    })
+    id: z.string(),
+    filename: z.string(),
 });
 
 

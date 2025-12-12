@@ -1,17 +1,26 @@
-export async function injectImg(tag: string, data_to_insert: Record<string, any>) {
-    const imageData = data_to_insert[tag];
+import { DataImage, EnrichedDataImage, ImagePreset } from "../../../../types";
+import { resolveImageSize } from "./resolveImageSize";
 
-    if (!imageData) return null;
-    if (!imageData.meta || !imageData.meta.file) return null; // No associated file
+export function injectImg(id: string, width: number, height: number, preset: ImagePreset, caption: string, images: (DataImage | EnrichedDataImage)[]) {
 
-    const { meta } = imageData
+    if (!images) return null;
 
-    const extension = meta.filename.split(".").pop()?.toLowerCase();
+    // 1. Find the image object by id
+    const image = images.find(img => img.id === id);
+
+    if (!image) return null;
+
+    const { width: finalWidth, height: finalHeight } =
+        resolveImageSize(width, height, preset);
 
     return {
-        width: meta.width ?? 10,
-        height: meta.height ?? 10,
-        data: meta.file.buffer,
-        extension: `.${extension}`
+        width: finalWidth,
+        height: finalHeight,
+        //@ts-ignore
+        data: image.data,
+        //@ts-ignore
+        extension: image.extension,
+        caption: caption || ""
     };
+
 }
