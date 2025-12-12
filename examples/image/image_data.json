@@ -1,16 +1,25 @@
 {
-  "mon_image_1": {
-    "meta": {
-      "filename": "example_image_1.jpg",
-      "width": 10,
-      "height": 5
+  "example_1": {
+    "id": "1",
+    "filename": "example_image_1.jpg"
+  },
+
+  "example_3": {
+    "fields": {
+      "mon_image_2": { "id": "3", "filename": "example_image_2.gif" }
     }
   },
-  "mon_image_2": {
-    "meta": {
-      "filename": "example_image_2.jpg",
-      "width": 15,
-      "height": 10
-    }
+
+  "example_4": {
+    "items": [
+      {
+        "id": "c",
+        "filename": "example_image_3.png"
+      },
+      {
+        "id": "d",
+        "filename": "example_image_4.jpg"
+      }
+    ]
   }
 }

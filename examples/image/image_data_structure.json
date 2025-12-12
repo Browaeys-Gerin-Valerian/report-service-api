@@ -1,10 +1,38 @@
 {
-  "mon_image_1": {
+  "example_1": {
     "type": "image",
     "required": true
   },
-  "mon_image_2": {
+  "example_2": {
     "type": "image",
     "required": false
+  },
+  "example_3": {
+    "type": "object",
+    "required": true,
+    "fields": {
+      "mon_image_1": {
+        "type": "image",
+        "required": false
+      },
+      "mon_image_2": {
+        "type": "image",
+        "required": true
+      }
+    }
+  },
+  "example_4": {
+    "type": "list",
+    "required": true,
+    "items": [
+      {
+        "type": "image",
+        "required": true
+      },
+      {
+        "type": "image",
+        "required": true
+      }
+    ]
   }
 }

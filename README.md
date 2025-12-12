@@ -28,7 +28,7 @@ my-app/
 
 ## Location
 
-All uploaded template files are stored in the `templates` folder at the root of the project
+All uploaded template files are stored in the `templates_files` folder at the root of the project
 
 ## File Naming Convention
 
@@ -94,8 +94,7 @@ See examples:
 
 - [Text](./examples/text)
 - [Object](./examples/object)
-- [List](./examples/list)
-- [Table](./examples/text)
+- [Collection](./examples/collection)
 - [Image](./examples/image)
 
 ### 1.1 Allowed field types
@@ -104,8 +103,7 @@ Each field in the data structure must specify one of the supported types:
 
 - text
 - object
-- list
-- table
+- collection
 - image
 
 ### 1.2 Required vs optional fields
@@ -155,7 +153,7 @@ The field may be omitted from the user's data, If omitted, the system will creat
 
 ### 1.3 Text structure
 
-A text only define is type and requirement level, for example:
+A text only define is type and requirement level, for example (this type can cover 90 % of your usage):
 
 data structure:
 
@@ -245,24 +243,23 @@ An object must define its children and Each child must also declare a type and r
 }
 ```
 
-### 1.5 List structure
+### 1.5 Collection structure
 
-A list must define its expected items:
+A collection must define its expected items:
 
-(IMPORTANT: the "list" type is useful when you need to generate between 0 and N
-instances of the same repeating structure. It is NOT intended for heterogeneous
-content or mixed element types. Every item in a list must conform to the same
-schema so the template engine can iterate safely and predictably. If you need differents type the object strucutre is more appropriated)
+(IMPORTANT: the "collection" type is useful when you need to generate between 0 and N instances of the same repeating structure. It is NOT intended for heterogeneous
+content or mixed element types. Every item in a list must conform to the same schema so the template engine can iterate safely and predictably. If you need differents
+type the text or object strucutre is more appropriated)
 
 ```json
 {
-  "example_list_1": {
-    "type": "list",
+  "example_collection_1": {
+    "type": "collection",
     "required": true,
     "items": [{ "type": "text", "required": true }]
   },
-  "example_list_2": {
-    "type": "list",
+  "example_collection_2": {
+    "type": "collection",
     "required": false,
     "items": [
       {
@@ -275,8 +272,8 @@ schema so the template engine can iterate safely and predictably. If you need di
       }
     ]
   },
-  "example_list_3": {
-    "type": "list",
+  "example_collection_3": {
+    "type": "collection",
     "required": false,
     "items": [
       {
@@ -292,11 +289,46 @@ schema so the template engine can iterate safely and predictably. If you need di
 }
 ```
 
-### 1.6 Table structure
+### 1.6 Image structure
 
-A table behaves exactly like a list, but uses:
+Every image must have a unique id across the document. Uploading multiple files with the same id will result in a validation error.
+Images can have optional width and height defined directly in the template call, if either is missing, a preset (small / medium / large) can be applied.
 
-rows instead of items
+Structure:
+
+```json
+{
+  "signature": {
+    "type": "image",
+    "required": true
+  },
+  "profile_picture": {
+    "type": "image",
+    "required": false
+  }
+}
+```
+
+Data:
+
+```json
+{
+  "signature": {
+    "id": "sig1",
+    "filename": "signature.png"
+  },
+  "profile_picture": {
+    "id": "prof1",
+    "filename": "profile.jpg"
+  }
+}
+```
+
+```text
+{IMAGE injectImg('sig1', 200, 150)}
+{IMAGE injectImg('sig1', undefined, undefined, "large")}
+{IMAGE injectImg('sig1', undefined, undefined, "medium", "Signature of John Doe")}
+```
 
 ## Data Payload (User Data) Rules
 

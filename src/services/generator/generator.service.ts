@@ -1,6 +1,6 @@
 import { DataSchema, DataStructureSchema, DocumentType, OutputFormat, ValidationError } from "../../types";
 import { ITemplate } from "../../types/entity"
-import { docxGenerator } from "./docx/index.service";
+import { docxGenerator } from "./docx/docxGenerator.service";
 
 
 

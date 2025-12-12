@@ -21,6 +21,15 @@ export type OutputFormat = "docx" | "pdf"
 
 export type FieldType = "text" | "object" | "collection" | "image"
 
+
+export const IMAGE_PRESETS = {
+    small: { width: 10, height: 10 },
+    medium: { width: 25, height: 25 },
+    large: { width: 40, height: 40 }
+} as const;
+
+export type ImagePreset = keyof typeof IMAGE_PRESETS;
+
 // --------------------------
 // INJECTABLE DATA DEFINITION
 // --------------------------
@@ -37,13 +46,11 @@ export type DataCollection = {
 
 
 export type DataImage = {
-    meta: {
-        filename: string;
-        width: number;
-        height: number;
-        file: IFile
-    };
+    id: string,
+    filename: string;
 };
+
+export type EnrichedDataImage = DataImage & { data: Buffer, extension: string }
 
 
 export type DataValue =

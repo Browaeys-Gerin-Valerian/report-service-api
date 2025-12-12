@@ -15,6 +15,7 @@ import { isObject } from "../../../utils/functions.utils";
 export function validateData(
     data_structure: DataStructureSchema,
     data_to_insert: DataSchema,
+    files: Express.Multer.File[],
     errors: string[] = [],
     path: string[] = [],
 ) {
@@ -30,7 +31,7 @@ export function validateData(
         // REQUIRED
         // --------------------------
         if (fieldStructure.required && (fieldValue === undefined || fieldValue === null)) {
-            addError(`Missing required field in ${currentPath}`);
+            addError(`Missing required field ${currentPath}`);
             continue;
         }
         // --------------------------
@@ -64,7 +65,7 @@ export function validateData(
                     break;
                 }
 
-                validateData(dataStructureObject.fields, dataObject.fields, errors, [...path, key]);
+                validateData(dataStructureObject.fields, dataObject.fields, files, errors, [...path, key]);
                 break;
 
             case "collection":
@@ -93,6 +94,7 @@ export function validateData(
                     validateData(
                         { items: itemStructure },
                         { items: itemValue },
+                        files,
                         errors,
                         [...path, `${key}`]
                     );
@@ -104,21 +106,20 @@ export function validateData(
                 //Casting for typescript
                 const dataImage = fieldValue as DataImage;
 
-                if (!isObject(dataImage?.meta)) {
-                    addError(`Field ${currentPath}.meta should be an object`);
+                if (!isObject(dataImage)) {
+                    addError(`Field ${currentPath} should be an object`);
                     break;
                 }
 
-                if (typeof dataImage.meta.filename !== "string") {
-                    addError(`Field ${currentPath}.meta.filename should be a string`);
+                if (typeof dataImage.filename !== "string") {
+                    addError(`Field ${currentPath}.filename should be a string`);
                 }
 
-                if (dataImage.meta.width !== undefined && typeof dataImage.meta.width !== "number") {
-                    addError(`Field ${currentPath}.meta.width should be a number`);
-                }
+                const file = files.find(file => file.originalname === dataImage.filename)
 
-                if (dataImage.meta.height !== undefined && typeof dataImage.meta.height !== "number") {
-                    addError(`Field ${currentPath}.meta.height should be a number`);
+                if (!file) {
+                    addError(`Image ${currentPath} doesn't have matching file`);
+                    break;
                 }
                 break;
 
