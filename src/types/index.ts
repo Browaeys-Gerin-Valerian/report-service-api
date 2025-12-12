@@ -1,4 +1,3 @@
-import { required } from "zod/v4/core/util.cjs";
 import { IFile } from "./entity";
 
 export class ValidationError extends Error {
@@ -20,7 +19,7 @@ export enum DocumentType {
 export type OutputFormat = "docx" | "pdf"
 
 
-export type FieldType = "text" | "object" | "list" | "table" | "image"
+export type FieldType = "text" | "object" | "collection" | "image"
 
 // --------------------------
 // INJECTABLE DATA DEFINITION
@@ -32,8 +31,8 @@ export type DataObject = {
     fields: Record<string, DataValue>;
 };
 
-export type DataList = {
-    items: (DataText | DataObject | DataList)[];
+export type DataCollection = {
+    items: DataValue[];
 };
 
 
@@ -47,16 +46,11 @@ export type DataImage = {
 };
 
 
-export type DataTable = {
-    rows: (DataText | DataObject | DataList)[];
-};
-
 export type DataValue =
     | DataText
     | DataObject
-    | DataList
+    | DataCollection
     | DataImage
-    | DataTable;
 
 export type DataSchema = Record<string, DataValue>;
 
@@ -70,35 +64,30 @@ export type BaseStructure = {
 }
 
 
-export type TextStructure = BaseStructure & {
+export type DataStructureText = BaseStructure & {
     type: "text";
 }
 
-export type ObjectStructure = BaseStructure & {
+export type DataStructureObject = BaseStructure & {
     type: "object";
     fields: Record<string, DataStructure>;
 }
 
-export type ListStructure = BaseStructure & {
-    type: "list";
-    items: (TextStructure | ObjectStructure | ListStructure)[];
+export type DataStructureCollection = BaseStructure & {
+    type: "collection";
+    items: DataStructure[];
 }
 
-export type TableStructure = BaseStructure & {
-    type: "table";
-    rows: (TextStructure | ObjectStructure | ListStructure)[];
-}
 
-export type ImageStructure = BaseStructure & {
+export type DataStructureImage = BaseStructure & {
     type: "image";
 }
 
 export type DataStructure =
-    | TextStructure
-    | ObjectStructure
-    | ListStructure
-    | TableStructure
-    | ImageStructure;
+    | DataStructureText
+    | DataStructureObject
+    | DataStructureCollection
+    | DataStructureImage;
 
 export type DataStructureSchema = Record<string, DataStructure>;
 

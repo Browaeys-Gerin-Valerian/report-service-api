@@ -11,8 +11,7 @@
     "required": true,
     "fields": {
       "intro": "This book explores the fascinating world of modern web development, covering both frontend and backend technologies in depth.",
-      "chapter_1": "Chapter 1 delves into JavaScript fundamentals, including variables, functions, closures, and the event loop, providing practical examples for everyday coding.",
-      "epilogue": "In the epilogue, we summarize key takeaways and provide guidance for continuous learning and exploring emerging web technologies."
+      "chapter_1": "Chapter 1 delves into JavaScript fundamentals, including variables, functions, closures, and the event loop, providing practical examples for everyday coding."
     }
   }
 }

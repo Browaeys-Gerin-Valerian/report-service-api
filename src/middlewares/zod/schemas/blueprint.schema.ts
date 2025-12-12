@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { dataStructureSchema } from "./dataStructure.schema"
+import { dataStructureSchema } from "./dataStructure.schema";
+
 export const getOneBlueprintSchema = z.object({
     params: z.object({
         id: z.string().min(1, "Blueprint ID is required"),

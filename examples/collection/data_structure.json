@@ -1,6 +1,6 @@
 {
   "persons": {
-    "type": "list",
+    "type": "collection",
     "required": true,
     "items": [
       {
@@ -11,7 +11,7 @@
   },
 
   "books": {
-    "type": "list",
+    "type": "collection",
     "required": false,
     "items": [
       {
@@ -22,7 +22,7 @@
   },
 
   "locations": {
-    "type": "list",
+    "type": "collection",
     "required": false,
     "items": [
       {

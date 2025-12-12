@@ -3,7 +3,7 @@ import { ValidatedRequest } from "../middlewares/zod/validateRequest.middleware"
 import { documentGeneratorService } from "../services/generator/generator.service"
 import { blueprintDbService } from "../services/db/blueprint.db.service";
 import { templateDbService } from "../services/db/template.db.service";
-import { detectContentType } from "../utils/functions.utils";
+import { detectContentType, mapToObject } from "../utils/functions.utils";
 
 export const generatorController = {
     generate,
@@ -23,7 +23,7 @@ export async function generate(req: Request, res: Response) {
 
         const buffer = await documentGeneratorService.generate({
             template,
-            data_structure: blueprint.data_structure,
+            data_structure: mapToObject(blueprint.data_structure),
             data_to_insert,
             files,
             output_format,

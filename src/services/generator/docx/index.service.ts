@@ -1,6 +1,6 @@
-import { DataSchema, DataStructure } from "../../../types";
+import { DataSchema, DataStructureSchema } from "../../../types";
 import { ITemplate } from "../../../types/entity";
-import { getTemplatePath, mapToObject } from "../../../utils/functions.utils";
+import { getTemplatePath } from "../../../utils/functions.utils";
 import { resolveImages } from "../utils/resolveImages";
 import { validateData } from "../utils/validateData";
 import { generateDocx } from "./docxGenerator.service";
@@ -9,7 +9,7 @@ import { generateDocx } from "./docxGenerator.service";
 
 export async function docxGenerator(
     template: ITemplate,
-    data_structure: Map<string, DataStructure>,
+    data_structure: DataStructureSchema,
     data_to_insert: DataSchema,
     files: Express.Multer.File[]
 ) {
@@ -28,7 +28,7 @@ export async function docxGenerator(
 * Throws `ValidationError` if any required field is missing or if a value does not match its schema.
 * 
 */
-    validateData(mapToObject(data_structure), data_to_insert);
+    validateData(data_structure, data_to_insert);
 
     // Match each image entry in data_to_insert with the uploaded files.
     // For each image:
