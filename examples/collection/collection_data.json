@@ -6,10 +6,7 @@
   "locations": {
     "items": [
       {
-        "fields": {
-          "country": "France",
-          "state": "Ile de france"
-        }
+        "fields": { "country": "France", "state": "Ile de france" }
       }
     ]
   }

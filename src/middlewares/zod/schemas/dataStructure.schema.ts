@@ -6,50 +6,37 @@ const base = {
 
 export const fieldSchema: z.ZodType<any> = z.lazy(() =>
     z.union([
-        text,
-        object,
-        list,
-        table,
-        image,
+        dataStructureText,
+        dataStructureObject,
+        dataStructureCollection,
+        dataStructureImage,
     ])
 );
 
 
-const text = z.object({
+const dataStructureText = z.object({
     ...base,
     type: z.literal("text")
 })
 
-const object = z.object({
+const dataStructureObject = z.object({
     ...base,
     type: z.literal("object"),
     fields: z.record(z.string(), fieldSchema)
 });
 
 
-const list = z.object({
+const dataStructureCollection = z.object({
     ...base,
-    type: z.literal("list"),
+    type: z.literal("collection"),
     items: z.array(fieldSchema),
 });
 
 
-const image = z.object({
+const dataStructureImage = z.object({
     ...base,
     type: z.literal("image"),
 }).strict();
 
-const table = z.object({
-    ...base,
-    type: z.literal("table"),
-    rows: z.array(
-        z.union([
-            text,
-            object,
-            list,
-
-        ])
-    )
-});
 
 export const dataStructureSchema = z.record(z.string(), z.union([fieldSchema]));

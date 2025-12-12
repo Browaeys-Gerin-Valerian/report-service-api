@@ -1,15 +1,13 @@
 import {
     BaseStructure,
     DataImage,
-    DataList,
+    DataCollection,
     DataObject,
     DataSchema,
     DataStructureSchema,
-    DataTable,
     FieldType,
-    ListStructure,
-    ObjectStructure,
-    TableStructure,
+    DataStructureCollection,
+    DataStructureObject,
     ValidationError
 } from "../../../types";
 import { isObject } from "../../../utils/functions.utils";
@@ -54,7 +52,7 @@ export function validateData(
 
             case "object":
                 //Casting for typescript
-                const dataStructureObject = fieldStructure as ObjectStructure
+                const dataStructureObject = fieldStructure as DataStructureObject
                 const dataObject = fieldValue as DataObject;
 
                 if (!isObject(dataStructureObject.fields)) {
@@ -69,10 +67,11 @@ export function validateData(
                 validateData(dataStructureObject.fields, dataObject.fields, errors, [...path, key]);
                 break;
 
-            case "list":
+            case "collection":
                 //Casting for typescript
-                const dataStructureList = fieldStructure as ListStructure
-                const dataList = fieldValue as DataList;
+
+                const dataStructureList = fieldStructure as DataStructureCollection
+                const dataList = fieldValue as DataCollection;
 
                 if (!Array.isArray(dataStructureList.items)) {
                     addError(`Schema for list ${currentPath} is missing 'items'`);
@@ -100,38 +99,6 @@ export function validateData(
                 });
                 break;
 
-            case "table":
-                //Casting for typescript
-                const dataStructureTable = fieldStructure as TableStructure;
-                const dataTable = fieldValue as DataTable;
-
-
-                if (!Array.isArray(dataStructureTable.rows)) {
-                    addError(`Schema ${currentPath} is missing 'rows'`);
-                    break;
-                }
-
-                if (!Array.isArray(dataTable.rows)) {
-                    addError(`Value for ${currentPath} is missing 'rows'`);
-                    break;
-                }
-
-                if (dataTable.rows.length === 0) {
-                    addError(`Table ${currentPath}.rows should not be empty`);
-                    break;
-                }
-
-                dataStructureTable.rows.forEach((itemStructure, i) => {
-                    const itemValue = dataTable.rows[i]
-
-                    validateData(
-                        { rows: itemStructure },
-                        { rows: itemValue },
-                        errors,
-                        [...path, `${key}`]
-                    );
-                });
-                break;
 
             case "image":
                 //Casting for typescript

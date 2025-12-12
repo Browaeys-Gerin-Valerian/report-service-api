@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { updateFileSchema } from "./file.schema";
 
+
 const allowedExtensions = ['docx', 'pdf']
 
 export const generateSchema = z.object({

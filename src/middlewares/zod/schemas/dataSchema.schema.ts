@@ -4,8 +4,7 @@ export const dataValueSchema: z.ZodType<any> = z.lazy(() =>
     z.union([
         dataText,
         dataObject,
-        dataList,
-        dataTable,
+        dataCollection,
         dataImage,
     ])
 );
@@ -19,7 +18,7 @@ const dataObject = z.object({
 });
 
 
-const dataList = z.object({
+const dataCollection = z.object({
     items: z.array(dataValueSchema),
 });
 
@@ -31,16 +30,6 @@ const dataImage = z.object({
     })
 });
 
-
-const dataTable = z.object({
-    rows: z.array(
-        z.union([
-            dataText,
-            dataObject,
-            dataList,
-        ])
-    )
-});
 
 export const dataSchema = z.record(z.string(), dataValueSchema);
 
