@@ -1,4 +1,4 @@
-import { DataSchema, DataStructureSchema } from "../../../types";
+import { DataSchema, DataStructureSchema } from "../../../types/entity";
 import { ITemplate } from "../../../types/entity";
 import { getTemplatePath } from "../../../utils/functions.utils";
 import { validateData } from "../utils/validateData";

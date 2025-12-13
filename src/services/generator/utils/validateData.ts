@@ -5,12 +5,11 @@ import {
     DataObject,
     DataSchema,
     DataStructureSchema,
-    FieldType,
     DataStructureCollection,
     DataStructureObject,
-    ValidationError
-} from "../../../types";
-import { isObject } from "../../../utils/functions.utils";
+} from "../../../types/entity";
+import { FieldType } from "../../../types";
+import { isObject, ValidationError } from "../../../utils/functions.utils";
 
 export function validateData(
     data_structure: DataStructureSchema,
