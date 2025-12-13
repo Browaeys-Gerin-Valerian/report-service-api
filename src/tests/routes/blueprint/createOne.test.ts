@@ -1,6 +1,7 @@
 import request from "supertest";
 import { app } from "../../setup";
-import blueprintModel from "../../../models/blueprint.model";
+import BlueprintModel from "../../../models/blueprint.model";
+import { MOCKED_DATA_STRUCTURE } from "../../mock/data/dataStrucutre";
 
 describe("POST /api/blueprints", () => {
 
@@ -8,22 +9,22 @@ describe("POST /api/blueprints", () => {
         const payload = {
             name: "New Blueprint",
             description: "A test blueprint",
-            data_structure: JSON.stringify({ x: "y" }) // parsé par parsedBody()
+            data_structure: JSON.stringify(MOCKED_DATA_STRUCTURE.text),
         };
 
         const res = await request(app)
             .post("/api/blueprints")
-            .type("form") // x-www-form-urlencoded
+            .type("form")
             .send(payload);
 
         expect(res.status).toBe(201);
         expect(res.body).toMatchObject({
             name: "New Blueprint",
             description: "A test blueprint",
-            data_structure: { x: "y" },
+            data_structure: MOCKED_DATA_STRUCTURE.text,
         });
 
-        const doc = await blueprintModel.findById(res.body._id);
+        const doc = await BlueprintModel.findById(res.body._id);
         expect(doc).not.toBeNull();
         expect(doc?.name).toBe("New Blueprint");
     });

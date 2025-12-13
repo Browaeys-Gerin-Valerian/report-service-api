@@ -1,11 +1,11 @@
 import request from "supertest";
 import { app } from "../../setup";
-import blueprintModel from "../../../models/blueprint.model";
+import BlueprintModel from "../../../models/blueprint.model";
 
 describe("GET /api/blueprints/:id", () => {
 
     it("should return the blueprint by ID", async () => {
-        const doc = await blueprintModel.create({
+        const doc = await BlueprintModel.create({
             name: "Blueprint A",
             description: "Test description",
             data_structure: { a: 123 }

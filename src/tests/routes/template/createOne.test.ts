@@ -2,17 +2,23 @@ import request from "supertest";
 import fs from "fs";
 import path from "path";
 import { app, TEMPLATE_DIR } from "../../setup";
+import BlueprintModel from "../../../models/blueprint.model";
+import { MOCKED_DATA_STRUCTURE } from "../../mock/data/dataStrucutre";
 
 describe("POST /api/templates", () => {
 
     it("should create a new template with file", async () => {
+
+        const blueprint = await BlueprintModel.create([
+            { name: "Blueprint 1", description: "This is the first blueprint", data_structure: MOCKED_DATA_STRUCTURE.text },
+        ]);
         const fileContent = Buffer.from("dummy content");
         const fileName = "Dummy_doc.docx";
 
         const res = await request(app)
             .post("/api/templates")
             .field("data", JSON.stringify({
-                blueprint_id: "6928371bbe7c75459cc4a01d",
+                blueprint_id: blueprint[0]._id.toString(),
                 name: "Test Template",
                 language: "EN"
             }))
@@ -20,7 +26,7 @@ describe("POST /api/templates", () => {
 
         expect(res.status).toBe(201);
         expect(res.body).toMatchObject({
-            blueprint_id: "6928371bbe7c75459cc4a01d",
+            blueprint_id: blueprint[0]._id.toString(),
             name: "Test Template",
             default: false,
             format: "docx",
