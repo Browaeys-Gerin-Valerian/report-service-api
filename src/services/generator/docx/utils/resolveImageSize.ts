@@ -7,7 +7,7 @@ export function resolveImageSize(
     preset?: ImagePreset
 ): { width: number; height: number } {
 
-    if ((width !== undefined && height !== undefined) && (Number(width) && Number(height))) {
+    if ((width !== undefined && height !== undefined) && (String(width) !== "0" && String(height) !== "0")) {
         return { width, height };
     }
 
