@@ -1,5 +1,5 @@
-import { DataSchema, DataStructureSchema } from "../../../types/entity";
-import { ITemplate } from "../../../types/entity";
+import { DataSchema, DataStructureSchema } from "@custom_types/entity";
+import { ITemplate } from "@custom_types/entity";
 import { docxGenerator } from "../docx/docxGenerator.service";
 import { generate } from "./generate.service";
 

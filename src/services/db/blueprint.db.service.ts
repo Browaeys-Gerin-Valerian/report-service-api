@@ -1,7 +1,7 @@
 
 import { FilterQuery, UpdateQuery } from "mongoose";
-import { IBlueprint } from "../../types/entity";
-import BlueprintModel from "../../models/blueprint.model";
+import { IBlueprint } from "@custom_types/entity";
+import BlueprintModel from "@models/blueprint.model";
 
 export const blueprintDbService = {
     getAll,

@@ -4,7 +4,7 @@ import { Application } from "express";
 import fs from "fs";
 import path from "path";
 import { createApp } from "../app";
-import { config } from "../config";
+import { config } from "@config/index";
 export const { TEMPLATE_DIR } = config;
 
 export let app: Application;

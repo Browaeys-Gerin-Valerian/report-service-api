@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { blueprintController } from "../controllers/blueprint.controller";
-import { validateRequest } from "../middlewares/zod/validateRequest.middleware";
-import { getOneBlueprintSchema, createBlueprintSchema, deleteBlueprintSchema, updateBlueprintSchema } from "../middlewares/zod/schemas/blueprint.schema";
+import { blueprintController } from "@controllers/blueprint.controller";
+import { validateRequest } from "@middlewares/zod/validateRequest.middleware";
+import { getOneBlueprintSchema, createBlueprintSchema, deleteBlueprintSchema, updateBlueprintSchema } from "@middlewares/zod/schemas/blueprint.schema";
 const router = Router();
 
 

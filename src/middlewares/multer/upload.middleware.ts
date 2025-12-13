@@ -1,7 +1,7 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import { config } from "../../config";
+import { config } from "@config/index";
 const { TEMPLATE_DIR, ALLOWED_DOC_EXTENSION, ALLOWED_IMG_EXTENSION } = config;
 
 const allowedExtensions = [...ALLOWED_DOC_EXTENSION, ...ALLOWED_IMG_EXTENSION];

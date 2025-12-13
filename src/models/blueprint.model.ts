@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 import fs from "fs";
 import path from "path";
-import { IBlueprint } from "../types/entity";
-import { templateDbService } from "../services/db/template.db.service";
-import { config } from "../config";
+import { IBlueprint } from "@custom_types/entity";
+import { templateDbService } from "@services/db/template.db.service";
+import { config } from "@config/index";
 const { TEMPLATE_DIR } = config;
 
 

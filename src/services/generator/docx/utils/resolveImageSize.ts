@@ -1,4 +1,4 @@
-import { IMAGE_PRESETS, ImagePreset } from "../../../../types";
+import { IMAGE_PRESETS, ImagePreset } from "@custom_types/index";
 
 
 export function resolveImageSize(

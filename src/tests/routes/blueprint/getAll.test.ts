@@ -1,8 +1,8 @@
 import request from "supertest";
-import { app } from "../../setup";
-import { IBlueprint } from "../../../types/entity";
-import BlueprintModel from "../../../models/blueprint.model";
-import { MOCKED_DATA_STRUCTURE } from "../../mock/data/dataStrucutre";
+import { app } from "@tests/setup";
+import { IBlueprint } from "@custom_types/entity";
+import BlueprintModel from "@models/blueprint.model";
+import { MOCKED_DATA_STRUCTURE } from "@tests/mock/data/dataStrucutre";
 
 describe("GET /api/blueprints", () => {
 

@@ -2,9 +2,9 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
-import { config } from "./config";
-import { router } from "./router/index.routes";
-import { getSwaggerDocument } from "./config/swagger/utils/getSwaggerDocument";
+import { config } from "@config/index";
+import { router } from "@router/index.routes";
+import { getSwaggerDocument } from "@config/swagger/utils/getSwaggerDocument";
 const { NODE_ENV, ALLOWED_ORIGINS } = config;
 
 

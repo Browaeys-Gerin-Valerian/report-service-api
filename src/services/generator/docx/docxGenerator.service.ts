@@ -1,6 +1,6 @@
-import { DataSchema, DataStructureSchema } from "../../../types/entity";
-import { ITemplate } from "../../../types/entity";
-import { getTemplatePath } from "../../../utils/functions.utils";
+import { DataSchema, DataStructureSchema } from "@custom_types/entity";
+import { ITemplate } from "@custom_types/entity";
+import { getTemplatePath } from "@utils/functions.utils";
 import { validateData } from "../utils/validateData";
 import { generate } from "./generate.service";
 

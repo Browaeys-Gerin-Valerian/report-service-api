@@ -1,11 +1,11 @@
 import fs from "fs";
 import path from "path";
 import request from "supertest";
-import BlueprintModel from "../../../models/blueprint.model";
-import TemplateModel from "../../../models/template.model";
-import { app, TEMPLATE_DIR } from "../../setup";
-import { MOCKED_DATA } from "../../mock/data/data";
-import { MOCKED_DATA_STRUCTURE } from "../../mock/data/dataStrucutre";
+import BlueprintModel from "@models/blueprint.model";
+import TemplateModel from "@models/template.model";
+import { app, TEMPLATE_DIR } from "@tests/setup";
+import { MOCKED_DATA } from "@tests/mock/data/data";
+import { MOCKED_DATA_STRUCTURE } from "@tests/mock/data/dataStrucutre";
 
 describe("POST /api/generate", () => {
     let blueprintId: string;

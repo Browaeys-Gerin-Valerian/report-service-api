@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ZodType, ZodError } from "zod";
-import { parsedBody } from "./utils/zod.utils";
+import { parsedBody } from "@middlewares/zod/utils/zod.utils";
 
 export type ValidatedRequest = Request & {
     validated: {

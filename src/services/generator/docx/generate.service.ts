@@ -1,11 +1,11 @@
 import fs from "fs";
 import createReport from 'docx-templates';
-import { config } from "../../../config"
-import { DataSchema } from "../../../types/entity";
-import { ImagePreset } from "../../../types";
+import { config } from "@config/index"
+import { DataSchema } from "@custom_types/entity";
+import { ImagePreset } from "@custom_types/index";
 import { injectImg } from "./utils/injectImg";
 import { resolveImages } from "./utils/resolveImage";
-import { ValidationError } from "../../../utils/functions.utils";
+import { ValidationError } from "@utils/functions.utils";
 const { TEMPLATE_CMD_DELIMITER } = config
 
 

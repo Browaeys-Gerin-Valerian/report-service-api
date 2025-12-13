@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { ValidatedRequest } from "../middlewares/zod/validateRequest.middleware";
-import { documentGeneratorService } from "../services/generator/generator.service"
-import { blueprintDbService } from "../services/db/blueprint.db.service";
-import { templateDbService } from "../services/db/template.db.service";
-import { detectContentType, mapToObject } from "../utils/functions.utils";
+import { ValidatedRequest } from "@middlewares/zod/validateRequest.middleware";
+import { documentGeneratorService } from "@services/generator/generator.service"
+import { blueprintDbService } from "@services/db/blueprint.db.service";
+import { templateDbService } from "@services/db/template.db.service";
+import { detectContentType, mapToObject } from "@utils/functions.utils";
 
 export const generatorController = {
     generate,

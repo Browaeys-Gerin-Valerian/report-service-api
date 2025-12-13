@@ -1,7 +1,7 @@
 import request from "supertest";
-import { app } from "../../setup";
-import BlueprintModel from "../../../models/blueprint.model";
-import { MOCKED_DATA_STRUCTURE } from "../../mock/data/dataStrucutre";
+import { app } from "@tests/setup";
+import BlueprintModel from "@models/blueprint.model";
+import { MOCKED_DATA_STRUCTURE } from "@tests/mock/data/dataStrucutre";
 
 describe("POST /api/blueprints", () => {
 
