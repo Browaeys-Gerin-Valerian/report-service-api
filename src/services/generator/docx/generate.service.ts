@@ -1,11 +1,12 @@
 import fs from "fs";
 import createReport from 'docx-templates';
 import { config } from "../../../config"
-import { DataSchema, ImagePreset, ValidationError } from "../../../types";
+import { DataSchema } from "../../../types/entity";
+import { ImagePreset } from "../../../types";
 import { injectImg } from "./utils/injectImg";
 import { resolveImages } from "./utils/resolveImage";
+import { ValidationError } from "../../../utils/functions.utils";
 const { TEMPLATE_CMD_DELIMITER } = config
-
 
 
 export async function generate(

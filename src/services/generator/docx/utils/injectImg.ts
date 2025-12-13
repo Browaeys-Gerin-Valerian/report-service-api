@@ -1,4 +1,5 @@
-import { DataImage, EnrichedDataImage, ImagePreset } from "../../../../types";
+import { ImagePreset } from "../../../../types";
+import { DataImage, EnrichedDataImage } from "../../../../types/entity";
 import { resolveImageSize } from "./resolveImageSize";
 
 export function injectImg(id: string, width: number, height: number, preset: ImagePreset, caption: string, images: (DataImage | EnrichedDataImage)[]) {

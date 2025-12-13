@@ -1,4 +1,6 @@
-import { DataImage, DataObject, DataSchema, DataValue, EnrichedDataImage, ValidationError } from "../../../../types";
+import { DataImage, DataSchema, EnrichedDataImage } from "../../../../types/entity";
+import { ValidationError } from "../../../../utils/functions.utils";
+
 
 /**
  * Recursively collects all objects with 'id' and 'filename' into a flat array.

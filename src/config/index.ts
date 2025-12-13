@@ -10,7 +10,6 @@ interface IConfig {
     TEMPLATE_CMD_DELIMITER: string | [string, string] | undefined,
     ALLOWED_DOC_EXTENSION: string[],
     ALLOWED_IMG_EXTENSION: string[]
-
 }
 
 export const config: IConfig = {
