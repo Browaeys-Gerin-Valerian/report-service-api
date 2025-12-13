@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { templateController } from "../controllers/template.controller";
-import { upload } from "../middlewares/multer/upload.middleware";
-import { validateRequest } from "../middlewares/zod/validateRequest.middleware";
-import { createTemplateSchema, deleteTemplateSchema, getOneTemplateSchema, updateTemplateSchema } from "../middlewares/zod/schemas/template.schema";
+import { templateController } from "@controllers/template.controller";
+import { upload } from "@middlewares/multer/upload.middleware";
+import { validateRequest } from "@middlewares/zod/validateRequest.middleware";
+import { createTemplateSchema, deleteTemplateSchema, getOneTemplateSchema, updateTemplateSchema } from "@middlewares/zod/schemas/template.schema";
 
 
 const router = Router();

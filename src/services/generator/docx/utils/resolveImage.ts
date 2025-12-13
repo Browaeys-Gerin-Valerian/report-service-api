@@ -1,5 +1,5 @@
-import { DataImage, DataSchema, EnrichedDataImage } from "../../../../types/entity";
-import { ValidationError } from "../../../../utils/functions.utils";
+import { DataImage, DataSchema, EnrichedDataImage } from "@custom_types/entity";
+import { ValidationError } from "@utils/functions.utils";
 
 
 /**

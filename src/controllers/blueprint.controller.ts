@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { blueprintDbService } from "../services/db/blueprint.db.service";
-import { ValidatedRequest } from "../middlewares/zod/validateRequest.middleware";
+import { blueprintDbService } from "@services/db/blueprint.db.service";
+import { ValidatedRequest } from "@middlewares/zod/validateRequest.middleware";
 
 
 export const blueprintController = {

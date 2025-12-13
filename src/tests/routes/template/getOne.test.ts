@@ -1,6 +1,6 @@
 import request from "supertest";
-import { app } from "../../setup";
-import templateModel from "../../../models/template.model";
+import { app } from "@tests/setup";
+import templateModel from "@models/template.model";
 
 
 

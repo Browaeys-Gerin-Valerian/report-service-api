@@ -1,10 +1,10 @@
 import fs from "fs";
 import mongoose, { Schema } from "mongoose";
-import { DocumentType } from "../types";
-import { ITemplate } from "../types/entity"
-import { config } from "../config";
+import { DocumentType } from "@custom_types/index";
+import { ITemplate } from "@custom_types/entity"
+import { config } from "@config/index";
 import path from "path";
-import { templateDbService } from "../services/db/template.db.service";
+import { templateDbService } from "@services/db/template.db.service";
 const { TEMPLATE_DIR } = config;
 
 const TemplateSchema = new Schema<ITemplate>(

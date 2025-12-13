@@ -7,9 +7,9 @@ import {
     DataStructureSchema,
     DataStructureCollection,
     DataStructureObject,
-} from "../../../types/entity";
-import { FieldType } from "../../../types";
-import { isObject, ValidationError } from "../../../utils/functions.utils";
+} from "@custom_types/entity";
+import { FieldType } from "@custom_types/index";
+import { isObject, ValidationError } from "@utils/functions.utils";
 
 export function validateData(
     data_structure: DataStructureSchema,

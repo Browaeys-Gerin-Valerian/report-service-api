@@ -1,6 +1,6 @@
-import { DataSchema, DataStructureSchema, } from "../../types/entity";
-import { DocumentType, OutputFormat } from "../../types";
-import { ITemplate } from "../../types/entity"
+import { DataSchema, DataStructureSchema, } from "@custom_types/entity";
+import { DocumentType, OutputFormat } from "@custom_types/index";
+import { ITemplate } from "@custom_types/entity";
 import { docxGenerator } from "./docx/docxGenerator.service";
 import { pdfGenerator } from "./pdf/pdfGenerator.service";
 import { ValidationError } from "../../utils/functions.utils";

@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
-import { config } from "../../../config";
-import { ITemplate } from "../../../types/entity";
-import { templateDbService } from "../../db/template.db.service";
-import { detectFormat } from "../../../utils/functions.utils";
+import { config } from "@config/index";
+import { ITemplate } from "@custom_types/entity";
+import { templateDbService } from "@services/db/template.db.service";
+import { detectFormat } from "@utils/functions.utils";
 const { TEMPLATE_DIR } = config;
 
 if (!fs.existsSync(TEMPLATE_DIR)) {

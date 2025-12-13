@@ -1,10 +1,10 @@
 import request from "supertest";
 import fs from "fs";
 import path from "path";
-import { app, TEMPLATE_DIR } from "../../setup";
-import BlueprintModel from "../../../models/blueprint.model";
-import templateModel from "../../../models/template.model";
-import { MOCKED_DATA_STRUCTURE } from "../../mock/data/dataStrucutre";
+import { app, TEMPLATE_DIR } from "@tests/setup";
+import BlueprintModel from "@models/blueprint.model";
+import templateModel from "@models/template.model";
+import { MOCKED_DATA_STRUCTURE } from "@tests/mock/data/dataStrucutre";
 
 describe("DELETE /api/blueprints/:id", () => {
 

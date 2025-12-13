@@ -1,7 +1,7 @@
 import { Router } from "express";
-import blueprintRouter from './blueprint.routes';
-import templateRouter from './template.routes';
-import generateRouter from './generate.routes';
+import blueprintRouter from '@router/blueprint.routes';
+import templateRouter from '@router/template.routes';
+import generateRouter from '@router/generate.routes';
 const router = Router();
 
 router.use(blueprintRouter);

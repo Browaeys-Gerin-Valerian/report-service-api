@@ -1,7 +1,8 @@
+import "tsconfig-paths/register";
 import "dotenv/config";
 import { createApp } from "./app";
-import { connectDb } from "./config/db/db.connect";
-import { config } from "./config";
+import { connectDb } from "@config/db/db.connect";
+import { config } from "@config/index";
 const { PORT, NODE_ENV } = config;
 
 async function main() {

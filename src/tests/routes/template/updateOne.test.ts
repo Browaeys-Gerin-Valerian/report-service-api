@@ -1,10 +1,10 @@
 import request from "supertest";
 import fs from "fs";
 import path from "path";
-import templateModel from "../../../models/template.model";
-import { app, TEMPLATE_DIR } from "../../setup";
-import BlueprintModel from "../../../models/blueprint.model";
-import { MOCKED_DATA_STRUCTURE } from "../../mock/data/dataStrucutre";
+import templateModel from "@models/template.model";
+import { app, TEMPLATE_DIR } from "@tests/setup";
+import BlueprintModel from "@models/blueprint.model";
+import { MOCKED_DATA_STRUCTURE } from "@tests/mock/data/dataStrucutre";
 
 describe("PATCH /api/templates/:id", () => {
     let blueprintId: string;

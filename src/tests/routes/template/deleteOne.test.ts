@@ -1,8 +1,8 @@
 import request from "supertest";
 import fs from "fs";
 import path from "path";
-import templateModel from "../../../models/template.model";
-import { app, TEMPLATE_DIR } from "../../setup";
+import templateModel from "@models/template.model";
+import { app, TEMPLATE_DIR } from "@tests/setup";
 
 describe("DELETE /api/templates/:id", () => {
 
