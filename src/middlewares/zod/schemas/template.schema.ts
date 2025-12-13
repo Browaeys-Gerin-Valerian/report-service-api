@@ -31,7 +31,6 @@ export const updateTemplateSchema = z.object({
             language: z.string().optional(),
         }).strict().optional()
     }).optional(),
-
     file: updateFileSchema.optional(),
 });
 
