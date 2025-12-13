@@ -169,15 +169,35 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
+                "required": ["data", "file"],
                 "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "JSON string containing template metadata (see CreateTemplateBody schema)",
+                    "example": "{\"blueprint_id\":\"507f1f77bcf86cd799439011\",\"name\":\"My Template\",\"language\":\"EN\",\"default\":false}",
+                    "x-schema-ref": "#/components/schemas/CreateTemplateBody"
+                  },
                   "file": {
                     "type": "string",
                     "format": "binary",
-                    "description": "Template file to upload"
-                  },
-                  "data": {
-                    "type": "string",
-                    "description": "Stringified JSON metadata matching CreateTemplateBody"
+                    "description": "Template file (DOCX or PDF)"
+                  }
+                }
+              },
+              "encoding": {
+                "data": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf"
+                }
+              },
+              "examples": {
+                "createTemplate": {
+                  "summary": "Create a new template",
+                  "value": {
+                    "data": "{\"blueprint_id\":\"507f1f77bcf86cd799439011\",\"name\":\"Annual Report Template\",\"language\":\"EN\",\"default\":true}",
+                    "file": "(binary)"
                   }
                 }
               }
@@ -238,14 +258,45 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "JSON string containing template metadata to update (see UpdateTemplateBody schema). All fields are optional.",
+                    "example": "{\"name\":\"Updated Template\",\"language\":\"FR\",\"default\":true}",
+                    "x-schema-ref": "#/components/schemas/UpdateTemplateBody"
+                  },
                   "file": {
                     "type": "string",
                     "format": "binary",
-                    "description": "Updated file (optional)"
-                  },
-                  "data": {
-                    "type": "string",
-                    "description": "Stringified JSON metadata matching UpdateTemplateBody"
+                    "description": "Updated template file (optional)"
+                  }
+                }
+              },
+              "encoding": {
+                "data": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf"
+                }
+              },
+              "examples": {
+                "updateDataOnly": {
+                  "summary": "Update only metadata",
+                  "value": {
+                    "data": "{\"name\":\"Updated Template Name\",\"default\":true}"
+                  }
+                },
+                "updateFileOnly": {
+                  "summary": "Update only file",
+                  "value": {
+                    "file": "(binary)"
+                  }
+                },
+                "updateBoth": {
+                  "summary": "Update both metadata and file",
+                  "value": {
+                    "data": "{\"name\":\"New Template\",\"language\":\"ES\"}",
+                    "file": "(binary)"
                   }
                 }
               }
@@ -284,6 +335,137 @@
           "500": { "description": "Internal server error" }
         }
       }
+    },
+
+    "/generate": {
+      "post": {
+        "operationId": "generateDocument",
+        "summary": "Generate a document from template",
+        "description": "Generate a document (DOCX or PDF) by filling a template with provided data and optional images.",
+        "tags": ["Generate"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["data"],
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "JSON string containing generation parameters (see GenerateRequest schema). The data_to_insert must match the blueprint's data_structure.",
+                    "example": "{\"template_id\":\"507f1f77bcf86cd799439011\",\"blueprint_id\":\"507f191e810c19729de860ea\",\"output_format\":\"docx\",\"data_to_insert\":{\"firstname\":\"John\",\"lastname\":\"Doe\"}}",
+                    "x-schema-ref": "#/components/schemas/GenerateRequest"
+                  },
+                  "files": {
+                    "type": "array",
+                    "description": "Optional image files referenced in data_to_insert. Each filename must match an image reference in data_to_insert.",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "data": {
+                  "contentType": "application/json"
+                },
+                "files": {
+                  "contentType": "image/jpeg, image/png, image/gif, image/svg+xml"
+                }
+              },
+              "examples": {
+                "simpleText": {
+                  "summary": "Simple text data (no images)",
+                  "value": {
+                    "data": "{\"template_id\":\"507f1f77bcf86cd799439011\",\"blueprint_id\":\"507f191e810c19729de860ea\",\"output_format\":\"docx\",\"data_to_insert\":{\"firstname\":\"John\",\"lastname\":\"Doe\",\"email\":\"john@example.com\"}}"
+                  }
+                },
+                "withObjects": {
+                  "summary": "Nested object data",
+                  "value": {
+                    "data": "{\"template_id\":\"507f1f77bcf86cd799439011\",\"blueprint_id\":\"507f191e810c19729de860ea\",\"output_format\":\"docx\",\"data_to_insert\":{\"user\":{\"fields\":{\"firstname\":\"Jane\",\"lastname\":\"Smith\",\"address\":{\"fields\":{\"city\":\"Paris\",\"zip\":\"75001\"}}}}}}"
+                  }
+                },
+                "withImages": {
+                  "summary": "Data with images",
+                  "value": {
+                    "data": "{\"template_id\":\"507f1f77bcf86cd799439011\",\"blueprint_id\":\"507f191e810c19729de860ea\",\"output_format\":\"pdf\",\"data_to_insert\":{\"author\":{\"fields\":{\"name\":\"John Doe\",\"photo\":{\"id\":\"img-1\",\"filename\":\"author.jpg\"}}}}}",
+                    "files": ["(binary image: author.jpg)"]
+                  }
+                },
+                "withCollections": {
+                  "summary": "Data with collections/arrays",
+                  "value": {
+                    "data": "{\"template_id\":\"507f1f77bcf86cd799439011\",\"blueprint_id\":\"507f191e810c19729de860ea\",\"output_format\":\"docx\",\"data_to_insert\":{\"skills\":{\"items\":[{\"fields\":{\"name\":\"TypeScript\",\"level\":\"Advanced\"}},{\"fields\":{\"name\":\"Node.js\",\"level\":\"Expert\"}}]}}}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Generated document",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ZodValidationError" }
+              }
+            }
+          },
+          "404": {
+            "description": "Blueprint or Template not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Blueprint not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Generation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Failed to generate template"
+                    },
+                    "details": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
 
@@ -317,9 +499,7 @@
           "name": { "type": "string" },
           "description": { "type": "string" },
           "data_structure": {
-            "type": "object",
-            "description": "Dynamic JSON structure mapping: key → type",
-            "additionalProperties": true
+            "$ref": "#/components/schemas/DataStructure"
           },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
@@ -333,9 +513,7 @@
           "name": { "type": "string" },
           "description": { "type": "string" },
           "data_structure": {
-            "type": "object",
-            "description": "Dynamic structure describing expected fields",
-            "additionalProperties": true
+            "$ref": "#/components/schemas/DataStructure"
           }
         }
       },
@@ -346,8 +524,7 @@
           "name": { "type": "string" },
           "description": { "type": "string" },
           "data_structure": {
-            "type": "object",
-            "additionalProperties": true
+            "$ref": "#/components/schemas/DataStructure"
           }
         }
       },
@@ -395,6 +572,225 @@
           "name": { "type": "string" },
           "default": { "type": "boolean" },
           "language": { "type": "string" }
+        }
+      },
+
+      "GenerateRequest": {
+        "type": "object",
+        "required": [
+          "template_id",
+          "blueprint_id",
+          "output_format",
+          "data_to_insert"
+        ],
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "description": "ID of the template to use"
+          },
+          "blueprint_id": {
+            "type": "string",
+            "description": "ID of the blueprint that defines the data structure"
+          },
+          "output_format": {
+            "type": "string",
+            "enum": ["docx", "pdf"],
+            "description": "Desired output format"
+          },
+          "data_to_insert": {
+            "$ref": "#/components/schemas/DataToInsert"
+          }
+        }
+      },
+
+      "DataStructureField": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["type", "required"],
+            "properties": {
+              "type": { "type": "string", "enum": ["text"] },
+              "required": { "type": "boolean" }
+            },
+            "description": "Text field definition"
+          },
+          {
+            "type": "object",
+            "required": ["type", "required", "fields"],
+            "properties": {
+              "type": { "type": "string", "enum": ["object"] },
+              "required": { "type": "boolean" },
+              "fields": {
+                "type": "object",
+                "description": "Nested field definitions",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/DataStructureField"
+                }
+              }
+            },
+            "description": "Nested object field definition"
+          },
+          {
+            "type": "object",
+            "required": ["type", "required", "items"],
+            "properties": {
+              "type": { "type": "string", "enum": ["collection"] },
+              "required": { "type": "boolean" },
+              "items": {
+                "type": "array",
+                "description": "Schema for each item in the collection",
+                "items": { "$ref": "#/components/schemas/DataStructureField" }
+              }
+            },
+            "description": "Collection/array field definition"
+          },
+          {
+            "type": "object",
+            "required": ["type", "required"],
+            "properties": {
+              "type": { "type": "string", "enum": ["image"] },
+              "required": { "type": "boolean" }
+            },
+            "description": "Image field definition"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+
+      "DataStructure": {
+        "type": "object",
+        "description": "Defines the structure of data that can be inserted into a template. Each key maps to a field definition.",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/DataStructureField"
+        },
+        "example": {
+          "firstname": { "type": "text", "required": true },
+          "lastname": { "type": "text", "required": true },
+          "email": { "type": "text", "required": false },
+          "user": {
+            "type": "object",
+            "required": true,
+            "fields": {
+              "address": {
+                "type": "object",
+                "required": false,
+                "fields": {
+                  "city": { "type": "text", "required": true },
+                  "zip": { "type": "text", "required": false }
+                }
+              }
+            }
+          },
+          "skills": {
+            "type": "collection",
+            "required": true,
+            "items": [
+              {
+                "type": "object",
+                "required": true,
+                "fields": {
+                  "name": { "type": "text", "required": true },
+                  "level": { "type": "text", "required": true }
+                }
+              }
+            ]
+          },
+          "avatar": { "type": "image", "required": false }
+        }
+      },
+
+      "DataValue": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Text value"
+          },
+          {
+            "type": "object",
+            "required": ["fields"],
+            "properties": {
+              "fields": {
+                "type": "object",
+                "description": "Nested object fields",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/DataValue"
+                }
+              }
+            },
+            "description": "Object value with nested fields"
+          },
+          {
+            "type": "object",
+            "required": ["items"],
+            "properties": {
+              "items": {
+                "type": "array",
+                "description": "Array of items",
+                "items": { "$ref": "#/components/schemas/DataValue" }
+              }
+            },
+            "description": "Collection value with items array"
+          },
+          {
+            "type": "object",
+            "required": ["id", "filename"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier for the image"
+              },
+              "filename": {
+                "type": "string",
+                "description": "Filename of the uploaded image (must match a file in the files array)"
+              }
+            },
+            "description": "Image reference"
+          }
+        ]
+      },
+
+      "DataToInsert": {
+        "type": "object",
+        "description": "Data to fill into the template. Structure must match the blueprint's data_structure definition.",
+        "additionalProperties": { "$ref": "#/components/schemas/DataValue" },
+        "example": {
+          "firstname": "John",
+          "lastname": "Doe",
+          "email": "john@example.com",
+          "user": {
+            "fields": {
+              "firstname": "Jane",
+              "lastname": "Smith",
+              "address": {
+                "fields": {
+                  "city": "Paris",
+                  "zip": "75001"
+                }
+              }
+            }
+          },
+          "skills": {
+            "items": [
+              {
+                "fields": {
+                  "name": "TypeScript",
+                  "level": "Advanced"
+                }
+              },
+              {
+                "fields": {
+                  "name": "Node.js",
+                  "level": "Expert"
+                }
+              }
+            ]
+          },
+          "avatar": {
+            "id": "img-1",
+            "filename": "avatar.jpg"
+          }
         }
       },
 
