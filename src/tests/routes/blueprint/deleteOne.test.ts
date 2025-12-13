@@ -2,16 +2,17 @@ import request from "supertest";
 import fs from "fs";
 import path from "path";
 import { app, TEMPLATE_DIR } from "../../setup";
-import blueprintModel from "../../../models/blueprint.model";
+import BlueprintModel from "../../../models/blueprint.model";
 import templateModel from "../../../models/template.model";
+import { MOCKED_DATA_STRUCTURE } from "../../mock/data/dataStrucutre";
 
 describe("DELETE /api/blueprints/:id", () => {
 
     it("should delete blueprint, templates and template files", async () => {
-        const blueprint = await blueprintModel.create({
+        const blueprint = await BlueprintModel.create({
             name: "Cascade BP",
             description: "",
-            data_structure: { x: 1 },
+            data_structure: MOCKED_DATA_STRUCTURE.text,
         });
 
         const filename = `template-${Date.now()}.docx`;
@@ -30,7 +31,7 @@ describe("DELETE /api/blueprints/:id", () => {
         const res = await request(app).delete(`/api/blueprints/${blueprint._id}`);
         expect(res.status).toBe(204);
 
-        const bp = await blueprintModel.findById(blueprint._id);
+        const bp = await BlueprintModel.findById(blueprint._id);
         expect(bp).toBeNull();
 
         const tpl = await templateModel.findOne({ blueprint_id: blueprint._id });

@@ -1,14 +1,15 @@
 import request from "supertest";
 import { app } from "../../setup";
-import blueprintModel from "../../../models/blueprint.model";
+import BlueprintModel from "../../../models/blueprint.model";
+import { MOCKED_DATA_STRUCTURE } from "../../mock/data/dataStrucutre";
 
 describe("PATCH /api/blueprints/:id", () => {
 
     it("should update blueprint fields", async () => {
-        const doc = await blueprintModel.create({
+        const doc = await BlueprintModel.create({
             name: "Old Name",
             description: "Old description",
-            data_structure: { a: 1 },
+            data_structure: MOCKED_DATA_STRUCTURE.text,
         });
 
 
@@ -18,7 +19,7 @@ describe("PATCH /api/blueprints/:id", () => {
             .send({
                 name: "Updated Name",
                 description: "New description",
-                data_structure: JSON.stringify({ new: true })
+                data_structure: JSON.stringify(MOCKED_DATA_STRUCTURE.complex)
             });
 
         expect(res.status).toBe(200);
@@ -26,10 +27,10 @@ describe("PATCH /api/blueprints/:id", () => {
             _id: doc._id.toString(),
             name: "Updated Name",
             description: "New description",
-            data_structure: { new: true },
+            data_structure: MOCKED_DATA_STRUCTURE.complex,
         });
 
-        const updated = await blueprintModel.findById(doc._id);
+        const updated = await BlueprintModel.findById(doc._id);
         expect(updated?.name).toBe("Updated Name");
         expect(updated?.description).toBe("New description");
     });
