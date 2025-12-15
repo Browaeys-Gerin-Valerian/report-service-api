@@ -70,26 +70,26 @@ export function validateData(
             case "collection":
                 //Casting for typescript
 
-                const dataStructureList = fieldStructure as DataStructureCollection
-                const dataList = fieldValue as DataCollection;
+                const dataStructureCollection = fieldStructure as DataStructureCollection
+                const dataCollection = fieldValue as DataCollection;
 
-                if (!Array.isArray(dataStructureList.items)) {
-                    addError(`Schema for list ${currentPath} is missing 'items'`);
+                if (!Array.isArray(dataStructureCollection.items)) {
+                    addError(`Schema for collection ${currentPath} is missing 'items'`);
                     break;
                 }
 
-                if (!Array.isArray(dataList.items)) {
+                if (!Array.isArray(dataCollection.items)) {
                     addError(`Value for ${currentPath} is missing 'items'`);
                     break;
                 }
 
-                if (dataList.items.length === 0) {
-                    addError(`List ${currentPath}.items should not be empty`);
+                if (dataCollection.items.length === 0) {
+                    addError(`Collection ${currentPath}.items should not be empty`);
                     break;
                 }
 
-                dataStructureList.items.forEach((itemStructure, i) => {
-                    const itemValue = dataList.items[i]
+                dataStructureCollection.items.forEach((itemStructure, i) => {
+                    const itemValue = dataCollection.items[i]
                     validateData(
                         { items: itemStructure },
                         { items: itemValue },

@@ -20,8 +20,7 @@ export async function docxGenerator(
 * - Dispatches validation based on field type:
 *   - "text": ensures value is a string.
 *   - "object": recursively validates nested fields.
-*   - "list": validates each item against its schema.
-*   - "table": validates each row and column against column schema.
+*   - "collection": validates each item against its schema.
 *   - "image": ensures that filename and associated file exist
 * 
 * Throws `ValidationError` if any required field is missing or if a value does not match its schema.
