@@ -1,7 +1,7 @@
 import { templateDbService } from "@services/db/template.db.service";
 import { generateFileName, handleTemplateNameAndFileChange, handleTemplateFileUpdateOnly, handleTemplateNameUpdateOnly, handleWriteTemplateFile } from "./utils/templates.utils";
 import { ITemplate } from "@custom_types/entity";
-import { detectFormat, isNotEmptyObject } from "@utils/functions.utils";
+import { detectFormatFromFile, isNotEmptyObject } from "@utils/functions.utils";
 
 export const templateFilesystemService = {
     createOne,
@@ -11,7 +11,7 @@ export const templateFilesystemService = {
 
 export async function createOne(payload: ITemplate, file: Express.Multer.File) {
     const filename = generateFileName(payload, file);
-    const format = detectFormat(file);
+    const format = detectFormatFromFile(file);
     const doc = await templateDbService.createOne({ ...payload, format, filename });
 
     // if doc creation failed for some reason, file should not be written

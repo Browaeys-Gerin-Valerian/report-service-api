@@ -42,7 +42,7 @@ export function detectContentType(outputFormat: OutputFormat): string {
 
 
 
-export function detectFormat(file: Express.Multer.File): string {
+export function detectFormatFromFile(file: Express.Multer.File): string {
     const ext = file.originalname.split(".").pop()?.toLowerCase();
     if (!ext) throw new Error("Unable to detect file format");
 
@@ -54,6 +54,12 @@ export function detectFormat(file: Express.Multer.File): string {
         default:
             throw new Error(`Unsupported format: ${ext}`);
     }
+}
+
+export function detectFormatFromFileName(filename: string) {
+    const ext = filename.split(".").pop()?.toLowerCase();
+    if (!ext) throw new Error("Unable to detect file format");
+    return ext
 }
 
 

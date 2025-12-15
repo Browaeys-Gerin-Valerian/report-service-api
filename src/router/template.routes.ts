@@ -9,6 +9,7 @@ const router = Router();
 
 router.get("/templates", templateController.getAll);
 router.get("/templates/:id", validateRequest(getOneTemplateSchema), templateController.getOneById);
+router.get("/templates/:id/analyze", validateRequest(getOneTemplateSchema), templateController.analyze);
 router.post("/templates", upload.single("file"), validateRequest(createTemplateSchema), templateController.createOne);
 router.patch("/templates/:id", upload.single("file"), validateRequest(updateTemplateSchema), templateController.updateOne);
 router.delete("/templates/:id", validateRequest(deleteTemplateSchema), templateController.deleteOne);

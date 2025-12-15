@@ -3,6 +3,8 @@ import { templateDbService } from "@services/db/template.db.service";
 import { templateFilesystemService } from "@services/filesystem/template.filesytem.service";
 import { ValidatedRequest } from "@middlewares/zod/validateRequest.middleware";
 import { blueprintDbService } from "@services/db/blueprint.db.service";
+import { analyzeService } from "@services/analyzer/analyzer.service";
+import { mapToObject } from "@utils/functions.utils";
 
 export const templateController = {
     getAll,
@@ -10,6 +12,7 @@ export const templateController = {
     createOne,
     updateOne,
     deleteOne,
+    analyze,
 };
 
 export async function getAll(req: Request, res: Response) {
@@ -70,5 +73,29 @@ export async function deleteOne(req: Request, res: Response) {
         res.status(204).send();
     } catch (err) {
         res.status(500).json({ error: "Failed to delete template", details: err });
+    }
+}
+
+export async function analyze(req: Request, res: Response) {
+    try {
+        const { params } = (req as ValidatedRequest).validated;
+        const { id } = params;
+
+        const template = await templateDbService.getOneById(id);
+        if (!template) return res.status(404).json({ error: "Template not found" });
+
+        const blueprint = await blueprintDbService.getOneById(template.blueprint_id.toString());
+        if (!blueprint) return res.status(404).json({ error: "Blueprint not found" });
+
+        const analysis = await analyzeService.analyze(
+            {
+                filename: template.filename,
+                data_structure: mapToObject(blueprint.data_structure)
+            }
+        );
+
+        res.json(analysis);
+    } catch (err) {
+        res.status(500).json({ error: "Failed to analyze placeholders", details: err });
     }
 }

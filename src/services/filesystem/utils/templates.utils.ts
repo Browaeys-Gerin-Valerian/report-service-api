@@ -3,7 +3,7 @@ import path from "path";
 import { config } from "@config/index";
 import { ITemplate } from "@custom_types/entity";
 import { templateDbService } from "@services/db/template.db.service";
-import { detectFormat } from "@utils/functions.utils";
+import { detectFormatFromFile } from "@utils/functions.utils";
 const { TEMPLATE_DIR } = config;
 
 if (!fs.existsSync(TEMPLATE_DIR)) {
@@ -12,7 +12,7 @@ if (!fs.existsSync(TEMPLATE_DIR)) {
 
 export function generateFileName(template: Partial<ITemplate>, file: Express.Multer.File): string {
     const { name } = template;
-    return `${name}-${Date.now()}.${detectFormat(file)}`;
+    return `${name}-${Date.now()}.${detectFormatFromFile(file)}`;
 }
 
 export async function handleWriteTemplateFile(doc: ITemplate, file: Express.Multer.File): Promise<ITemplate> {
@@ -53,7 +53,7 @@ export async function handleTemplateNameUpdateOnly(template: ITemplate, id: stri
 // Helper function to handle file update only scenario on template update
 export async function handleTemplateFileUpdateOnly(template: ITemplate, id: string, file: Express.Multer.File) {
     const filename = generateFileName(template, file);
-    const format = detectFormat(file);
+    const format = detectFormatFromFile(file);
 
     await HandleDeleteTemplateFile(template);
 
@@ -73,7 +73,7 @@ export async function handleTemplateNameAndFileChange(
     file: Express.Multer.File
 ) {
     const filename = generateFileName(payload, file);
-    const format = detectFormat(file);
+    const format = detectFormatFromFile(file);
 
     await HandleDeleteTemplateFile(template);
 

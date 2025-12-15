@@ -248,7 +248,7 @@ An object must define its children and Each child must also declare a type and r
 A collection must define its expected items:
 
 (IMPORTANT: the "collection" type is useful when you need to generate between 0 and N instances of the same repeating structure. It is NOT intended for heterogeneous
-content or mixed element types. Every item in a list must conform to the same schema so the template engine can iterate safely and predictably. If you need differents
+content or mixed element types. Every item in a collection must conform to the same schema so the template engine can iterate safely and predictably. If you need differents
 type the text or object strucutre is more appropriated)
 
 ```json
