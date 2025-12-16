@@ -38,4 +38,10 @@ export const deleteTemplateSchema = z.object({
     params: z.object({
         id: z.string().min(1, "Template ID is required"),
     }),
+});
+
+export const analyzeTemplateSchema = z.object({
+    params: z.object({
+        id: z.string().min(1, "Template ID is required"),
+    }),
 }); 

@@ -337,6 +337,77 @@
       }
     },
 
+    "/templates/{id}/analyze": {
+      "get": {
+        "operationId": "analyzeTemplate",
+        "summary": "Analyze template placeholders",
+        "description": "Analyzes the template to identify which data structure fields are present, absent, or don't exist. Returns a comparison between template placeholders and the blueprint's data structure.",
+        "tags": ["Templates"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "200": {
+            "description": "Analysis results",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AnalysisResult" },
+                "example": {
+                  "placeholders": [
+                    {
+                      "field": "person.fields.name",
+                      "status": "present"
+                    },
+                    {
+                      "field": "person.fields.email",
+                      "status": "present"
+                    },
+                    {
+                      "field": "person.fields.phone",
+                      "status": "absent"
+                    },
+                    {
+                      "field": "departments",
+                      "status": "present"
+                    },
+                    {
+                      "field": "departments.fields.employees",
+                      "status": "present"
+                    },
+                    {
+                      "field": "departments.fields.employees.fields.fullname",
+                      "status": "present"
+                    },
+                    {
+                      "field": "unknown_placeholder",
+                      "status": "does_not_exist"
+                    }
+                  ],
+                  "summary": {
+                    "present": 5,
+                    "absent": 1,
+                    "does_not_exist": 1
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Template or Blueprint not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+
     "/generate": {
       "post": {
         "operationId": "generateDocument",
@@ -463,6 +534,73 @@
                 }
               }
             }
+          }
+        }
+      },
+      "PlaceholderAnalysis": {
+        "type": "object",
+        "required": ["field", "status"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Field path (e.g., 'person.fields.name', 'locations')",
+            "example": "person.fields.name"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["present", "absent", "does_not_exist"],
+            "description": "present: field exists in both template and data structure | absent: field exists in data structure but not in template | does_not_exist: field exists in template but not in data structure"
+          }
+        }
+      },
+
+      "AnalysisResult": {
+        "type": "object",
+        "required": ["placeholders", "summary"],
+        "properties": {
+          "placeholders": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PlaceholderAnalysis" },
+            "description": "Detailed analysis of each field"
+          },
+          "summary": {
+            "type": "object",
+            "required": ["present", "absent", "does_not_exist"],
+            "properties": {
+              "present": {
+                "type": "integer",
+                "description": "Number of fields present in both template and data structure"
+              },
+              "absent": {
+                "type": "integer",
+                "description": "Number of fields in data structure but not in template"
+              },
+              "does_not_exist": {
+                "type": "integer",
+                "description": "Number of fields in template but not in data structure"
+              }
+            }
+          }
+        },
+        "example": {
+          "placeholders": [
+            {
+              "field": "person.fields.name",
+              "status": "present"
+            },
+            {
+              "field": "person.fields.email",
+              "status": "absent"
+            },
+            {
+              "field": "unknown_field",
+              "status": "does_not_exist"
+            }
+          ],
+          "summary": {
+            "present": 1,
+            "absent": 1,
+            "does_not_exist": 1
           }
         }
       }
