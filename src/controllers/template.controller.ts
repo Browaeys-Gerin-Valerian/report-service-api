@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { templateDbService } from "@services/db/template.db.service";
-import { templateFilesystemService } from "@services/filesystem/template.filesytem.service";
+import { templateDbService } from "@services/db/template.service";
+import { templateFilesystemService } from "@services/filesystem/filesystem.service";
 import { ValidatedRequest } from "@middlewares/zod/validateRequest.middleware";
-import { blueprintDbService } from "@services/db/blueprint.db.service";
+import { blueprintDbService } from "@services/db/blueprint.service";
 import { analyzeService } from "@services/analyzer/analyzer.service";
 import { mapToObject } from "@utils/functions.utils";
 

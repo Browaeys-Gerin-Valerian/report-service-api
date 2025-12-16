@@ -4,7 +4,7 @@ import { DocumentType } from "@custom_types/index";
 import { ITemplate } from "@custom_types/entity"
 import { config } from "@config/index";
 import path from "path";
-import { templateDbService } from "@services/db/template.db.service";
+import { templateDbService } from "@services/db/template.service";
 const { TEMPLATE_DIR } = config;
 
 const TemplateSchema = new Schema<ITemplate>(

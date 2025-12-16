@@ -1,5 +1,5 @@
-import { templateDbService } from "@services/db/template.db.service";
-import { generateFileName, handleTemplateNameAndFileChange, handleTemplateFileUpdateOnly, handleTemplateNameUpdateOnly, handleWriteTemplateFile } from "./utils/templates.utils";
+import { templateDbService } from "@services/db/template.service";
+import { generateFileName, handleTemplateNameAndFileChange, handleTemplateFileUpdateOnly, handleTemplateNameUpdateOnly, handleWriteTemplateFile } from "./utils/filesystem.utils";
 import { ITemplate } from "@custom_types/entity";
 import { detectFormatFromFile, isNotEmptyObject } from "@utils/functions.utils";
 
