@@ -3,7 +3,7 @@ import { ValidatedRequest } from "@middlewares/zod/validateRequest.middleware";
 import { documentGeneratorService } from "@services/generator/generator.service"
 import { blueprintDbService } from "@services/db/blueprint.db.service";
 import { templateDbService } from "@services/db/template.db.service";
-import { detectContentType, mapToObject } from "@utils/functions.utils";
+import { detectContentType, mapToObject, ValidationError } from "@utils/functions.utils";
 
 export const generatorController = {
     generate,
@@ -37,6 +37,17 @@ export async function generate(req: Request, res: Response) {
         res.send(buffer);
 
     } catch (err) {
-        res.status(500).json({ error: "Failed to generate template", details: err });
+        if (err instanceof ValidationError) {
+            return res.status(400).json({
+                error: err.message,
+                details: err.details
+            });
+        }
+
+        const errorMessage = err instanceof Error ? err.message : "Unknown error";
+        res.status(500).json({
+            error: "Failed to generate document",
+            details: errorMessage
+        });
     }
 }
