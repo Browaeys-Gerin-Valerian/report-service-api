@@ -1,76 +1,54 @@
 
-import mammoth from "mammoth";
-import puppeteer, { PaperFormat } from "puppeteer";
+import { exec } from "child_process";
+import { promisify } from "util";
+import { writeFile, unlink } from "fs/promises";
+import path from "path";
+import { randomUUID } from "crypto";
 
-export interface IPDFOptions {
-    format: PaperFormat;
-    printBackground: boolean;
-    margin: {
-        top: string;
-        right: string;
-        bottom: string;
-        left: string;
-    };
-}
+const execAsync = promisify(exec);
 
-const PDF_OPTIONS: IPDFOptions = {
-    format: 'A4',
-    printBackground: true,
-    margin: {
-        top: '10mm',
-        right: '10mm',
-        bottom: '10mm',
-        left: '10mm'
-    }
-};
-
-
+/**
+ * Converts a DOCX buffer to PDF using LibreOffice
+ * Preserves all formatting, colors, styles, and images
+ * 
+ * Requirements:
+ * - Local dev: Install LibreOffice (https://www.libreoffice.org/download)
+ * - Docker: Add to Dockerfile (see instructions below)
+ * - Production: Ensure LibreOffice is installed on server
+ */
 export async function generate(
     docxBuffer: Uint8Array<ArrayBufferLike>
 ) {
-    // Step 1: Convert DOCX to HTML (ensure buffer is Buffer type)
-    const { value: html } = await mammoth.convertToHtml({
-        buffer: Buffer.from(docxBuffer)
-    });
-
-    // Step 2: Convert HTML to PDF using puppeteer
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    const tempDir = path.join(process.cwd(), 'temp');
+    const tempId = randomUUID();
+    const inputPath = path.join(tempDir, `${tempId}.docx`);
+    const outputPath = path.join(tempDir, `${tempId}.pdf`);
 
     try {
-        const page = await browser.newPage();
+        // Create temp directory if it doesn't exist
+        await execAsync(`mkdir -p "${tempDir}"`).catch(() => { });
 
-        // Set HTML content with proper styling
-        await page.setContent(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        margin: 40px;
-                        line-height: 1.6;
-                    }
-                    img {
-                        max-width: 100%;
-                        height: auto;
-                    }
-                </style>
-            </head>
-            <body>
-                ${html}
-            </body>
-            </html>
-        `, { waitUntil: 'networkidle0' });
+        // Write DOCX buffer to temporary file
+        await writeFile(inputPath, Buffer.from(docxBuffer));
 
-        // Generate PDF
-        const pdfBuffer = await page.pdf(PDF_OPTIONS);
+        // Convert DOCX to PDF using LibreOffice
+        // --headless: Run without GUI
+        // --convert-to pdf: Output format
+        // --outdir: Output directory
+        const command = process.platform === 'win32'
+            ? `"C:\\Program Files\\LibreOffice\\program\\soffice.exe" --headless --convert-to pdf --outdir "${tempDir}" "${inputPath}"`
+            : `libreoffice --headless --convert-to pdf --outdir "${tempDir}" "${inputPath}"`;
+
+        await execAsync(command, { timeout: 30000 });
+
+        // Read the generated PDF
+        const fs = await import('fs/promises');
+        const pdfBuffer = await fs.readFile(outputPath);
 
         return Buffer.from(pdfBuffer);
     } finally {
-        await browser.close();
+        // Cleanup temporary files
+        await unlink(inputPath).catch(() => { });
+        await unlink(outputPath).catch(() => { });
     }
 };
