@@ -269,7 +269,7 @@ export async function convertGifToPng(imageBuffer: Buffer): Promise<{ data: Buff
 // IMAGE INJECTION 
 // =============================================================================
 
-export async function injectImg(id: string, images: (DataImage | EnrichedDataImage)[], width: number, height: number, preset: ImagePreset, caption: string) {
+export async function injectImg(id: string, path: string, width: number, height: number, preset: ImagePreset, caption: string, images: (DataImage | EnrichedDataImage)[]) {
 
     if (!images) return null;
 
