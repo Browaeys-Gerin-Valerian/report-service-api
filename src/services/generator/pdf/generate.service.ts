@@ -1,7 +1,7 @@
 
 import { exec } from "child_process";
 import { promisify } from "util";
-import { writeFile, unlink } from "fs/promises";
+import { writeFile, unlink, mkdir } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
 
@@ -25,8 +25,8 @@ export async function generate(
     const outputPath = path.join(tempDir, `${tempId}.pdf`);
 
     try {
-        // Create temp directory if it doesn't exist
-        await execAsync(`mkdir -p "${tempDir}"`).catch(() => { });
+        // Create temp directory if it doesn't exist (cross-platform solution)
+        await mkdir(tempDir, { recursive: true }).catch(() => { });
 
         // Write DOCX buffer to temporary file
         await writeFile(inputPath, Buffer.from(docxBuffer));
