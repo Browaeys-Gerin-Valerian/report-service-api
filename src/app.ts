@@ -4,7 +4,7 @@ import morgan from "morgan";
 import cors from "cors";
 import { config } from "@config/index";
 import { router } from "@router/index.routes";
-import { getSwaggerDocument } from "@config/swagger/utils/getSwaggerDocument";
+import { getSwaggerDocument } from "@config/swagger/utils/swagger.utils";
 const { NODE_ENV, ALLOWED_ORIGINS } = config;
 
 

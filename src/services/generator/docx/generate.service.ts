@@ -3,8 +3,7 @@ import createReport from 'docx-templates';
 import { config } from "@config/index"
 import { DataSchema } from "@custom_types/entity";
 import { ImagePreset } from "@custom_types/index";
-import { injectImg } from "./utils/injectImg";
-import { resolveImages } from "./utils/resolveImage";
+import { injectImg, resolveImages } from "./utils/docxGenerator.utils";
 import { ValidationError } from "@utils/functions.utils";
 const { TEMPLATE_CMD_DELIMITER } = config
 
