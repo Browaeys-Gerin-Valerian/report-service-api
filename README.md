@@ -451,9 +451,24 @@ Data:
 ### 1.6 Image structure
 
 Every image must have a unique id across the document. Uploading multiple files with the same id will result in a validation error.
-Images can have optional width and height defined directly in the template call, if either is missing, a preset (small / medium / large) can be applied.
+Images are injected into templates using the `injectImg` function with the following parameters:
 
-Structure:
+**Function Signature:**
+
+```
+{IMAGE injectImg(id, fieldPath, width, height, preset, caption)}
+```
+
+**Parameters:**
+
+1. **id** (string, required): Unique identifier to match with uploaded files (runtime matching)
+2. **fieldPath** (string, required): Path in data structure for template analysis (e.g., 'signature', 'example_3.fields.mon_image_1')
+3. **width** (number, optional): Image width in pixels (use empty string "" to skip)
+4. **height** (number, optional): Image height in pixels (use empty string "" to skip)
+5. **preset** (string, optional): Size preset - "small" / "medium" / "large" (used when width/height are not specified)
+6. **caption** (string, optional): Image caption text
+
+**Data Structure:**
 
 ```json
 {
@@ -464,11 +479,31 @@ Structure:
   "profile_picture": {
     "type": "image",
     "required": false
+  },
+  "company_info": {
+    "type": "object",
+    "required": true,
+    "fields": {
+      "logo": {
+        "type": "image",
+        "required": true
+      }
+    }
+  },
+  "team_photos": {
+    "type": "collection",
+    "required": false,
+    "items": [
+      {
+        "type": "image",
+        "required": true
+      }
+    ]
   }
 }
 ```
 
-Data:
+**Data:**
 
 ```json
 {
@@ -479,15 +514,69 @@ Data:
   "profile_picture": {
     "id": "prof1",
     "filename": "profile.jpg"
+  },
+  "company_info": {
+    "fields": {
+      "logo": {
+        "id": "logo1",
+        "filename": "company_logo.png"
+      }
+    }
+  },
+  "team_photos": {
+    "items": [
+      {
+        "id": "team1",
+        "filename": "team_photo_1.jpg"
+      },
+      {
+        "id": "team2",
+        "filename": "team_photo_2.jpg"
+      }
+    ]
   }
 }
 ```
 
+**Template Examples:**
+
 ```text
-{IMAGE injectImg("sig1" "200", "150", "", "")}
-{IMAGE injectImg("sig1", "", "", "large", "")}
-{IMAGE injectImg("sig1", "", "", "medium", "Signature of John Doe")}
+1. Simple image with custom dimensions:
+{IMAGE injectImg('sig1', 'signature', '200', '150', '', '')}
+
+2. Image with preset size:
+{IMAGE injectImg('sig1', 'signature', '', '', 'large', '')}
+
+3. Image with preset and caption:
+{IMAGE injectImg('sig1', 'signature', '', '', 'medium', 'Signature of John Doe')}
+
+4. Optional image with IF condition:
+{IF profile_picture}
+{IMAGE injectImg('prof1', 'profile_picture', '150', '150', '', 'Profile Photo')}
+{END-IF}
+
+5. Image inside an object:
+{IMAGE injectImg('logo1', 'company_info.fields.logo', '300', '100', '', 'Company Logo')}
+
+6. Images in a collection (loop):
+{FOR photo IN team_photos.items}
+{IMAGE injectImg($photo.id, 'team_photos', '200', '200', '', '')}
+{END-FOR photo}
+
+7. Image with only width (medium preset will be applied):
+{IMAGE injectImg('sig1', 'signature', '300', '', '', '')}
+
+8. Image with only preset (no custom dimensions):
+{IMAGE injectImg('prof1', 'profile_picture', '', '', 'small', '')}
 ```
+
+**Important Notes:**
+
+- The first parameter (`id`) is used at runtime to match with uploaded files
+- The second parameter (`fieldPath`) is used for template analysis to verify fields exist in data structure
+- If both width and height are empty, the preset is used (default: "medium")
+- Supported image formats: JPG, PNG, GIF (automatically converted to PNG for PDF compatibility), SVG
+- GIF images are automatically converted to PNG during PDF generation for better LibreOffice compatibility
 
 ## Data Payload (User Data) Rules
 
