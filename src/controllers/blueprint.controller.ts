@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 import { blueprintDbService } from "@services/db/blueprint.service";
 import { ValidatedRequest } from "@middlewares/zod/validateRequest.middleware";
-import { asyncHandler } from "@utils/functions.utils";
+import { asyncErrorHandler } from "@utils/functions.utils";
 
 
 export const blueprintController = {
-    getAll: asyncHandler(getAll),
-    getOneById: asyncHandler(getOneById),
-    createOne: asyncHandler(createOne),
-    updateOne: asyncHandler(updateOne),
-    deleteOne: asyncHandler(deleteOne),
+    getAll: asyncErrorHandler(getAll),
+    getOneById: asyncErrorHandler(getOneById),
+    createOne: asyncErrorHandler(createOne),
+    updateOne: asyncErrorHandler(updateOne),
+    deleteOne: asyncErrorHandler(deleteOne),
 };
 
 

@@ -77,13 +77,13 @@ export class ValidationError extends Error {
  * Automatically catches errors and sends appropriate HTTP responses
  * 
  * Usage:
- * export const myController = asyncHandler(async (req, res) => {
+ * export const myController = asyncErrorHandler(async (req, res) => {
  *   // Your code here
  *   // Throw ValidationError for 400 responses
  *   // Throw Error for 500 responses
  * });
  */
-export function asyncHandler(fn: (req: any, res: any) => Promise<any>) {
+export function asyncErrorHandler(fn: (req: any, res: any) => Promise<any>) {
     return async (req: any, res: any) => {
         try {
             await fn(req, res);

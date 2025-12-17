@@ -6,7 +6,7 @@ import { templateDbService } from "@services/db/template.service";
 import { detectContentType, mapToObject, asyncHandler } from "@utils/functions.utils";
 
 export const generatorController = {
-    generate: asyncHandler(generate),
+    generate: asyncErrorHandler(generate),
 };
 
 async function generate(req: Request, res: Response) {

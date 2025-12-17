@@ -4,15 +4,15 @@ import { templateFilesystemService } from "@services/filesystem/filesystem.servi
 import { ValidatedRequest } from "@middlewares/zod/validateRequest.middleware";
 import { blueprintDbService } from "@services/db/blueprint.service";
 import { analyzeService } from "@services/analyzer/analyzer.service";
-import { mapToObject, asyncHandler } from "@utils/functions.utils";
+import { mapToObject, asyncErrorHandler } from "@utils/functions.utils";
 
 export const templateController = {
-    getAll: asyncHandler(getAll),
-    getOneById: asyncHandler(getOneById),
-    createOne: asyncHandler(createOne),
-    updateOne: asyncHandler(updateOne),
-    deleteOne: asyncHandler(deleteOne),
-    analyze: asyncHandler(analyze),
+    getAll: asyncErrorHandler(getAll),
+    getOneById: asyncErrorHandler(getOneById),
+    createOne: asyncErrorHandler(createOne),
+    updateOne: asyncErrorHandler(updateOne),
+    deleteOne: asyncErrorHandler(deleteOne),
+    analyze: asyncErrorHandler(analyze),
 };
 
 async function getAll(req: Request, res: Response) {
