@@ -21,13 +21,7 @@ export async function createOne(payload: ITemplate, file: Express.Multer.File) {
     return await handleWriteTemplateFile(doc, file);
 }
 
-export async function updateOne(id: string, payload: Partial<ITemplate>, file?: Express.Multer.File) {
-
-    const docToUpdate = await templateDbService.getOneById(id);
-
-    if (!docToUpdate) {
-        throw new Error("Template not found");
-    }
+export async function updateOne(id: string, docToUpdate: ITemplate, payload: Partial<ITemplate>, file?: Express.Multer.File) {
 
     const fileExist = file && isNotEmptyObject(file)
 

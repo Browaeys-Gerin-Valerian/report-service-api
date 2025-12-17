@@ -67,8 +67,43 @@ export class ValidationError extends Error {
     public details: string[];
     constructor(message: string, details: string[] = []) {
         super(message);
+        this.name = 'ValidationError';
         this.details = details;
     }
+}
+
+/**
+ * Async error handler wrapper for Express controllers
+ * Automatically catches errors and sends appropriate HTTP responses
+ * 
+ * Usage:
+ * export const myController = asyncHandler(async (req, res) => {
+ *   // Your code here
+ *   // Throw ValidationError for 400 responses
+ *   // Throw Error for 500 responses
+ * });
+ */
+export function asyncHandler(fn: (req: any, res: any) => Promise<any>) {
+    return async (req: any, res: any) => {
+        try {
+            await fn(req, res);
+        } catch (err) {
+            // Handle ValidationError with 400 status
+            if (err instanceof ValidationError) {
+                return res.status(400).json({
+                    error: err.message,
+                    details: err.details
+                });
+            }
+
+            // Handle all other errors with 500 status
+            const errorMessage = err instanceof Error ? err.message : "Unknown error";
+            return res.status(500).json({
+                error: "Internal server error",
+                details: errorMessage
+            });
+        }
+    };
 }
 
 
