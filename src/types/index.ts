@@ -12,9 +12,9 @@ export type FieldType = "text" | "object" | "collection" | "image"
 
 
 export const IMAGE_PRESETS = {
-    small: { width: 10, height: 10 },
-    medium: { width: 25, height: 25 },
-    large: { width: 40, height: 40 }
+    small: { width: 5, height: 5 },
+    medium: { width: 10, height: 10 },
+    large: { width: 15, height: 15 }
 } as const;
 
 export type ImagePreset = keyof typeof IMAGE_PRESETS;

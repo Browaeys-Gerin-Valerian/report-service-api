@@ -23,7 +23,7 @@ export async function generate(
             data: data_to_insert,
             cmdDelimiter: TEMPLATE_CMD_DELIMITER,
             additionalJsContext: {
-                injectImg: (id: string, width: number, height: number, preset: ImagePreset, caption: string) => injectImg(id, width, height, preset, caption, images)
+                injectImg: async (id: string, width: number, height: number, preset: ImagePreset, caption: string) => await injectImg(id, images, width, height, preset, caption)
             },
             //THIS PREVENT DOCX-TEMPLATES TO CRASH WHEN HE ENCOUNTER AN UNKNOW KEY DON'T REMOVE THIS LINE UNLESS YOU WANT TO UPDATE DOCX-TEMPLATES BEHAVIOR
             errorHandler: (err, command_code) => { },

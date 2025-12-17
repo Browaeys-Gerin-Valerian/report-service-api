@@ -28,10 +28,6 @@
       {
         "type": "image",
         "required": true
-      },
-      {
-        "type": "image",
-        "required": true
       }
     ]
   }
