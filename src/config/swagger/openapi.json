@@ -30,7 +30,14 @@
               }
             }
           },
-          "500": { "description": "Internal server error" }
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
         }
       },
       "post": {
@@ -56,14 +63,26 @@
             }
           },
           "400": {
-            "description": "Zod validation error",
+            "description": "Validation error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ZodValidationError" }
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ZodValidationError" },
+                    { "$ref": "#/components/schemas/ValidationError" }
+                  ]
+                }
               }
             }
           },
-          "500": { "description": "Internal server error" }
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
         }
       }
     },
@@ -86,8 +105,22 @@
               }
             }
           },
-          "404": { "description": "Blueprint not found" },
-          "500": { "description": "Internal server error" }
+          "404": {
+            "description": "Blueprint not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
         }
       },
       "patch": {
@@ -113,15 +146,34 @@
             }
           },
           "400": {
-            "description": "Zod validation error",
+            "description": "Validation error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ZodValidationError" }
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ZodValidationError" },
+                    { "$ref": "#/components/schemas/ValidationError" }
+                  ]
+                }
               }
             }
           },
-          "404": { "description": "Blueprint not found" },
-          "500": { "description": "Internal server error" }
+          "404": {
+            "description": "Blueprint not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
         }
       },
       "delete": {
@@ -131,8 +183,22 @@
         "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "responses": {
           "204": { "description": "Blueprint deleted" },
-          "404": { "description": "Blueprint not found" },
-          "500": { "description": "Internal server error" }
+          "404": {
+            "description": "Blueprint not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
         }
       }
     },
@@ -155,7 +221,14 @@
               }
             }
           },
-          "500": { "description": "Internal server error" }
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
         }
       },
       "post": {
@@ -214,15 +287,34 @@
             }
           },
           "400": {
-            "description": "Zod validation error",
+            "description": "Validation error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ZodValidationError" }
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ZodValidationError" },
+                    { "$ref": "#/components/schemas/ValidationError" }
+                  ]
+                }
               }
             }
           },
-          "404": { "description": "Blueprint not found" },
-          "500": { "description": "Internal server error" }
+          "404": {
+            "description": "Blueprint not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
         }
       }
     },
@@ -242,8 +334,22 @@
               }
             }
           },
-          "404": { "description": "Template not found" },
-          "500": { "description": "Internal server error" }
+          "404": {
+            "description": "Template not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
         }
       },
       "patch": {
@@ -316,12 +422,31 @@
             "description": "Validation error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ZodValidationError" }
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ZodValidationError" },
+                    { "$ref": "#/components/schemas/ValidationError" }
+                  ]
+                }
               }
             }
           },
-          "404": { "description": "Template not found" },
-          "500": { "description": "Internal server error" }
+          "404": {
+            "description": "Template not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
         }
       },
       "delete": {
@@ -331,8 +456,22 @@
         "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
         "responses": {
           "204": { "description": "Template deleted" },
-          "404": { "description": "Template not found" },
-          "500": { "description": "Internal server error" }
+          "404": {
+            "description": "Template not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
         }
       }
     },
@@ -394,16 +533,18 @@
             "description": "Template or Blueprint not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": { "type": "string" }
-                  }
-                }
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
               }
             }
           },
-          "500": { "description": "Internal server error" }
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
         }
       }
     },
@@ -498,7 +639,12 @@
             "description": "Validation error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ZodValidationError" }
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ZodValidationError" },
+                    { "$ref": "#/components/schemas/ValidationError" }
+                  ]
+                }
               }
             }
           },
@@ -506,101 +652,17 @@
             "description": "Blueprint or Template not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Blueprint not found"
-                    }
-                  }
-                }
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
               }
             }
           },
           "500": {
-            "description": "Generation failed",
+            "description": "Internal server error",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Failed to generate template"
-                    },
-                    "details": { "type": "object" }
-                  }
-                }
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
               }
             }
-          }
-        }
-      },
-      "PlaceholderAnalysis": {
-        "type": "object",
-        "required": ["field", "status"],
-        "properties": {
-          "field": {
-            "type": "string",
-            "description": "Field path (e.g., 'person.fields.name', 'locations')",
-            "example": "person.fields.name"
-          },
-          "status": {
-            "type": "string",
-            "enum": ["present", "absent", "does_not_exist"],
-            "description": "present: field exists in both template and data structure | absent: field exists in data structure but not in template | does_not_exist: field exists in template but not in data structure"
-          }
-        }
-      },
-
-      "AnalysisResult": {
-        "type": "object",
-        "required": ["placeholders", "summary"],
-        "properties": {
-          "placeholders": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/PlaceholderAnalysis" },
-            "description": "Detailed analysis of each field"
-          },
-          "summary": {
-            "type": "object",
-            "required": ["present", "absent", "does_not_exist"],
-            "properties": {
-              "present": {
-                "type": "integer",
-                "description": "Number of fields present in both template and data structure"
-              },
-              "absent": {
-                "type": "integer",
-                "description": "Number of fields in data structure but not in template"
-              },
-              "does_not_exist": {
-                "type": "integer",
-                "description": "Number of fields in template but not in data structure"
-              }
-            }
-          }
-        },
-        "example": {
-          "placeholders": [
-            {
-              "field": "person.fields.name",
-              "status": "present"
-            },
-            {
-              "field": "person.fields.email",
-              "status": "absent"
-            },
-            {
-              "field": "unknown_field",
-              "status": "does_not_exist"
-            }
-          ],
-          "summary": {
-            "present": 1,
-            "absent": 1,
-            "does_not_exist": 1
           }
         }
       }
@@ -951,6 +1013,122 @@
                 "code": { "type": "string", "example": "invalid_type" }
               }
             }
+          }
+        }
+      },
+
+      "ValidationError": {
+        "type": "object",
+        "required": ["error", "details"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message describing what went wrong",
+            "example": "Data validation failed"
+          },
+          "details": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Detailed list of validation errors",
+            "example": [
+              "Missing required field person.fields.name",
+              "Field age should be a number"
+            ]
+          }
+        }
+      },
+
+      "NotFoundError": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Blueprint not found"
+          }
+        }
+      },
+
+      "InternalServerError": {
+        "type": "object",
+        "required": ["error", "details"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Internal server error"
+          },
+          "details": {
+            "type": "string",
+            "description": "Technical error details",
+            "example": "Failed to write template file to disk: EPERM permission denied"
+          }
+        }
+      },
+
+      "PlaceholderAnalysis": {
+        "type": "object",
+        "required": ["field", "status"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Field path (e.g., 'person.fields.name', 'locations')",
+            "example": "person.fields.name"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["present", "absent", "does_not_exist"],
+            "description": "present: field exists in both template and data structure | absent: field exists in data structure but not in template | does_not_exist: field exists in template but not in data structure"
+          }
+        }
+      },
+
+      "AnalysisResult": {
+        "type": "object",
+        "required": ["placeholders", "summary"],
+        "properties": {
+          "placeholders": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PlaceholderAnalysis" },
+            "description": "Detailed analysis of each field"
+          },
+          "summary": {
+            "type": "object",
+            "required": ["present", "absent", "does_not_exist"],
+            "properties": {
+              "present": {
+                "type": "integer",
+                "description": "Number of fields present in both template and data structure"
+              },
+              "absent": {
+                "type": "integer",
+                "description": "Number of fields in data structure but not in template"
+              },
+              "does_not_exist": {
+                "type": "integer",
+                "description": "Number of fields in template but not in data structure"
+              }
+            }
+          }
+        },
+        "example": {
+          "placeholders": [
+            {
+              "field": "person.fields.name",
+              "status": "present"
+            },
+            {
+              "field": "person.fields.email",
+              "status": "absent"
+            },
+            {
+              "field": "unknown_field",
+              "status": "does_not_exist"
+            }
+          ],
+          "summary": {
+            "present": 1,
+            "absent": 1,
+            "does_not_exist": 1
           }
         }
       }
