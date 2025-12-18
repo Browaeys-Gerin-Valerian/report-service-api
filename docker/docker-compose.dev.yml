@@ -16,6 +16,8 @@ services:
       - mongo
     environment:
       - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
 
   mongo:
     image: mongo:6

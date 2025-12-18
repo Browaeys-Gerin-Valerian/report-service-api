@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only --no-notify src/index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only --no-notify --poll src/index.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "start:prod": "cross-env NODE_ENV=production npm run build && npm run start",
