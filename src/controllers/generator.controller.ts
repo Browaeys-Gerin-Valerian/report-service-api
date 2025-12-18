@@ -3,7 +3,7 @@ import { ValidatedRequest } from "@middlewares/zod/validateRequest.middleware";
 import { documentGeneratorService } from "@services/generator/generator.service"
 import { blueprintDbService } from "@services/db/blueprint.service";
 import { templateDbService } from "@services/db/template.service";
-import { detectContentType, mapToObject, asyncHandler } from "@utils/functions.utils";
+import { detectContentType, mapToObject, asyncErrorHandler } from "@utils/functions.utils";
 
 export const generatorController = {
     generate: asyncErrorHandler(generate),

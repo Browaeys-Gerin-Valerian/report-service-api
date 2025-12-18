@@ -42,7 +42,8 @@ afterEach(async () => {
         try {
             await fs.promises.unlink(filePath);
         } catch (err: any) {
-            if (err.code !== "ENOENT") {
+            // Ignore ENOENT (file doesn't exist) and EPERM (permission denied - file locked on Windows)
+            if (err.code !== "ENOENT" && err.code !== "EPERM") {
                 throw err;
             }
         }
