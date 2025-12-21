@@ -342,7 +342,7 @@ Jean Dupont
 This is the end of my super report
 ```
 
-(NOTE: this apply to every structure type when you have some optional subkey: without IF condition wrapped over your subkey will result an empty space)
+(NOTE: this apply to every structure type when you have some optional key/subkey: without IF condition wrapped over your key/subkey will result an empty space)
 
 ### 1.4 Object structure
 
