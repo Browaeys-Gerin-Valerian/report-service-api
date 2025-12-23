@@ -1,0 +1,44 @@
+# ==========================
+# Node / TypeScript général
+# ==========================
+node_modules/
+dist/
+
+# Logs
+npm-debug.log*
+
+# Env files
+.env
+
+# ==========================
+# TypeScript
+# ==========================
+*.tsbuildinfo
+
+# ==========================
+# Docker
+# ==========================
+# Ignore Docker build cache & volumes
+**/docker-cache/
+**/.docker-cache/
+
+# Local Docker Compose override files
+docker-compose.override.yml
+docker-compose.local.yml
+
+# ==========================
+# OS files
+# ==========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+templates_files/
+
+# ==========================
+# IDE
+# ==========================
+.vscode/
+.idea/
+*.iml
+

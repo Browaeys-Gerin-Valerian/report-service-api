@@ -1,0 +1,17 @@
+{
+  "person": {
+    "fields": {
+      "name": "Jean Dupont",
+      "age": "28",
+      "email": "jean.dupont@example.com"
+    }
+  },
+  "book": {
+    "type": "object",
+    "required": true,
+    "fields": {
+      "intro": "This book explores the fascinating world of modern web development, covering both frontend and backend technologies in depth.",
+      "chapter_1": "Chapter 1 delves into JavaScript fundamentals, including variables, functions, closures, and the event loop, providing practical examples for everyday coding."
+    }
+  }
+}

@@ -1,93 +1,594 @@
-# Report Generator
+# 📘 Report Service API
 
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)
+![Node.js](https://img.shields.io/badge/Node.js-24+-green?logo=node.js)
+![Express](https://img.shields.io/badge/Express-5.1-lightgrey?logo=express)
+![MongoDB](https://img.shields.io/badge/MongoDB-8.x-green?logo=mongodb)
+![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)
+![License](https://img.shields.io/badge/License-ISC-yellow)
 
+A RESTful API service built with Node.js, Express, TypeScript, and MongoDB for managing document templates and generating customized reports (DOCX/PDF) from structured data.
 
-## Getting started
+## 📑 Table of Contents
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [Architecture](#-architecture)
+- [Templates File Storage](#-templates-file-storage)
+- [Prerequisites](#-prérequis)
+- [Installation](#-installation)
+- [Running with Docker](#-running-the-containers)
+- [API Documentation](#-api-documentation)
+- [Testing](#-testing)
+- [Business Rules](#-business-rules)
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## 🎯 Overview
 
-## Add your files
+This service provides a complete solution for:
 
-* [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+- **Blueprint Management**: Define reusable data structure schemas
+- **Template Management**: Upload and manage DOCX templates with placeholders
+- **Template Analysis**: Automatically detect missing or unused placeholders
+- **Document Generation**: Generate DOCX or PDF documents by merging templates with data
+- **Validation**: Comprehensive validation of data against blueprints using Zod schemas
+
+## ✨ Key Features
+
+- 📝 **Dynamic Template Processing**: Uses `docx-templates` for advanced template manipulation
+- 🔍 **Placeholder Analysis**: Automatically identifies present, absent, and non-existent placeholders
+- 📄 **Multiple Output Formats**: Generate DOCX or convert to PDF using LibreOffice
+- 🎨 **Image Support**: Inject images with customizable dimensions and presets
+- ✅ **Data Validation**: Validate user data against blueprint schemas with detailed error reporting
+- 🗂️ **File Management**: Automatic template file storage and cleanup
+- 🔒 **Type Safety**: Full TypeScript implementation with strict typing
+- 🧪 **Comprehensive Testing**: Jest-based test suite
+- 🐳 **Docker Support**: Ready-to-deploy with development and production configurations
+
+## 🏗️ Architecture
+
+### Technology Stack
+
+- **Runtime**: Node.js 24+
+- **Framework**: Express 5
+- **Language**: TypeScript 5
+- **Database**: MongoDB with Mongoose ODM
+- **Validation**: Zod schemas
+- **Testing**: Jest with Supertest
+- **Documentation**: OpenAPI 3.1 / Swagger UI
+- **Template Engine**: docx-templates
+- **PDF Conversion**: LibreOffice (headless)
+
+### Path Aliases
+
+The project uses TypeScript path aliases for cleaner imports:
+
+- `@config/*` → `src/config/*`
+- `@controllers/*` → `src/controllers/*`
+- `@middlewares/*` → `src/middlewares/*`
+- `@models/*` → `src/models/*`
+- `@router/*` → `src/router/*`
+- `@services/*` → `src/services/*`
+- `@tests/*` → `src/tests/*`
+- `@types/*` → `src/types/*`
+- `@utils/*` → `src/utils/*`
+- `@custom_types/*` → `src/types/*`
+
+## 📄 Templates File Storage
+
+### Location
+
+All uploaded template files are stored in the `templates_files` folder at the root of the project
+
+### File Naming Convention
+
+Uploaded files are renamed according to the following pattern:
+
+`<template_name>-<timestamp>.<extension>`
+
+- `<template_name>`: The `name` field of the template.
+- `<timestamp>`: Current timestamp in milliseconds (to avoid collisions).
+- `<extension>`: Extension type (.pdf, .docx, ...).
+
+### Notes
+
+- This ensures that files are unique even if multiple files with the same name are uploaded.
+- Original file extensions are preserved to maintain compatibility with software (e.g., `.docx`, `.pdf`).
+- Temporary files are written directly to the `templates` folder after upload.
+
+## ⚙️ Prerequisites
+
+- **Node.js** 24+ ([Download](https://nodejs.org/))
+- **npm** or **yarn**
+- **Docker Desktop** ([Download](https://www.docker.com/products/docker-desktop)) (Windows / Mac / Linux)
+- **Docker Compose** V2
+- **MongoDB** (will be launched via Docker)
+- **LibreOffice** (for PDF generation - see [LIBREOFFICE_SETUP.md](./LIBREOFFICE_SETUP.md))
+
+## 💻 Installation
+
+### Local Development (without Docker)
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd report-service-api
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm ci
+   ```
+
+3. **Configure environment variables**
+
+   Create a `.env` file at the root (you can check expected keys in .env.example)
+
+4. **Start MongoDB** (if not using Docker)
+
+   ```bash
+   mongod --dbpath /path/to/data
+   ```
+
+5. **Run the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+   The API will be available at `http://localhost:3000`
+
+### Using Docker (Recommended)
+
+See [Running the Containers](#-running-the-containers) section below.
+
+## 🚀 Running the Containers
+
+Go to the `docker/` folder.
+
+### Development Mode
+
+start containers:
+
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+stop containers:
+
+```bash
+docker-compose -f docker-compose.dev.yml down
+```
+
+### Production Mode
+
+```bash
+docker-compose -f docker-compose.prod.yml up --build
+```
+
+stop containers:
+
+```bash
+docker-compose -f docker-compose.prod.yml down
+```
+
+To run containers in detached mode, simply add the -d flag at the end of the commands above.
+
+### Check if Containers are Running
+
+```bash
+docker ps
+```
+
+## � API Documentation
+
+The API is fully documented using **OpenAPI 3.1** (Swagger).
+
+### Access Swagger UI
+
+When running in **development mode**, access the interactive API documentation at:
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/panopsys/services/report-generator.git
-git branch -M main
-git push -uf origin main
+http://localhost:3000/api-docs
 ```
 
-## Integrate with your tools
+## 🧪 Testing
 
-* [Set up project integrations](https://gitlab.com/panopsys/services/report-generator/-/settings/integrations)
+The project includes comprehensive integration tests using **Jest** and **Supertest**.
 
-## Collaborate with your team
+### Run Tests
 
-* [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+```bash
+# Run all tests
+npm run test:watch
 
-## Test and Deploy
+# Run tests in watch mode (development)
+npm run test:watch
+```
 
-Use the built-in continuous integration in GitLab.
+Each test file includes:
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+- ✅ Success scenarios
+- ❌ Error handling (404, 400, 500)
+- 📝 Data validation
+- 🗂️ File system operations
+- 🔄 Database state verification
 
-***
+## Code Style
 
-# Editing this README
+- Use TypeScript strict mode
+- Follow existing naming conventions
+- Use path aliases (`@services/*`, `@controllers/*`, etc.)
+- Add JSDoc comments for public APIs
+- Write meaningful commit messages
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+## �📝 Business Rules
 
-## Suggestions for a good README
+## 1. Data Structure Schema Rules
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+The data structure describes the entire structure and all fields that the client expects to inject into the DOCX template.
 
-## Name
-Choose a self-explaining name for your project.
+See examples:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+- [Text](./examples/text)
+- [Object](./examples/object)
+- [Collection](./examples/collection)
+- [Image](./examples/image)
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### 1.1 Allowed field types
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Each field in the data structure must specify one of the supported types:
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+- text
+- object
+- collection
+- image
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+### 1.2 Required vs optional fields
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+Each field must include:
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+```json
+{ "required": true | false }
+```
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+- required: true
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+The field must exist in the user's data, if the field is missing, the system will generate an error.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+- required: false
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+The field may be omitted from the user's data.
 
-## License
-For open source projects, say how it is licensed.
+```json
+"example_1": {
+  "type": "text",
+  "required": true,
+}
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+"example_2": {
+  "type": "object",
+  "required": true,
+  "fields": {
+    "country": { "type": "text", "required": true },
+    "city": { "type": "text", "required": false }
+  }
+}
+```
+
+### 1.3 Text structure
+
+A text only define is type and requirement level, for example (this type can cover 90 % of your usage):
+
+data structure:
+
+```json
+{
+  "example_text_1": { "type": "text", "required": true },
+  "example_text_2": { "type": "text", "required": false }
+}
+```
+
+data:
+
+```json
+{
+  "example_text_1": "Jean Dupont",
+  "not_expected_key": { "type": "text", "required": false }
+}
+```
+
+the "example_text_1" key will be injected in the document, "not_expected_key" will be ignored and "example_text_2" will have two behaviours depeding on how you define your template:
+
+- Without IF condition, a line will have been reserved for "example_text_2", so you will have an empty line between "example_text_1" and "This is the end of my super report"
+
+Template:
+
+```text
+This is the start of my super report
+{example_text_1}
+{example_text_2}
+This is the end of my super report
+```
+
+Output template:
+
+```text
+This is the start of my super report
+Jean Dupont
+
+This is the end of my super report
+```
+
+- With IF condition, a line will NOT have been reserved for "example_text_2", so you will have NOT have an empty line between "example_text_1" and "This is the end of my super report"
+
+Template:
+
+```text
+This is the start of my super report
+{example_text_1}
+{IF example_text_2}
+{example_text_2}
+{END-IF}
+This is the end of my super report
+```
+
+Output template:
+
+```text
+This is the start of my super report
+Jean Dupont
+This is the end of my super report
+```
+
+(NOTE: this apply to every structure type when you have some optional key/subkey: without IF condition wrapped over your key/subkey will result an empty space)
+
+### 1.4 Object structure
+
+An object must define its children and Each child must also declare a type and requirement level:
+
+Structure:
+
+```json
+{
+  "example_object_1": {
+    "type": "object",
+    "required": true,
+    "fields": {
+      "country": { "type": "text", "required": true },
+      "city": { "type": "text", "required": true }
+    }
+  },
+  "example_object_2": {
+    "type": "object",
+    "required": true,
+    "fields": {
+      "siret": { "type": "text", "required": true },
+      "iban": { "type": "text", "required": false }
+    }
+  }
+}
+```
+
+Data:
+
+```json
+{
+  "example_object_1": {
+    "fields": {
+      "country": "France",
+      "city": "paris"
+    }
+  },
+  "example_object_2": {
+    "fields": {
+      "siret": "461781686161"
+    }
+  }
+}
+```
+
+### 1.5 Collection structure
+
+A collection must define its expected items:
+
+(IMPORTANT: the "collection" type is useful when you need to generate between 0 and N instances of the same repeating structure. It is NOT intended for heterogeneous
+content or mixed element types. Every item in a collection must conform to the same schema so the template engine can iterate safely and predictably. If you need differents
+type the text or object strucutre is more appropriated)
+
+Structure:
+
+```json
+{
+  "example_collection_1": {
+    "type": "collection",
+    "required": true,
+    "items": [{ "type": "text", "required": true }]
+  },
+  "example_collection_2": {
+    "type": "collection",
+    "required": false,
+    "items": [
+      {
+        "type": "object",
+        "required": false,
+        "fields": {
+          "security_lvl": { "type": "text", "required": true },
+          "security_code": { "type": "text", "required": false }
+        }
+      }
+    ]
+  }
+}
+```
+
+Data:
+
+```json
+{
+  "example_collection_1": {
+    "items": ["item-1", "item-2", "item-3"]
+  },
+  "example_collection_2": {
+    "items": [
+      {
+        "fields": {
+          "security_lvl": "low",
+          "security_code": "100"
+        }
+      },
+      {
+        "fields": {
+          "security_lvl": "warning"
+        }
+      }
+    ]
+  }
+}
+```
+
+### 1.6 Image structure
+
+Every image must have a unique id across the document. Uploading multiple files with the same id will result in a validation error.
+Images are injected into templates using the `injectImg` function with the following parameters:
+
+**Function Signature:**
+
+```
+{IMAGE injectImg(id, fieldPath, width, height, preset, caption)}
+```
+
+**Parameters:**
+
+1. **id** (string, required): Unique identifier to match with uploaded files (runtime matching)
+2. **fieldPath** (string, required): Path in data structure for template analysis (e.g., 'signature', 'example_3.fields.mon_image_1')
+3. **width** (number, optional): Image width in pixels (use empty string "" to skip)
+4. **height** (number, optional): Image height in pixels (use empty string "" to skip)
+5. **preset** (string, optional): Size preset - "small" / "medium" / "large" (used when width/height are not specified)
+6. **caption** (string, optional): Image caption text
+
+**Data Structure:**
+
+```json
+{
+  "signature": {
+    "type": "image",
+    "required": true
+  },
+  "profile_picture": {
+    "type": "image",
+    "required": false
+  },
+  "company_info": {
+    "type": "object",
+    "required": true,
+    "fields": {
+      "logo": {
+        "type": "image",
+        "required": true
+      }
+    }
+  },
+  "team_photos": {
+    "type": "collection",
+    "required": false,
+    "items": [
+      {
+        "type": "image",
+        "required": true
+      }
+    ]
+  }
+}
+```
+
+**Data:**
+
+```json
+{
+  "signature": {
+    "id": "sig1",
+    "filename": "signature.png"
+  },
+  "profile_picture": {
+    "id": "prof1",
+    "filename": "profile.jpg"
+  },
+  "company_info": {
+    "fields": {
+      "logo": {
+        "id": "logo1",
+        "filename": "company_logo.png"
+      }
+    }
+  },
+  "team_photos": {
+    "items": [
+      {
+        "id": "team1",
+        "filename": "team_photo_1.jpg"
+      },
+      {
+        "id": "team2",
+        "filename": "team_photo_2.jpg"
+      }
+    ]
+  }
+}
+```
+
+**Template Examples:**
+
+```text
+1. Simple image with custom dimensions:
+{IMAGE injectImg('sig1', 'signature', '200', '150', '', '')}
+
+2. Image with preset size:
+{IMAGE injectImg('sig1', 'signature', '', '', 'large', '')}
+
+3. Image with preset and caption:
+{IMAGE injectImg('sig1', 'signature', '', '', 'medium', 'Signature of John Doe')}
+
+4. Optional image with IF condition:
+{IF profile_picture}
+{IMAGE injectImg('prof1', 'profile_picture', '150', '150', '', 'Profile Photo')}
+{END-IF}
+
+5. Image inside an object:
+{IMAGE injectImg('logo1', 'company_info.fields.logo', '300', '100', '', 'Company Logo')}
+
+6. Images in a collection (loop):
+{FOR photo IN team_photos.items}
+{IMAGE injectImg($photo.id, 'team_photos', '200', '200', '', '')}
+{END-FOR photo}
+
+7. Image with only width (medium preset will be applied):
+{IMAGE injectImg('sig1', 'signature', '300', '', '', '')}
+
+8. Image with only preset (no custom dimensions):
+{IMAGE injectImg('prof1', 'profile_picture', '', '', 'small', '')}
+```
+
+**Important Notes:**
+
+- The first parameter (`id`) is used at runtime to match with uploaded files
+- The second parameter (`fieldPath`) is used for template analysis to verify fields exist in data structure
+- If both width and height are empty, the preset is used (default: "medium")
+- Supported image formats: JPG, PNG, GIF (automatically converted to PNG for PDF compatibility), SVG
+- GIF images are automatically converted to PNG during PDF generation for better LibreOffice compatibility
+
+## Data Payload (User Data) Rules
+
+### 2.1 Unknown keys are ignored
+
+If the data payload contains keys that are not defined in the data structure:
+
+- They are silently ignored.
+- They are neither copied nor injected into the final document.
+
+This applies at any nesting depth:
+
+- Unknown fields inside objects → ignored
+- Unknown items inside arrays → ignored
+- Unknown rows in tables → ignored

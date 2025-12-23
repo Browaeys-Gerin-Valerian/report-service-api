@@ -1,0 +1,10 @@
+{
+  "title": {
+    "type": "text",
+    "required": true
+  },
+  "author": {
+    "type": "text",
+    "required": false
+  }
+}

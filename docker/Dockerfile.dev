@@ -1,0 +1,19 @@
+FROM node:24.11.0
+
+# Install LibreOffice for DOCX to PDF conversion
+RUN apt-get update && apt-get install -y \
+    libreoffice \
+    libreoffice-writer \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy package files first for better caching
+COPY package.json package-lock.json* ./
+RUN npm install
+
+# Copy source code (will be overridden by volume mount in dev)
+COPY . .
+
+EXPOSE 3000
+CMD ["npm", "run", "dev"]

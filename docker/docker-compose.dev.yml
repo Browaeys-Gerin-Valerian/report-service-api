@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: ..       
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - ../:/app        
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../.env
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+
+  mongo:
+    image: mongo:6
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-dev-data:/data/db
+
+volumes:
+  mongo-dev-data:

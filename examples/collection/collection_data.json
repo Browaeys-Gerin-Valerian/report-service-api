@@ -1,0 +1,30 @@
+{
+  "persons": {
+    "items": ["item-1", "item-2", "item-3", "item-3"]
+  },
+
+  "locations": {
+    "items": [
+      {
+        "fields": {
+          "country": "France",
+          "state": "Ile de france"
+        }
+      },
+      {
+        "fields": {
+          "country": "USA",
+          "state": "California",
+          "city": "San Francisco"
+        }
+      },
+      {
+        "fields": {
+          "country": "Italy",
+          "state": "Lombardia",
+          "city": "Milan"
+        }
+      }
+    ]
+  }
+}

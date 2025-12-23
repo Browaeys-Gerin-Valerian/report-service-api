@@ -1,0 +1,69 @@
+{
+  "person": {
+    "type": "object",
+    "required": true,
+    "fields": {
+      "name": {
+        "type": "text",
+        "required": true
+      },
+      "email": {
+        "type": "text",
+        "required": true
+      }
+    }
+  },
+
+  "book": {
+    "type": "object",
+    "required": true,
+    "fields": {
+      "intro": {
+        "type": "text",
+        "required": true
+      },
+      "chapter_1": {
+        "type": "text",
+        "required": true
+      },
+      "epilogue": {
+        "type": "text",
+        "required": false
+      }
+    }
+  },
+
+  "car": {
+    "type": "object",
+    "required": false,
+    "fields": {
+      "model": {
+        "type": "text",
+        "required": true
+      },
+      "version": {
+        "type": "text",
+        "required": false
+      }
+    }
+  },
+
+  "location": {
+    "type": "object",
+    "required": false,
+    "fields": {
+      "country": {
+        "type": "text",
+        "required": false
+      },
+      "state": {
+        "type": "text",
+        "required": false
+      },
+      "city": {
+        "type": "text",
+        "required": false
+      }
+    }
+  }
+}

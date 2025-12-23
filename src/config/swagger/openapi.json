@@ -1,0 +1,1137 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Report Document Generation API",
+    "version": "1.0.0",
+    "description": "API for managing cybersecurity report blueprints and templates (Express + TypeScript + Mongoose)."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/blueprints": {
+      "get": {
+        "operationId": "listBlueprints",
+        "summary": "List all blueprints",
+        "description": "Retrieve all available blueprints.",
+        "tags": ["Blueprints"],
+        "responses": {
+          "200": {
+            "description": "List of all blueprints",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Blueprint" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createBlueprint",
+        "summary": "Create a new blueprint",
+        "tags": ["Blueprints"],
+        "description": "Create a blueprint by providing its metadata and structure.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateBlueprintBody" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Blueprint successfully created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Blueprint" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ZodValidationError" },
+                    { "$ref": "#/components/schemas/ValidationError" }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/blueprints/{id}": {
+      "get": {
+        "operationId": "getBlueprint",
+        "summary": "Get a blueprint by ID",
+        "tags": ["Blueprints"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" },
+          { "$ref": "#/components/parameters/WithTemplatesQuery" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blueprint found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Blueprint" }
+              }
+            }
+          },
+          "404": {
+            "description": "Blueprint not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateBlueprint",
+        "summary": "Update a blueprint",
+        "tags": ["Blueprints"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateBlueprintBody" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Blueprint updated",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Blueprint" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ZodValidationError" },
+                    { "$ref": "#/components/schemas/ValidationError" }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blueprint not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteBlueprint",
+        "summary": "Delete a blueprint",
+        "tags": ["Blueprints"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "204": { "description": "Blueprint deleted" },
+          "404": {
+            "description": "Blueprint not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/templates": {
+      "get": {
+        "operationId": "listTemplates",
+        "summary": "List all templates",
+        "description": "Retrieve all document templates.",
+        "tags": ["Templates"],
+        "responses": {
+          "200": {
+            "description": "List of all templates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Template" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTemplate",
+        "summary": "Create a template",
+        "description": "Upload a file and attach template metadata.",
+        "tags": ["Templates"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["data", "file"],
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "JSON string containing template metadata (see CreateTemplateBody schema)",
+                    "example": "{\"blueprint_id\":\"507f1f77bcf86cd799439011\",\"name\":\"My Template\",\"language\":\"EN\",\"default\":false}",
+                    "x-schema-ref": "#/components/schemas/CreateTemplateBody"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Template file (DOCX or PDF)"
+                  }
+                }
+              },
+              "encoding": {
+                "data": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf"
+                }
+              },
+              "examples": {
+                "createTemplate": {
+                  "summary": "Create a new template",
+                  "value": {
+                    "data": "{\"blueprint_id\":\"507f1f77bcf86cd799439011\",\"name\":\"Annual Report Template\",\"language\":\"EN\",\"default\":true}",
+                    "file": "(binary)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Template created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Template" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ZodValidationError" },
+                    { "$ref": "#/components/schemas/ValidationError" }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blueprint not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/templates/{id}": {
+      "get": {
+        "operationId": "getTemplate",
+        "summary": "Get template by ID",
+        "tags": ["Templates"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "200": {
+            "description": "Template found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Template" }
+              }
+            }
+          },
+          "404": {
+            "description": "Template not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateTemplate",
+        "summary": "Update a template",
+        "tags": ["Templates"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "JSON string containing template metadata to update (see UpdateTemplateBody schema). All fields are optional.",
+                    "example": "{\"name\":\"Updated Template\",\"language\":\"FR\",\"default\":true}",
+                    "x-schema-ref": "#/components/schemas/UpdateTemplateBody"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Updated template file (optional)"
+                  }
+                }
+              },
+              "encoding": {
+                "data": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf"
+                }
+              },
+              "examples": {
+                "updateDataOnly": {
+                  "summary": "Update only metadata",
+                  "value": {
+                    "data": "{\"name\":\"Updated Template Name\",\"default\":true}"
+                  }
+                },
+                "updateFileOnly": {
+                  "summary": "Update only file",
+                  "value": {
+                    "file": "(binary)"
+                  }
+                },
+                "updateBoth": {
+                  "summary": "Update both metadata and file",
+                  "value": {
+                    "data": "{\"name\":\"New Template\",\"language\":\"ES\"}",
+                    "file": "(binary)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Template updated",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Template" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ZodValidationError" },
+                    { "$ref": "#/components/schemas/ValidationError" }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Template not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTemplate",
+        "summary": "Delete a template",
+        "tags": ["Templates"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "204": { "description": "Template deleted" },
+          "404": {
+            "description": "Template not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/templates/{id}/analyze": {
+      "get": {
+        "operationId": "analyzeTemplate",
+        "summary": "Analyze template placeholders",
+        "description": "Analyzes the template to identify which data structure fields are present, absent, or don't exist. Returns a comparison between template placeholders and the blueprint's data structure.",
+        "tags": ["Templates"],
+        "parameters": [{ "$ref": "#/components/parameters/IdParam" }],
+        "responses": {
+          "200": {
+            "description": "Analysis results",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AnalysisResult" },
+                "example": {
+                  "placeholders": [
+                    {
+                      "field": "person.fields.name",
+                      "status": "present"
+                    },
+                    {
+                      "field": "person.fields.email",
+                      "status": "present"
+                    },
+                    {
+                      "field": "person.fields.phone",
+                      "status": "absent"
+                    },
+                    {
+                      "field": "departments",
+                      "status": "present"
+                    },
+                    {
+                      "field": "departments.fields.employees",
+                      "status": "present"
+                    },
+                    {
+                      "field": "departments.fields.employees.fields.fullname",
+                      "status": "present"
+                    },
+                    {
+                      "field": "unknown_placeholder",
+                      "status": "does_not_exist"
+                    }
+                  ],
+                  "summary": {
+                    "present": 5,
+                    "absent": 1,
+                    "does_not_exist": 1
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Template or Blueprint not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/generate": {
+      "post": {
+        "operationId": "generateDocument",
+        "summary": "Generate a document from template",
+        "description": "Generate a document (DOCX or PDF) by filling a template with provided data and optional images.",
+        "tags": ["Generate"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["data"],
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "JSON string containing generation parameters (see GenerateRequest schema). The data_to_insert must match the blueprint's data_structure.",
+                    "example": "{\"template_id\":\"507f1f77bcf86cd799439011\",\"blueprint_id\":\"507f191e810c19729de860ea\",\"output_format\":\"docx\",\"data_to_insert\":{\"firstname\":\"John\",\"lastname\":\"Doe\"}}",
+                    "x-schema-ref": "#/components/schemas/GenerateRequest"
+                  },
+                  "files": {
+                    "type": "array",
+                    "description": "Optional image files referenced in data_to_insert. Each filename must match an image reference in data_to_insert.",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "data": {
+                  "contentType": "application/json"
+                },
+                "files": {
+                  "contentType": "image/jpeg, image/png, image/gif, image/svg+xml"
+                }
+              },
+              "examples": {
+                "simpleText": {
+                  "summary": "Simple text data (no images)",
+                  "value": {
+                    "data": "{\"template_id\":\"507f1f77bcf86cd799439011\",\"blueprint_id\":\"507f191e810c19729de860ea\",\"output_format\":\"docx\",\"data_to_insert\":{\"firstname\":\"John\",\"lastname\":\"Doe\",\"email\":\"john@example.com\"}}"
+                  }
+                },
+                "withObjects": {
+                  "summary": "Nested object data",
+                  "value": {
+                    "data": "{\"template_id\":\"507f1f77bcf86cd799439011\",\"blueprint_id\":\"507f191e810c19729de860ea\",\"output_format\":\"docx\",\"data_to_insert\":{\"user\":{\"fields\":{\"firstname\":\"Jane\",\"lastname\":\"Smith\",\"address\":{\"fields\":{\"city\":\"Paris\",\"zip\":\"75001\"}}}}}}"
+                  }
+                },
+                "withImages": {
+                  "summary": "Data with images",
+                  "value": {
+                    "data": "{\"template_id\":\"507f1f77bcf86cd799439011\",\"blueprint_id\":\"507f191e810c19729de860ea\",\"output_format\":\"pdf\",\"data_to_insert\":{\"author\":{\"fields\":{\"name\":\"John Doe\",\"photo\":{\"id\":\"img-1\",\"filename\":\"author.jpg\"}}}}}",
+                    "files": ["(binary image: author.jpg)"]
+                  }
+                },
+                "withCollections": {
+                  "summary": "Data with collections/arrays",
+                  "value": {
+                    "data": "{\"template_id\":\"507f1f77bcf86cd799439011\",\"blueprint_id\":\"507f191e810c19729de860ea\",\"output_format\":\"docx\",\"data_to_insert\":{\"skills\":{\"items\":[{\"fields\":{\"name\":\"TypeScript\",\"level\":\"Advanced\"}},{\"fields\":{\"name\":\"Node.js\",\"level\":\"Expert\"}}]}}}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Generated document",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/ZodValidationError" },
+                    { "$ref": "#/components/schemas/ValidationError" }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blueprint or Template not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundError" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InternalServerError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "parameters": {
+      "IdParam": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "description": "MongoDB ObjectID"
+        }
+      },
+      "WithTemplatesQuery": {
+        "name": "withTemplates",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "boolean"
+        },
+        "description": "Populate the blueprint with its templates if true"
+      }
+    },
+
+    "schemas": {
+      "Blueprint": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "data_structure": {
+            "$ref": "#/components/schemas/DataStructure"
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+
+      "CreateBlueprintBody": {
+        "type": "object",
+        "required": ["name", "data_structure"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "data_structure": {
+            "$ref": "#/components/schemas/DataStructure"
+          }
+        }
+      },
+
+      "UpdateBlueprintBody": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "data_structure": {
+            "$ref": "#/components/schemas/DataStructure"
+          }
+        }
+      },
+
+      "Template": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "blueprint_id": {
+            "type": "string",
+            "description": "Reference to the associated blueprint"
+          },
+          "filename": { "type": "string" },
+          "name": { "type": "string" },
+          "default": { "type": "boolean" },
+          "format": {
+            "type": "string",
+            "description": "Original uploaded file extension (e.g., docx, pdf)"
+          },
+          "supported_output_formats": {
+            "type": "array",
+            "description": "Output formats this template supports",
+            "items": { "type": "string" }
+          },
+          "language": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+
+      "CreateTemplateBody": {
+        "type": "object",
+        "required": ["blueprint_id", "name", "language"],
+        "properties": {
+          "blueprint_id": { "type": "string" },
+          "name": { "type": "string" },
+          "default": { "type": "boolean" },
+          "language": { "type": "string" }
+        }
+      },
+
+      "UpdateTemplateBody": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "default": { "type": "boolean" },
+          "language": { "type": "string" }
+        }
+      },
+
+      "GenerateRequest": {
+        "type": "object",
+        "required": [
+          "template_id",
+          "blueprint_id",
+          "output_format",
+          "data_to_insert"
+        ],
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "description": "ID of the template to use"
+          },
+          "blueprint_id": {
+            "type": "string",
+            "description": "ID of the blueprint that defines the data structure"
+          },
+          "output_format": {
+            "type": "string",
+            "enum": ["docx", "pdf"],
+            "description": "Desired output format"
+          },
+          "data_to_insert": {
+            "$ref": "#/components/schemas/DataToInsert"
+          }
+        }
+      },
+
+      "DataStructureField": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["type", "required"],
+            "properties": {
+              "type": { "type": "string", "enum": ["text"] },
+              "required": { "type": "boolean" }
+            },
+            "description": "Text field definition"
+          },
+          {
+            "type": "object",
+            "required": ["type", "required", "fields"],
+            "properties": {
+              "type": { "type": "string", "enum": ["object"] },
+              "required": { "type": "boolean" },
+              "fields": {
+                "type": "object",
+                "description": "Nested field definitions",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/DataStructureField"
+                }
+              }
+            },
+            "description": "Nested object field definition"
+          },
+          {
+            "type": "object",
+            "required": ["type", "required", "items"],
+            "properties": {
+              "type": { "type": "string", "enum": ["collection"] },
+              "required": { "type": "boolean" },
+              "items": {
+                "type": "array",
+                "description": "Schema for each item in the collection",
+                "items": { "$ref": "#/components/schemas/DataStructureField" }
+              }
+            },
+            "description": "Collection/array field definition"
+          },
+          {
+            "type": "object",
+            "required": ["type", "required"],
+            "properties": {
+              "type": { "type": "string", "enum": ["image"] },
+              "required": { "type": "boolean" }
+            },
+            "description": "Image field definition"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+
+      "DataStructure": {
+        "type": "object",
+        "description": "Defines the structure of data that can be inserted into a template. Each key maps to a field definition.",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/DataStructureField"
+        },
+        "example": {
+          "firstname": { "type": "text", "required": true },
+          "lastname": { "type": "text", "required": true },
+          "email": { "type": "text", "required": false },
+          "user": {
+            "type": "object",
+            "required": true,
+            "fields": {
+              "address": {
+                "type": "object",
+                "required": false,
+                "fields": {
+                  "city": { "type": "text", "required": true },
+                  "zip": { "type": "text", "required": false }
+                }
+              }
+            }
+          },
+          "skills": {
+            "type": "collection",
+            "required": true,
+            "items": [
+              {
+                "type": "object",
+                "required": true,
+                "fields": {
+                  "name": { "type": "text", "required": true },
+                  "level": { "type": "text", "required": true }
+                }
+              }
+            ]
+          },
+          "avatar": { "type": "image", "required": false }
+        }
+      },
+
+      "DataValue": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "Text value"
+          },
+          {
+            "type": "object",
+            "required": ["fields"],
+            "properties": {
+              "fields": {
+                "type": "object",
+                "description": "Nested object fields",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/DataValue"
+                }
+              }
+            },
+            "description": "Object value with nested fields"
+          },
+          {
+            "type": "object",
+            "required": ["items"],
+            "properties": {
+              "items": {
+                "type": "array",
+                "description": "Array of items",
+                "items": { "$ref": "#/components/schemas/DataValue" }
+              }
+            },
+            "description": "Collection value with items array"
+          },
+          {
+            "type": "object",
+            "required": ["id", "filename"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier for the image"
+              },
+              "filename": {
+                "type": "string",
+                "description": "Filename of the uploaded image (must match a file in the files array)"
+              }
+            },
+            "description": "Image reference"
+          }
+        ]
+      },
+
+      "DataToInsert": {
+        "type": "object",
+        "description": "Data to fill into the template. Structure must match the blueprint's data_structure definition.",
+        "additionalProperties": { "$ref": "#/components/schemas/DataValue" },
+        "example": {
+          "firstname": "John",
+          "lastname": "Doe",
+          "email": "john@example.com",
+          "user": {
+            "fields": {
+              "firstname": "Jane",
+              "lastname": "Smith",
+              "address": {
+                "fields": {
+                  "city": "Paris",
+                  "zip": "75001"
+                }
+              }
+            }
+          },
+          "skills": {
+            "items": [
+              {
+                "fields": {
+                  "name": "TypeScript",
+                  "level": "Advanced"
+                }
+              },
+              {
+                "fields": {
+                  "name": "Node.js",
+                  "level": "Expert"
+                }
+              }
+            ]
+          },
+          "avatar": {
+            "id": "img-1",
+            "filename": "avatar.jpg"
+          }
+        }
+      },
+
+      "ZodValidationError": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string", "example": "Validation error" },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "array",
+                  "description": "Path to invalid field",
+                  "items": { "type": "string" },
+                  "example": ["data", "name"]
+                },
+                "message": { "type": "string", "example": "Name is required" },
+                "code": { "type": "string", "example": "invalid_type" }
+              }
+            }
+          }
+        }
+      },
+
+      "ValidationError": {
+        "type": "object",
+        "required": ["error", "details"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message describing what went wrong",
+            "example": "Data validation failed"
+          },
+          "details": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Detailed list of validation errors",
+            "example": [
+              "Missing required field person.fields.name",
+              "Field age should be a number"
+            ]
+          }
+        }
+      },
+
+      "NotFoundError": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Blueprint not found"
+          }
+        }
+      },
+
+      "InternalServerError": {
+        "type": "object",
+        "required": ["error", "details"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Internal server error"
+          },
+          "details": {
+            "type": "string",
+            "description": "Technical error details",
+            "example": "Failed to write template file to disk: EPERM permission denied"
+          }
+        }
+      },
+
+      "PlaceholderAnalysis": {
+        "type": "object",
+        "required": ["field", "status"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Field path (e.g., 'person.fields.name', 'locations')",
+            "example": "person.fields.name"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["present", "absent", "does_not_exist"],
+            "description": "present: field exists in both template and data structure | absent: field exists in data structure but not in template | does_not_exist: field exists in template but not in data structure"
+          }
+        }
+      },
+
+      "AnalysisResult": {
+        "type": "object",
+        "required": ["placeholders", "summary"],
+        "properties": {
+          "placeholders": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PlaceholderAnalysis" },
+            "description": "Detailed analysis of each field"
+          },
+          "summary": {
+            "type": "object",
+            "required": ["present", "absent", "does_not_exist"],
+            "properties": {
+              "present": {
+                "type": "integer",
+                "description": "Number of fields present in both template and data structure"
+              },
+              "absent": {
+                "type": "integer",
+                "description": "Number of fields in data structure but not in template"
+              },
+              "does_not_exist": {
+                "type": "integer",
+                "description": "Number of fields in template but not in data structure"
+              }
+            }
+          }
+        },
+        "example": {
+          "placeholders": [
+            {
+              "field": "person.fields.name",
+              "status": "present"
+            },
+            {
+              "field": "person.fields.email",
+              "status": "absent"
+            },
+            {
+              "field": "unknown_field",
+              "status": "does_not_exist"
+            }
+          ],
+          "summary": {
+            "present": 1,
+            "absent": 1,
+            "does_not_exist": 1
+          }
+        }
+      }
+    }
+  }
+}

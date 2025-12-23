@@ -1,0 +1,34 @@
+{
+  "example_1": {
+    "type": "image",
+    "required": true
+  },
+  "example_2": {
+    "type": "image",
+    "required": false
+  },
+  "example_3": {
+    "type": "object",
+    "required": true,
+    "fields": {
+      "mon_image_1": {
+        "type": "image",
+        "required": false
+      },
+      "mon_image_2": {
+        "type": "image",
+        "required": true
+      }
+    }
+  },
+  "example_4": {
+    "type": "collection",
+    "required": true,
+    "items": [
+      {
+        "type": "image",
+        "required": true
+      }
+    ]
+  }
+}

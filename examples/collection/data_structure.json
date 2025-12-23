@@ -1,0 +1,39 @@
+{
+  "persons": {
+    "type": "collection",
+    "required": true,
+    "items": [
+      {
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+
+  "books": {
+    "type": "collection",
+    "required": false,
+    "items": [
+      {
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+
+  "locations": {
+    "type": "collection",
+    "required": false,
+    "items": [
+      {
+        "type": "object",
+        "required": true,
+        "fields": {
+          "country": { "type": "text", "required": true },
+          "state": { "type": "text", "required": true },
+          "city": { "type": "text", "required": false }
+        }
+      }
+    ]
+  }
+}

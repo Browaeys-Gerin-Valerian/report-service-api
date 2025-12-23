@@ -1,0 +1,42 @@
+import { Request, Response, NextFunction } from "express";
+import { ZodType, ZodError } from "zod";
+import { parsedBody } from "@middlewares/zod/utils/zod.utils";
+
+export type ValidatedRequest = Request & {
+    validated: {
+        params: any;
+        query: any;
+        body: any;
+        file: any;
+        files: any
+    };
+};
+
+export function validateRequest(schema: ZodType<any>) {
+    return (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const data = {
+                params: req.params,
+                query: req.query,
+                body: req.body ? parsedBody(req.body) : {},
+                file: req.file ? req.file : {},
+                files: req.files ? req.files : []
+            };
+
+            const parsed = schema.parse(data);
+
+
+            (req as ValidatedRequest).validated = parsed;
+
+            next();
+        } catch (err) {
+            if (err instanceof ZodError) {
+                return res.status(400).json({
+                    error: "Validation error",
+                    issues: err.issues
+                });
+            }
+            next(err);
+        }
+    };
+}
