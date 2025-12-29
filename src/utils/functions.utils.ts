@@ -35,6 +35,8 @@ export function detectContentType(outputFormat: OutputFormat): string {
             return "application/pdf";
         case "docx":
             return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        case "xlsx":
+            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         default:
             throw new Error(`Unsupported output format: ${outputFormat}`);
     }
@@ -51,6 +53,8 @@ export function detectFormatFromFile(file: Express.Multer.File): string {
             return DocumentType.PDF;
         case "docx":
             return DocumentType.DOCX;
+        case "xlsx":
+            return DocumentType.XLSX;
         default:
             throw new Error(`Unsupported format: ${ext}`);
     }

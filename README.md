@@ -21,6 +21,7 @@ A RESTful API service built with Node.js, Express, TypeScript, and MongoDB for m
 - [API Documentation](#-api-documentation)
 - [Testing](#-testing)
 - [Business Rules](#-business-rules)
+- [XLSX Template Data Mapping](#-xlsx-template-data-mapping)
 
 ## 🎯 Overview
 
@@ -592,3 +593,88 @@ This applies at any nesting depth:
 - Unknown fields inside objects → ignored
 - Unknown items inside arrays → ignored
 - Unknown rows in tables → ignored
+
+## 📊 XLSX Template Data Mapping
+
+When generating XLSX files, the data you provide is automatically transformed to match the placeholders in your XLSX template. Here are some examples of how to structure your data and reference it in the template:
+
+- **Single property**
+
+  Data:
+
+  ```json
+  {
+    "report_date": "December 23, 2025"
+  }
+  ```
+
+  Template: `${report_date}`
+
+- **Object**
+
+  Data:
+
+  ```json
+  {
+    "company": {
+      "fields": {
+        "name": "Acme Corporation",
+        "address": "123 Business Street, New York, NY 10001"
+      }
+    }
+  }
+  ```
+
+  Template: `${company.name}`
+
+- **Simple array**
+
+  Data:
+
+  ```json
+  {
+    "customers": {
+      "items": ["Jean Dupont", "Maria Garcia", "Liu Wei"]
+    }
+  }
+  ```
+
+  Template: `${customers}`
+
+- **Array of objects (table)**
+
+  Data:
+
+  ```json
+  {
+    "subscriptions": {
+      "items": [
+        {
+          "fields": {
+            "description": "Premium Subscription - Annual Plan",
+            "unit_price": "$1,200.00"
+          }
+        },
+        {
+          "fields": {
+            "description": "Professional Services - Consulting Hours",
+            "unit_price": "$150.00"
+          }
+        },
+        {
+          "fields": {
+            "description": "Custom Integration Development",
+            "unit_price": "$2,500.00"
+          }
+        }
+      ]
+    }
+  }
+  ```
+
+  Template: `${table:subscriptions.description}` (renders a table column for each object's `description` field)
+
+> **Note:**
+>
+> - The system automatically unwraps `{ fields: ... }` and `{ items: [...] }` wrappers, so you can use flat references in your XLSX template.
+> - For tables, use `${table:collectionName.fieldName}` to render columns from an array of objects.

@@ -20,7 +20,7 @@ export const config: IConfig = {
     ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : ["http://localhost:3000"],
     TEMPLATE_DIR: path.join(process.cwd(), "templates_files"),
     TEMPLATE_CMD_DELIMITER: ['{', '}'],
-    ALLOWED_DOC_EXTENSION: [".docx", ".pdf"],
+    ALLOWED_DOC_EXTENSION: [".docx", ".pdf", ".xlsx"],
     ALLOWED_IMG_EXTENSION: [".jpg", ".jpeg", ".png", ".gif", ".svg"]
 
 };

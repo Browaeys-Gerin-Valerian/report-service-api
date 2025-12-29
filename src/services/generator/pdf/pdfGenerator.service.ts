@@ -1,4 +1,4 @@
-import { DataSchema, DataStructureSchema } from "@custom_types/entity";
+import { DataSchema } from "@custom_types/entity";
 import { ITemplate } from "@custom_types/entity";
 import { docxGenerator } from "../docx/docxGenerator.service";
 import { generate } from "./generate.service";
@@ -12,13 +12,9 @@ import { generate } from "./generate.service";
  */
 export async function pdfGenerator(
     template: ITemplate,
-    data_structure: DataStructureSchema,
     data_to_insert: DataSchema,
     files: Express.Multer.File[]
 ) {
-
-    const docxBuffer = await docxGenerator(template, data_structure, data_to_insert, files);
+    const docxBuffer = await docxGenerator(template, data_to_insert, files);
     return generate(docxBuffer);
-
-
 };

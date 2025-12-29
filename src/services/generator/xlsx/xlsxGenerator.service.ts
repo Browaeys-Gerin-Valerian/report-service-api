@@ -3,11 +3,10 @@ import { ITemplate } from "@custom_types/entity";
 import { getTemplatePath } from "@utils/functions.utils";
 import { generate } from "./generate.service";
 
-export async function docxGenerator(
+export async function xlsxGenerator(
     template: ITemplate,
     data_to_insert: DataSchema,
-    files: Express.Multer.File[]
 ) {
     const templatePath = getTemplatePath(template.filename)
-    return generate(templatePath, data_to_insert, files);
-};
+    return generate(templatePath, data_to_insert);
+}

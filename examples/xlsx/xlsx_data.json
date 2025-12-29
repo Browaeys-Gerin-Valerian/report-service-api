@@ -1,0 +1,35 @@
+{
+  "report_title": "Invoice",
+  "report_date": "December 23, 2025",
+  "company": {
+    "fields": {
+      "name": "Acme Corporation",
+      "address": "123 Business Street, New York, NY 10001"
+    }
+  },
+  "customers": {
+    "items": ["Jean Dupont", "Maria Garcia", "Liu Wei"]
+  },
+  "subscriptions": {
+    "items": [
+      {
+        "fields": {
+          "description": "Premium Subscription - Annual Plan",
+          "unit_price": "$1,200.00"
+        }
+      },
+      {
+        "fields": {
+          "description": "Professional Services - Consulting Hours",
+          "unit_price": "$150.00"
+        }
+      },
+      {
+        "fields": {
+          "description": "Custom Integration Development",
+          "unit_price": "$2,500.00"
+        }
+      }
+    ]
+  }
+}
