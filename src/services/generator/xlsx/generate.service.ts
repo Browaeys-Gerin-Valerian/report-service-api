@@ -1,6 +1,6 @@
 import fs from "fs";
 import XlsxTemplate from "xlsx-template";
-import { DataSchema, DataCollection } from "@custom_types/entity";
+import { DataSchema } from "@custom_types/entity";
 import { ValidationError } from "@utils/functions.utils";
 import { transformDataForXlsx } from "./utils/xlsx.utils";
 
