@@ -3,9 +3,10 @@ export enum DocumentType {
     DOCX = "docx",
     HTML = "html",
     PPTX = "pptx",
+    XLSX = "xlsx",
 }
 
-export type OutputFormat = "docx" | "pdf"
+export type OutputFormat = "docx" | "pdf" | "xlsx"
 
 
 export type FieldType = "text" | "object" | "collection" | "image"
